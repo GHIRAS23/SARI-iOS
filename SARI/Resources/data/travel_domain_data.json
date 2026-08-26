@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "status": "domain_data_separated",
+  "values": [
+    {
+      "id": "travel_value_01",
+      "ar": "ألمانيا"
+    },
+    {
+      "id": "travel_value_02",
+      "ar": "أنقرة"
+    },
+    {
+      "id": "travel_value_03",
+      "ar": "إيطاليا"
+    },
+    {
+      "id": "travel_value_04",
+      "ar": "الألمانية"
+    },
+    {
+      "id": "travel_value_05",
+      "ar": "الإمارات"
+    },
+    {
+      "id": "travel_value_06",
+      "ar": "البحرين"
+    },
+    {
+      "id": "travel_value_07",
+      "ar": "البولندية"
+    },
+    {
+      "id": "travel_value_08",
+      "ar": "التركية"
+    },
+    {
+      "id": "travel_value_09",
+      "ar": "الرينغيت (MYR)"
+    },
+    {
+      "id": "travel_value_10",
+      "ar": "الزلوتي البولندي (PLN)"
+    },
+    {
+      "id": "travel_value_11",
+      "ar": "السعودية"
+    },
+    {
+      "id": "travel_value_12",
+      "ar": "الفرنسية"
+    },
+    {
+      "id": "travel_value_13",
+      "ar": "القطارات والحجوزات داخل فرنسا."
+    },
+    {
+      "id": "travel_value_14",
+      "ar": "القطارات والنقل العام في ألمانيا."
+    },
+    {
+      "id": "travel_value_15",
+      "ar": "الكويت"
+    },
+    {
+      "id": "travel_value_16",
+      "ar": "الليرة التركية (TRY)"
+    },
+    {
+      "id": "travel_value_17",
+      "ar": "النقل العام في باريس وما حولها."
+    },
+    {
+      "id": "travel_value_18",
+      "ar": "النمسا"
+    },
+    {
+      "id": "travel_value_19",
+      "ar": "اليابان"
+    },
+    {
+      "id": "travel_value_20",
+      "ar": "اليابانية"
+    },
+    {
+      "id": "travel_value_21",
+      "ar": "الين الياباني (JPY)"
+    },
+    {
+      "id": "travel_value_22",
+      "ar": "اليورو (EUR)"
+    },
+    {
+      "id": "travel_value_23",
+      "ar": "باريس"
+    },
+    {
+      "id": "travel_value_24",
+      "ar": "برلين"
+    },
+    {
+      "id": "travel_value_25",
+      "ar": "بولندا"
+    },
+    {
+      "id": "travel_value_26",
+      "ar": "تركيا"
+    },
+    {
+      "id": "travel_value_27",
+      "ar": "روما"
+    },
+    {
+      "id": "travel_value_28",
+      "ar": "فرنسا"
+    },
+    {
+      "id": "travel_value_29",
+      "ar": "مفيد للنقل العام في برلين."
+    },
+    {
+      "id": "travel_value_30",
+      "ar": "مفيد للنقل العام والمسارات داخل المدن البولندية."
+    }
+  ],
+  "policy": {
+    "display": "Use localized country/city/currency/language labels when a locale mapping exists; preserve canonical codes internally.",
+    "not_ui_debt": true
+  }
+}

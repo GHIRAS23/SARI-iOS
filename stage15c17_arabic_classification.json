@@ -1,0 +1,463 @@
+[
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "ui": [
+      "HStack { Text(\"ساري\").font(.headline); Spacer(); Text(entry.location).font(.caption2).foregroundStyle(.secondary) }",
+      "HStack { Label(\"القبلة \\(Int(entry.qibla))°\", systemImage:\"location.north.line\"); Spacer(); Text(entry.prayerTime,style:.relative).monospacedDigit() }.font(.caption)",
+      "Text(\"آخر تحديث \\(entry.updated.formatted(date:.omitted,time:.shortened))\").font(.caption2).foregroundStyle(.secondary)"
+    ],
+    "domain": [
+      "location:suite?.string(forKey:\"location\") ?? \"افتح ساري لتحديث الموقع\",",
+      ".description(\"الصلاة القادمة، الوقت المتبقي واتجاه القبلة من بيانات ساري.\")"
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "ui": [],
+    "domain": [
+      ".init(code: \"SA\", nameArabic: \"السعودية\", flag: \"🇸🇦\"),",
+      ".init(code: \"QA\", nameArabic: \"قطر\", flag: \"🇶🇦\"),",
+      ".init(code: \"BH\", nameArabic: \"البحرين\", flag: \"🇧🇭\"),",
+      ".init(code: \"KW\", nameArabic: \"الكويت\", flag: \"🇰🇼\"),",
+      ".init(code: \"AE\", nameArabic: \"الإمارات\", flag: \"🇦🇪\"),",
+      ".init(code: \"OM\", nameArabic: \"عُمان\", flag: \"🇴🇲\")",
+      ".init(code: \"PL\", nameArabic: \"بولندا\", flag: \"🇵🇱\", capitalArabic: \"وارسو\", currency: \"الزلوتي البولندي (PLN)\", languagesArabic: \"البولندية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / E • 230V\", latitude: 52.2297, longitude: 21.0122, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: [",
+      ".init(id:\"pl1\", name:\"Jakdojade\", category:\"النقل\", noteArabic:\"مفيد للنقل العام والمسارات داخل المدن البولندية.\", systemImage:\"tram.fill\"),",
+      ".init(id:\"pl2\", name:\"KOLEO\", category:\"القطارات\", noteArabic:\"البحث عن رحلات القطارات المحلية وتذاكرها.\", systemImage:\"train.side.front.car\"),",
+      ".init(id:\"pl3\", name:\"Bolt / Uber\", category:\"التنقل\", noteArabic:\"خيارات شائعة لطلب السيارات في المدن الكبرى.\", systemImage:\"car.fill\")",
+      ".init(code: \"JP\", nameArabic: \"اليابان\", flag: \"🇯🇵\", capitalArabic: \"طوكيو\", currency: \"الين الياباني (JPY)\", languagesArabic: \"اليابانية\", timeZoneNoteArabic: \"JST\", plugsArabic: \"A / B • 100V\", latitude: 35.6762, longitude: 139.6503, muslimMajority: false, emergencyGeneral: nil, emergencyNoteArabic: \"للشرطة 110، وللإسعاف والإطفاء 119. تحقق دائمًا من الإرشادات الرسمية عند الحاجة.\", apps: [",
+      ".init(id:\"jp1\", name:\"Japan Travel by NAVITIME\", category:\"النقل\", noteArabic:\"تخطيط القطارات والمترو والتنقل بين المدن.\", systemImage:\"train.side.front.car\"),",
+      ".init(id:\"jp2\", name:\"GO\", category:\"سيارات الأجرة\", noteArabic:\"من تطبيقات طلب سيارات الأجرة المحلية.\", systemImage:\"car.fill\"),",
+      ".init(id:\"jp3\", name:\"Google Maps\", category:\"الخرائط\", noteArabic:\"مفيد للتنقل والبحث عن الأماكن ومواعيد النقل.\", systemImage:\"map.fill\")",
+      ".init(code: \"IT\", nameArabic: \"إيطاليا\", flag: \"🇮🇹\", capitalArabic: \"روما\", currency: \"اليورو (EUR)\", languagesArabic: \"الإيطالية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / F / L • 230V\", latitude: 41.9028, longitude: 12.4964, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: [",
+      ".init(id:\"it1\", name:\"Trenitalia\", category:\"القطارات\", noteArabic:\"القطارات الوطنية والحجوزات.\", systemImage:\"train.side.front.car\"),",
+      ".init(id:\"it2\", name:\"Italo\", category:\"القطارات\", noteArabic:\"قطارات سريعة بين مدن إيطالية عديدة.\", systemImage:\"train.side.front.car\"),",
+      ".init(id:\"it3\", name:\"Moovit\", category:\"النقل\", noteArabic:\"مسارات النقل العام في مدن متعددة.\", systemImage:\"bus.fill\")",
+      ".init(code: \"AT\", nameArabic: \"النمسا\", flag: \"🇦🇹\", capitalArabic: \"فيينا\", currency: \"اليورو (EUR)\", languagesArabic: \"الألمانية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / F • 230V\", latitude: 48.2082, longitude: 16.3738, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: [",
+      ".init(id:\"at1\", name:\"ÖBB\", category:\"القطارات\", noteArabic:\"القطارات والنقل بين المدن.\", systemImage:\"train.side.front.car\"),",
+      ".init(id:\"at2\", name:\"WienMobil\", category:\"النقل\", noteArabic:\"مفيد للتنقل داخل فيينا.\", systemImage:\"tram.fill\")",
+      ".init(code: \"DE\", nameArabic: \"ألمانيا\", flag: \"🇩🇪\", capitalArabic: \"برلين\", currency: \"اليورو (EUR)\", languagesArabic: \"الألمانية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / F • 230V\", latitude: 52.5200, longitude: 13.4050, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"112 للطوارئ الطبية والإطفاء؛ أرقام الجهات قد تختلف حسب نوع الحالة.\", apps: [",
+      ".init(id:\"de1\", name:\"DB Navigator\", category:\"القطارات\", noteArabic:\"القطارات والنقل العام في ألمانيا.\", systemImage:\"train.side.front.car\"),",
+      ".init(id:\"de2\", name:\"BVG\", category:\"النقل\", noteArabic:\"مفيد للنقل العام في برلين.\", systemImage:\"tram.fill\")",
+      ".init(code: \"FR\", nameArabic: \"فرنسا\", flag: \"🇫🇷\", capitalArabic: \"باريس\", currency: \"اليورو (EUR)\", languagesArabic: \"الفرنسية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / E • 230V\", latitude: 48.8566, longitude: 2.3522, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: [",
+      ".init(id:\"fr1\", name:\"Bonjour RATP\", category:\"النقل\", noteArabic:\"النقل العام في باريس وما حولها.\", systemImage:\"tram.fill\"),",
+      ".init(id:\"fr2\", name:\"SNCF Connect\", category:\"القطارات\", noteArabic:\"القطارات والحجوزات داخل فرنسا.\", systemImage:\"train.side.front.car\")",
+      ".init(code: \"TR\", nameArabic: \"تركيا\", flag: \"🇹🇷\", capitalArabic: \"أنقرة\", currency: \"الليرة التركية (TRY)\", languagesArabic: \"التركية\", timeZoneNoteArabic: \"TRT\", plugsArabic: \"C / F • 230V\", latitude: 39.9334, longitude: 32.8597, muslimMajority: true, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الموحد.\", apps: [",
+      ".init(id:\"tr1\", name:\"BiTaksi\", category:\"التنقل\", noteArabic:\"طلب سيارات الأجرة في عدد من المدن.\", systemImage:\"car.fill\"),",
+      ".init(id:\"tr2\", name:\"Moovit\", category:\"النقل\", noteArabic:\"مسارات النقل العام.\", systemImage:\"bus.fill\")",
+      ".init(code: \"MY\", nameArabic: \"ماليزيا\", flag: \"🇲🇾\", capitalArabic: \"كوالالمبور\", currency: \"الرينغيت (MYR)\", languagesArabic: \"الماليزية ولغات أخرى\", timeZoneNoteArabic: \"MYT\", plugsArabic: \"G • 240V\", latitude: 3.1390, longitude: 101.6869, muslimMajority: true, emergencyGeneral: \"999\", emergencyNoteArabic: \"رقم طوارئ عام؛ تحقق من تعليمات السلطات المحلية عند الحاجة.\", apps: [",
+      ".init(id:\"my1\", name:\"Grab\", category:\"التنقل\", noteArabic:\"سيارات وتوصيل وخدمات محلية.\", systemImage:\"car.fill\"),",
+      ".init(id:\"my2\", name:\"MyRapid PULSE\", category:\"النقل\", noteArabic:\"مفيد للنقل العام في كوالالمبور.\", systemImage:\"tram.fill\")",
+      ".init(id:\"entry\", title:\"متطلبات الدخول\", detail:\"تحقق من التأشيرة وصلاحية الجواز ومتطلبات الدخول من مصدر رسمي قبل السفر.\", systemImage:\"person.text.rectangle\"),",
+      ".init(id:\"apps\", title:\"نزّل التطبيقات المهمة\", detail:\"راجع تطبيقات النقل والخرائط والخدمات المقترحة للوجهة.\", systemImage:\"square.and.arrow.down.fill\"),",
+      ".init(id:\"weather\", title:\"راجع الطقس ولباس الرحلة\", detail:\"افتح طقس الوجهة قبل المغادرة وحدث البيانات عند اقتراب موعد السفر.\", systemImage:\"cloud.sun.fill\"),",
+      ".init(id:\"mission\", title:\"احفظ بيانات بعثتك\", detail:nationality == nil ? \"اختر جنسيتك مرة واحدة ليعرض ساري بعثتك المناسبة.\" : \"سيعرض ساري بيانات بعثة دولتك عند توفر بيانات موثقة للوجهة.\", systemImage:\"building.columns.fill\")",
+      "if let tripDate { items.insert(.init(id:\"date\", title:\"موعد الرحلة\", detail:tripDate.formatted(date: .long, time: .omitted), systemImage:\"calendar\"), at:0) }"
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/SariAppearance.swift",
+    "ui": [],
+    "domain": [
+      "case (.system,.ar):return SariUIStrings.text(\"automatic\", SariLanguage.selected); case (.light,.ar):return \"فاتح\"; case (.dark,.ar):return \"داكن\""
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "ui": [],
+    "domain": [
+      "case 0: return \"صحو\"",
+      "case 1, 2: return \"غائم جزئيًا\"",
+      "case 3: return \"غائم\"",
+      "case 45, 48: return \"ضباب\"",
+      "case 51, 53, 55, 56, 57: return \"رذاذ\"",
+      "case 61, 63, 65, 66, 67: return \"أمطار\"",
+      "case 71, 73, 75, 77: return \"ثلوج\"",
+      "case 80, 81, 82: return \"زخات مطر\"",
+      "case 85, 86: return \"زخات ثلج\"",
+      "case 95, 96, 99: return \"عواصف رعدية\"",
+      "default: return \"طقس متغير\"",
+      "pieces += [\"ملابس خفيفة وفضفاضة\", \"يفضل الألوان الفاتحة\"]",
+      "case 27..<34: pieces += [\"ملابس صيفية خفيفة\"]",
+      "case 20..<27: pieces += [\"ملابس خفيفة مع طبقة بسيطة للمساء\"]",
+      "case 13..<20: pieces += [\"جاكيت خفيف أو كنزة\"]",
+      "case 6..<13: pieces += [\"جاكيت متوسط وملابس دافئة\"]",
+      "default: pieces += [\"معطف دافئ وطبقات متعددة\"]",
+      "pieces += [\"خذ مظلة أو معطفًا مقاومًا للمطر\"]",
+      "if max(windSpeed, windGust) >= 35 { pieces += [\"الرياح قوية؛ اختر طبقة خارجية ثابتة\"] }",
+      "if let today = daily.first, today.high - today.low >= 10 { pieces += [\"الحرارة تتغير بوضوح اليوم؛ خذ طبقة إضافية للمساء\"] }",
+      "if let uv = daily.first?.uvIndexMax, uv >= 7 { pieces += [\"الشمس قوية؛ قبعة وواقي شمس مناسبان للخروج الطويل\"] }",
+      "return pieces.joined(separator: \"، \") + \".\"",
+      "if let d = daily.first, d.precipitationProbability >= 70 { return \"احتمال المطر مرتفع اليوم؛ خطط للخروج مع مظلة.\" }",
+      "if windGust >= 50 { return \"هبات الرياح قوية؛ انتبه في الأماكن المفتوحة.\" }",
+      "if let uv = daily.first?.uvIndexMax, uv >= 8 { return \"مؤشر الأشعة فوق البنفسجية مرتفع؛ قلل التعرض المباشر وقت الظهيرة.\" }",
+      "if let d = daily.first, d.high >= 40 { return \"حرارة شديدة متوقعة؛ تجنب المجهود الطويل وقت الذروة.\" }",
+      "guard let url = components.url else { errorMessage = \"تعذر تكوين طلب الطقس\"; return }",
+      "guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { errorMessage = \"تعذر تحديث الطقس الآن\"; return }",
+      "errorMessage=\"لا يوجد اتصال — يتم عرض آخر طقس محفوظ.\"",
+      "} else { errorMessage=\"تعذر تحديث الطقس الآن ولا توجد بيانات محفوظة.\" }"
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/SariLanguage.swift",
+    "ui": [],
+    "domain": [
+      "case .ar:return \"العربية\"; case .en:return \"English\"; case .tr:return \"Türkçe\""
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhSearch.swift",
+    "ui": [],
+    "domain": [
+      "var label:String{\"السلسبيل — الجزء \\(part)، الصفحة \\(page)\"}",
+      ".replacingOccurrences(of:\"أ\",with:\"ا\").replacingOccurrences(of:\"إ\",with:\"ا\").replacingOccurrences(of:\"آ\",with:\"ا\")",
+      ".replacingOccurrences(of:\"ة\",with:\"ه\")",
+      "let stop:Set<String>=[\"من\",\"في\",\"على\",\"الى\",\"إلى\",\"هل\",\"ما\",\"هو\",\"هي\",\"عن\",\"ثم\",\"بعد\",\"قبل\",\"the\",\"a\",\"an\",\"is\",\"are\",\"to\",\"of\",\"in\",\"and\",\"or\"]"
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/SariCalendar.swift",
+    "ui": [],
+    "domain": [
+      "switch self { case .dual:return \"هجري + ميلادي\";case .hijri:return \"هجري — أم القرى\";case .gregorian:return \"ميلادي\" }",
+      "f.dateFormat=language.isArabic ? \"EEEE، d MMMM y 'هـ'\" : \"EEEE, d MMMM y 'AH'\""
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "ui": [],
+    "domain": [
+      "let items = [(\"الفجر\",fajr),(\"الشروق\",sunrise),(\"الظهر\",dhuhr),(\"العصر\",asr),(\"المغرب\",maghrib),(\"العشاء\",isha)]",
+      "return (\"الفجر\", Calendar.current.date(byAdding: .day, value: 1, to: fajr) ?? fajr)",
+      "case .auto:return \"تلقائي حسب الموقع\"; case .ummAlQura:return \"أم القرى — مكة المكرمة\"",
+      "case .muslimWorldLeague:return \"رابطة العالم الإسلامي\"; case .isna:return \"ISNA — أمريكا الشمالية\"",
+      "case .egyptian:return \"الهيئة المصرية العامة للمساحة\"; case .karachi:return \"جامعة العلوم الإسلامية — كراتشي\"",
+      "case .dubai:return \"دبي\"; case .qatar:return \"قطر\"; case .kuwait:return \"الكويت\"; case .singapore:return \"سنغافورة\"",
+      "case .turkey:return \"رئاسة الشؤون الدينية التركية\"; case .tehran:return \"طهران\"; case .custom:return \"مخصص\"",
+      "var title:String{self == .hanafi ? \"حنفي — ظلّان\" : \"الجمهور — ظل واحد\"}",
+      "@Published var locationName = \"موقعك\"",
+      "locationMessage=\"يتم استخدام آخر موقع محفوظ حتى يتم تحديث الموقع.\"",
+      "case .denied,.restricted: locationDenied=true;locationMessage=\"صلاحية الموقع غير متاحة. يمكن الاستمرار بآخر موقع محفوظ أو تفعيل الموقع من إعدادات الجهاز.\"",
+      "@unknown default: locationMessage=\"تعذر تحديد حالة صلاحية الموقع.\"",
+      "case .denied,.restricted: locationDenied=true;locationMessage=\"صلاحية الموقع غير متاحة. يمكن الاستمرار بآخر موقع محفوظ.\"",
+      "if let p=p?.first { Task { @MainActor in self?.locationName = p.locality ?? p.administrativeArea ?? \"موقعك\"; self?.saveWidget() } }",
+      "locationMessage = coordinate == nil ? \"تعذر تحديد الموقع ولا يوجد موقع محفوظ بعد.\" : \"تعذر تحديث الموقع؛ يتم استخدام آخر موقع محفوظ.\"",
+      "let items=[(\"fajr\",\"الفجر\",t.fajr),(\"dhuhr\",\"الظهر\",t.dhuhr),(\"asr\",\"العصر\",t.asr),(\"maghrib\",\"المغرب\",t.maghrib),(\"isha\",\"العشاء\",t.isha)]",
+      "addNotification(center:center,id:\"\\(id)_pre\",title:\"اقتربت صلاة \\(name)\",body:\"متبقي نحو \\(preMinutes) دقائق\",date:pre,sound:nil)",
+      "if date > .now { addNotification(center:center,id:id,title:\"حان وقت صلاة \\(name)\",body:\"ساري يذكّرك بالصلاة\",date:date,sound:soundName) }",
+      "addNotification(center:center,id:\"\\(id)_iqama\",title:\"تنبيه الإقامة — \\(name)\",body:\"حان موعد الإقامة الذي حددته\",date:iqama,sound:nil)"
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/PlacesService.swift",
+    "ui": [],
+    "domain": [
+      "return text.contains(\"halal\") || text.contains(\"حلال\")",
+      "switch self { case .food:return \"المطاعم\"; case .mosque:return \"المساجد\"; case .pharmacy:return \"الصيدليات\"; case .hospital:return \"المستشفيات\"; case .grocery:return \"البقالات\"; case .transport:return \"النقل\" }",
+      "message=\"افتح البحث على الخريطة للحصول على نتائج حية حول وجهتك.\""
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "ui": [],
+    "domain": [
+      "\"ask\":[\"ar\":\"اسأل ساري\",\"en\":\"Ask SARI\",\"tr\":\"SARI'ye Sor\",\"ms\":\"Tanya SARI\",\"id\":\"Tanya SARI\",\"ja\":\"SARIに質問\",\"zh\":\"询问 SARI\",\"ru\":\"Спросить SARI\",\"fr\":\"Demander à SARI\"],",
+      "\"more\":[\"ar\":\"المزيد\",\"en\":\"More\",\"tr\":\"Daha Fazla\",\"ms\":\"Lagi\",\"id\":\"Lainnya\",\"ja\":\"その他\",\"zh\":\"更多\",\"ru\":\"Ещё\",\"fr\":\"Plus\"],",
+      "\"inCountry\":[\"ar\":\"في بلدي\",\"en\":\"At home\",\"tr\":\"Ülkemde\",\"ms\":\"Di negara saya\",\"id\":\"Di negara saya\",\"ja\":\"自国\",\"zh\":\"在本国\",\"ru\":\"В своей стране\",\"fr\":\"Dans mon pays\"],",
+      "\"weather\":[\"ar\":\"طقس اليوم\",\"en\":\"Today's weather\",\"tr\":\"Bugünün havası\",\"ms\":\"Cuaca hari ini\",\"id\":\"Cuaca hari ini\",\"ja\":\"今日の天気\",\"zh\":\"今日天气\",\"ru\":\"Погода сегодня\",\"fr\":\"Météo du jour\"],",
+      "\"clothes\":[\"ar\":\"لباس اليوم\",\"en\":\"What to wear\",\"tr\":\"Bugün ne giyilmeli\",\"ms\":\"Pakaian hari ini\",\"id\":\"Pakaian hari ini\",\"ja\":\"今日の服装\",\"zh\":\"今日穿着\",\"ru\":\"Что надеть\",\"fr\":\"Tenue du jour\"],",
+      "\"fiqhSubtitle\":[\"ar\":\"مساعد فقهي موثّق\",\"en\":\"Source-bound fiqh assistant\",\"tr\":\"Kaynaklı fıkıh asistanı\",\"ms\":\"Pembantu fiqh bersumber\",\"id\":\"Asisten fikih bersumber\",\"ja\":\"出典に基づくフィクフ助手\",\"zh\":\"基于来源的教法助手\",\"ru\":\"Фикх-помощник по источникам\",\"fr\":\"Assistant fiqh sourcé\"],",
+      "\"quranSubtitle\":[\"ar\":\"المصحف والتفسير\",\"en\":\"Mushaf & tafsir\",\"tr\":\"Mushaf ve tefsir\",\"ms\":\"Mushaf & tafsir\",\"id\":\"Mushaf & tafsir\",\"ja\":\"ムスハフとタフスィール\",\"zh\":\"古兰经与经注\",\"ru\":\"Мусхаф и тафсир\",\"fr\":\"Mushaf et tafsir\"],",
+      "\"adhkarSubtitle\":[\"ar\":\"حصنك اليومي\",\"en\":\"Your daily remembrance\",\"tr\":\"Günlük zikirlerin\",\"ms\":\"Zikir harian anda\",\"id\":\"Zikir harian Anda\",\"ja\":\"毎日のズィクル\",\"zh\":\"每日赞念\",\"ru\":\"Ежедневные поминания\",\"fr\":\"Vos invocations quotidiennes\"]",
+      ",\"search\":[\"ar\":\"البحث\",\"en\":\"Search\",\"tr\":\"Ara\",\"ms\":\"Cari\",\"id\":\"Cari\",\"ja\":\"検索\",\"zh\":\"搜索\",\"ru\":\"Поиск\",\"fr\":\"Recherche\"],",
+      "\"bookmarks\":[\"ar\":\"المحفوظات\",\"en\":\"Bookmarks\",\"tr\":\"Yer imleri\",\"ms\":\"Penanda\",\"id\":\"Penanda\",\"ja\":\"ブックマーク\",\"zh\":\"书签\",\"ru\":\"Закладки\",\"fr\":\"Favoris\"],",
+      "\"continueReading\":[\"ar\":\"متابعة القراءة\",\"en\":\"Continue reading\",\"tr\":\"Okumaya devam et\",\"ms\":\"Teruskan membaca\",\"id\":\"Lanjutkan membaca\",\"ja\":\"続きを読む\",\"zh\":\"继续阅读\",\"ru\":\"Продолжить чтение\",\"fr\":\"Continuer la lecture\"],",
+      "\"humidity\":[\"ar\":\"الرطوبة\",\"en\":\"Humidity\",\"tr\":\"Nem\",\"ms\":\"Kelembapan\",\"id\":\"Kelembapan\",\"ja\":\"湿度\",\"zh\":\"湿度\",\"ru\":\"Влажность\",\"fr\":\"Humidité\"],",
+      "\"wind\":[\"ar\":\"الرياح\",\"en\":\"Wind\",\"tr\":\"Rüzgâr\",\"ms\":\"Angin\",\"id\":\"Angin\",\"ja\":\"風\",\"zh\":\"风速\",\"ru\":\"Ветер\",\"fr\":\"Vent\"],",
+      "\"fajr\":[\"ar\":\"الفجر\",\"en\":\"Fajr\",\"tr\":\"Sabah\",\"ms\":\"Subuh\",\"id\":\"Subuh\",\"ja\":\"ファジュル\",\"zh\":\"晨礼\",\"ru\":\"Фаджр\",\"fr\":\"Fajr\"],",
+      "\"dhuhr\":[\"ar\":\"الظهر\",\"en\":\"Dhuhr\",\"tr\":\"Öğle\",\"ms\":\"Zohor\",\"id\":\"Zuhur\",\"ja\":\"ズフル\",\"zh\":\"晌礼\",\"ru\":\"Зухр\",\"fr\":\"Dhuhr\"],",
+      "\"asr\":[\"ar\":\"العصر\",\"en\":\"Asr\",\"tr\":\"İkindi\",\"ms\":\"Asar\",\"id\":\"Asar\",\"ja\":\"アスル\",\"zh\":\"晡礼\",\"ru\":\"Аср\",\"fr\":\"Asr\"],",
+      "\"maghrib\":[\"ar\":\"المغرب\",\"en\":\"Maghrib\",\"tr\":\"Akşam\",\"ms\":\"Maghrib\",\"id\":\"Magrib\",\"ja\":\"マグリブ\",\"zh\":\"昏礼\",\"ru\":\"Магриб\",\"fr\":\"Maghrib\"],",
+      "\"isha\":[\"ar\":\"العشاء\",\"en\":\"Isha\",\"tr\":\"Yatsı\",\"ms\":\"Isyak\",\"id\":\"Isya\",\"ja\":\"イシャー\",\"zh\":\"宵礼\",\"ru\":\"Иша\",\"fr\":\"Isha\"],",
+      "\"sources\":[\"ar\":\"المصادر\",\"en\":\"Sources\",\"tr\":\"Kaynaklar\",\"ms\":\"Sumber\",\"id\":\"Sumber\",\"ja\":\"出典\",\"zh\":\"来源\",\"ru\":\"Источники\",\"fr\":\"Sources\"]"
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhEngine.swift",
+    "ui": [],
+    "domain": [
+      "return .init(answer:insufficient(language),sources:[],reason:\"لم أجد نصًا قريبًا بما يكفي في المصادر المحلية.\",confidence:0)",
+      "return .init(answer:cleaned.isEmpty ? insufficient(language):cleaned,sources:sources,reason:\"الخلاصة صيغت محليًا من المقاطع المسترجعة من المصادر المثبتة على الجهاز.\",confidence:confidence)",
+      "case .ar:return \"لم أجد في المصادر المحلية نصًا كافيًا للإجابة بثقة.\""
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "ui": [],
+    "domain": [
+      "@Published private(set) var status=\"غير مثبت\"",
+      "status=installed ? \"جاهز للعمل بدون إنترنت\":\"غير مثبت\"",
+      "installed=false;installedVersion=nil;progress=0;status=\"تم حذف الملفات\"",
+      "downloading=true;progress=0;status=\"جلب معلومات الحزمة…\"",
+      "try await fetch(manifest.modelURL,to:stagedModel,expectedBytes:manifest.modelBytes,sha256:manifest.modelSHA256,base:0,span:0.82,label:\"تنزيل نموذج المساعد…\")",
+      "try await fetch(manifest.libraryURL,to:stagedLibrary,expectedBytes:manifest.libraryBytes,sha256:manifest.librarySHA256,base:0.82,span:0.18,label:\"تنزيل مكتبة المصادر…\")",
+      "progress=1;installed=true;installedVersion=manifest.version;status=\"جاهز للعمل بدون إنترنت\""
+    ],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "ui": [
+      "Section(\"عرض التاريخ\") {",
+      "Section(\"تصحيح التاريخ الهجري\") {",
+      "Stepper(\"\\(adjustment >= 0 ? \"+\" : \"\")\\(adjustment) يوم\",value:$adjustment,in:-2...2)",
+      "Button(\"إعادة الضبط\"){adjustment=0}.disabled(adjustment==0)",
+      "Text(\"يعتمد التاريخ الهجري على تقويم أم القرى. خيار التصحيح يغيّر العرض الهجري فقط ولا يغيّر تاريخ الجهاز أو حساب مواقيت الصلاة.\")",
+      "Section(\"معاينة\") {",
+      "}.navigationTitle(\"التقويم والتاريخ\")"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "ui": [
+      "let sounds=[(\"Alnufis\",\"النفيس\"),(\"Alimula\",\"المعيقلي\"),(\"Alqitami\",\"القطامي\")]",
+      "let prayers=[(\"fajr\",\"الفجر\"),(\"dhuhr\",\"الظهر\"),(\"asr\",\"العصر\"),(\"maghrib\",\"المغرب\"),(\"isha\",\"العشاء\")]",
+      "Section(\"طريقة حساب المواقيت\") {",
+      "Picker(\"التقويم / طريقة الحساب\",selection:$calcMethod) {",
+      "LabeledContent(\"المستخدم حاليًا\",value:prayer.effectiveCalculationMethod.title)",
+      "Picker(\"حساب العصر\",selection:$asrMethod) {",
+      "NavigationLink(\"التعديلات اليدوية ± دقائق\"){ PrayerOffsetsView().environmentObject(prayer) }",
+      "Text(\"يمكن اختيار الطريقة يدويًا أو ترك ساري يختار تلقائيًا حسب الموقع. قد تختلف المواقيت الرسمية محليًا بدقائق قليلة.\").font(.footnote).foregroundStyle(.secondary)",
+      "Toggle(\"تفعيل التنبيه المسبق\",isOn:bindingBool(\"prePrayerEnabled\",defaultValue:true)).onChange(of:bindingBool(\"prePrayerEnabled\",defaultValue:true).wrappedValue){_,_ in prayer.schedulePrayerNotifications()}",
+      "Toggle(\"تفعيل تنبيه الإقامة\",isOn:bindingBool(\"iqamaEnabled\",defaultValue:true)).onChange(of:bindingBool(\"iqamaEnabled\",defaultValue:true).wrappedValue){_,_ in prayer.schedulePrayerNotifications()}",
+      "Section(\"صوت تنبيه الأذان\") {",
+      "HStack { Button(\"معاينة — \\(name)\"){ play(file) }; Spacer(); if selectedSound == \"\\(file)_29s.caf\" { Image(systemName:\"checkmark.circle.fill\").foregroundStyle(.tint) } }",
+      "Section { Text(\"يمكن تشغيل أو إيقاف الأذان لكل صلاة على حدة. يستخدم iOS صوت إشعار مختصرًا التزامًا بقيود النظام.\").font(.footnote) }",
+      "let rows=[(\"fajr\",\"الفجر\"),(\"sunrise\",\"الشروق\"),(\"dhuhr\",\"الظهر\"),(\"asr\",\"العصر\"),(\"maghrib\",\"المغرب\"),(\"isha\",\"العشاء\")]",
+      ".navigationTitle(\"تعديل الدقائق\")",
+      "Stepper(\"\\(name): \\(value >= 0 ? \"+\" : \"\")\\(value) دقيقة\",value:$value,in:-30...30)"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "ui": [
+      "Text(\"تلقائي — \\(SariLanguage.device.displayName)\").tag(\"\")",
+      "Section(language.isArabic ? \"التاريخ\":\"Date\") {",
+      "NavigationLink { CalendarSettingsView() } label:{Label(language.isArabic ? \"التقويم والتاريخ\":\"Calendar & date\",systemImage:\"calendar\")}",
+      "Picker(language.isArabic ? \"الوضع\":\"Theme\",selection:$appearanceRaw) {",
+      "NavigationLink { PrayerSettingsView() } label:{Label(\"الصلاة والأذان والإقامة\",systemImage:\"bell.badge.fill\")}",
+      "Label(\"الحزمة مثبتة\\(pack.installedVersion.map{\" — \\($0)\"} ?? \"\")\",systemImage:\"checkmark.seal.fill\").foregroundStyle(.green)",
+      "Button(role:.destructive){showDelete=true}label:{Label(\"حذف حزمة المساعد من الجهاز\",systemImage:\"trash\")}",
+      ".confirmationDialog(\"حذف ملفات المساعد؟\",isPresented:$showDelete,titleVisibility:.visible) {",
+      "} message:{Text(\"يمكن تنزيلها مرة أخرى لاحقًا.\")}"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+    "ui": [
+      "\"repeat\":[\"ar\":\"التكرار\",\"en\":\"Repeat\",\"tr\":\"Tekrar\",\"ms\":\"Ulangan\",\"id\":\"Ulangi\",\"ja\":\"回数\",\"zh\":\"重复\",\"ru\":\"Повтор\",\"fr\":\"Répétition\"],",
+      "\"meaning\":[\"ar\":\"المعنى\",\"en\":\"Meaning\",\"tr\":\"Anlamı\",\"ms\":\"Makna\",\"id\":\"Makna\",\"ja\":\"意味\",\"zh\":\"含义\",\"ru\":\"Смысл\",\"fr\":\"Sens\"],",
+      "\"pron\":[\"ar\":\"النطق النصي\",\"en\":\"Transliteration\",\"tr\":\"Okunuş\",\"ms\":\"Transliterasi\",\"id\":\"Transliterasi\",\"ja\":\"ローマ字読み\",\"zh\":\"拉丁转写\",\"ru\":\"Транслитерация\",\"fr\":\"Translittération\"],",
+      "\"done\":[\"ar\":\"تم ✓\",\"en\":\"Done ✓\",\"tr\":\"Tamam ✓\",\"ms\":\"Selesai ✓\",\"id\":\"Selesai ✓\",\"ja\":\"完了 ✓\",\"zh\":\"完成 ✓\",\"ru\":\"Готово ✓\",\"fr\":\"Terminé ✓\"],",
+      "\"unavailable\":[\"ar\":\"تعذر تحميل الأذكار\",\"en\":\"Adhkar could not be loaded\",\"tr\":\"Zikirler yüklenemedi\",\"ms\":\"Zikir tidak dapat dimuatkan\",\"id\":\"Zikir tidak dapat dimuat\",\"ja\":\"アズカールを読み込めませんでした\",\"zh\":\"无法加载赞念\",\"ru\":\"Не удалось загрузить азкары\",\"fr\":\"Impossible de charger les adhkar\"]"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "ui": [
+      "Text(\"ساري\")",
+      "Label(\"القبلة \\(Int(prayer.qiblaBearing))°\", systemImage: \"location.north.circle.fill\")",
+      "Text(\"تنبيه الإقامة قابل للتخصيص\").font(.caption)",
+      "HStack(spacing: 12) { ProgressView(); Text(\"جاري تحديد موقعك وحساب مواقيت الصلاة…\") }",
+      "HStack { Text(\"عرض التفاصيل والتوقعات\").font(.caption.bold()); Image(systemName: \"chevron.left\").font(.caption.bold()) }.foregroundStyle(Color.accentColor)",
+      "} else if weather.isLoading { HStack { ProgressView(); Text(\"جاري تحديث الطقس ولباس اليوم…\") }.frame(maxWidth: .infinity).padding(20) }",
+      "Text(\"كل ما تحتاجه\").font(.title3.weight(.bold))",
+      "NavigationLink(destination: QiblaView()) { ActionCard(title: SariStrings.t(\"qibla\",language), subtitle: \"\\(Int(prayer.qiblaBearing))° من موقعك\", icon: \"location.north.fill\") }",
+      "HStack { Text(\"وضع السفر مفعّل\").font(.headline); Spacer(); Image(systemName: \"airplane.circle.fill\").font(.title2) }",
+      "Text(\"ساري سيبرز لك معلومات السفر، التطبيقات المحلية، المطاعم الحلال والتنبيهات المهمة في وجهتك.\")",
+      "Button(\"استكشف أدوات السفر\") { }.buttonStyle(.borderedProminent)",
+      "HStack { NavigationLink(SariUIStrings.text(\"see_all\", SariLanguage.selected)) { PrayerTimesView() }.font(.subheadline.bold()); Spacer(); Text(\"مواقيت اليوم\").font(.title3.weight(.bold)) }",
+      "prayerTime(\"الفجر\", t.fajr)",
+      "prayerTime(\"الظهر\", t.dhuhr)",
+      "prayerTime(\"العصر\", t.asr)",
+      "prayerTime(\"المغرب\", t.maghrib)",
+      "prayerTime(\"العشاء\", t.isha)",
+      "Text(\"ساري يساعدك بالمعلومة ويعرض مصادرها، ولا يُعد جهة مستقلة للفتوى.\")"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "ui": [
+      "Text(\"يبحث ساري في النصوص المفهرسة، ويتحقق من دعم الخلاصة قبل عرضها. إذا لم تكفِ المصادر يتحفظ بدل تخمين الحكم.\")",
+      "Label(\"حزمة Qwen3.5-2B والمصادر مثبتة. ربط محرك GGUF المحلي داخل iPhone هو الخطوة المتبقية لتشغيل الإجابة دون خادم.\",systemImage:\"iphone.gen3\")",
+      "TextField(\"اكتب سؤالك بتفاصيله…\",text:$question,axis:.vertical)",
+      "Text(\"مطابقة المصادر \\(a.retrieval_confidence)%\").font(.caption.weight(.bold))",
+      "if level.contains(\"صريح\"){return \"checkmark.seal.fill\"}",
+      "if level.contains(\"استنتاج\"){return \"arrow.triangle.branch\"}",
+      "level: local.sources.isEmpty ? SariUIStrings.text(\"insufficient_source\", SariLanguage.selected) : \"استنتاج من المصادر المحلية\",",
+      "disclaimer: \"ساري مساعد معرفي يعتمد على المصادر المثبتة على الجهاز، وليس جهة مستقلة للفتوى.\""
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "ui": [
+      "Text(\"حمّل ملفات المساعد مرة واحدة. بعد اكتمال التنزيل تعمل المصادر والنموذج على جهازك دون خادم، ويمكن حذف الملفات لاحقًا.\")",
+      "guard let u=manifestURL else{error=\"رابط حزمة المساعد غير مهيأ في هذه النسخة.\";return}",
+      "Task{do{try await pack.install(from:u)}catch{self.error=\"فشل التنزيل أو التحقق من الملفات. لم يتم تفعيل الحزمة.\"}}",
+      "Text(\"لن يعتبر ساري الحزمة صالحة إذا لم يطابق حجم الملفات وبصمة SHA-256 القيم المعتمدة.\")"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "ui": [
+      "\"ar\":.init(title:SariUIStrings.text(\"welcome\", SariLanguage.selected),subtitle:\"رفيق المسلم في بلده وفي سفره\"),",
+      "\"ar\":.init(title:\"صلاتك أينما كنت\",subtitle:\"مواقيت الصلاة والقبلة وطرق الحساب والتنبيهات في مكان واحد\"),",
+      "\"ar\":.init(title:\"القرآن والأذكار معك\",subtitle:\"المصحف والتفسير والأذكار مع تجربة تناسب لغتك\"),",
+      "\"ar\":.init(title:\"سافر وأنت مستعد\",subtitle:\"الوجهة والطقس ولباس اليوم ومعلومات البلد ومتطلبات الرحلة والتطبيقات المهمة\"),",
+      "\"ar\":.init(title:\"معلومات مهمة عند السفر\",subtitle:\"يعرض ساري السفارة أو القنصلية والمعلومات المناسبة وفق جنسيتك ووجهتك\"),",
+      "\"ar\":.init(title:\"مساعدك الفقهي على جهازك\",subtitle:\"نزّل حزمة المساعد لتعمل المصادر والنموذج محليًا على جهازك\"),",
+      "Button(word(\"تخطي\",\"Skip\")){finish()}.fontWeight(.semibold)",
+      "HStack{Text(page == sariOnboardingPages.count-1 ? word(\"ابدأ مع ساري\",\"Start\") : word(\"التالي\",\"Next\")).fontWeight(.bold);Image(systemName:rtl ? \"arrow.left\":\"arrow.right\")}"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Contacts/ScholarsView.swift",
+    "ui": [
+      "Link(\"اتصال\", destination: url)",
+      "}.navigationTitle(\"أصحاب الفضيلة\")"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "ui": [
+      "Text(destination.muslimMajority ? \"أماكن مميزة حولك\":\"أماكن مفيدة للمسافر\").font(.title2.bold())",
+      "Text(destination.muslimMajority ? \"يركز ساري على جودة المكان وقربه.\":\"لا يصف ساري مطعمًا بأنه حلال إلا عند وجود تحقق صريح.\")",
+      "Text(store.message ?? \"لا توجد نتائج موثقة محفوظة حاليًا.\").foregroundStyle(.secondary)",
+      "Text(\"خدمات وتطبيقات الوجهة\").font(.title3.bold())",
+      "Text(\"المطاعم، ساعات العمل، حالة الحلال وأرقام الخدمات بيانات متغيرة. ساري لا يخمّنها؛ النتائج الحية تفتح في خدمة الخرائط.\")",
+      "}.navigationTitle(\"حولك في \\(destination.nameArabic)\").environment(\\.layoutDirection,.rightToLeft)"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "ui": [
+      "HStack { Text(profile.destination.flag).font(.system(size:42)); Spacer(); VStack(alignment:.trailing, spacing:3) { Text(\"وجهتك\").font(.caption.bold()).foregroundStyle(.secondary); Text(profile.destination.nameArabic).font(.system(size:30,weight:.black,design:.rounded)); Text(profile.destination.capitalArabic).foregroundStyle(.secondary) } }",
+      "HStack(spacing:14) { Image(systemName:\"checklist.checked\").font(.title2).foregroundStyle(Color.accentColor); Spacer(); VStack(alignment:.trailing,spacing:5) { Text(SariUIStrings.text(\"before_travel\", SariLanguage.selected)).font(.headline).foregroundStyle(.primary); Text(\"التأشيرة والجواز، الطقس، التطبيقات، بعثتك وتجهيزات الوجهة.\").font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.trailing) } }",
+      "infoRow(\"العملة\", profile.destination.currency, \"creditcard.fill\")",
+      "infoRow(\"التوقيت\", profile.destination.timeZoneNoteArabic, \"clock.fill\")",
+      "infoRow(\"الكهرباء\", profile.destination.plugsArabic, \"powerplug.fill\")",
+      "HStack { Text(\"طقس الوجهة ولباس اليوم\").font(.title3.bold()); Spacer(); Image(systemName:\"cloud.sun.fill\").symbolRenderingMode(.multicolor) }",
+      "} else if destinationWeather.isLoading { HStack { ProgressView(); Text(\"جاري تحديث طقس الوجهة…\") } }",
+      "else { Text(\"تعذر تحديث الطقس الآن.\").foregroundStyle(.secondary) }",
+      "Text(\"الأرقام المهمة\").font(.title3.bold())",
+      "HStack { Text(nationality.flag).font(.title2); Spacer(); VStack(alignment:.trailing) { Text(SariUIStrings.format(\"embassy_of\", SariLanguage.selected, [\"country\":nationality.nameArabic])).font(.headline); if let m = TravelCatalog.mission(for:nationality.code,in:profile.destination.code) { Text(m.titleArabic).foregroundStyle(.secondary) } else { Text(\"لا توجد بيانات بعثة موثقة مخزنة لهذه الوجهة في النسخة الحالية. لن يخمّن ساري أرقامًا حساسة.\").font(.caption).foregroundStyle(.secondary) } } }",
+      "Button { showProfile = true } label: { Label(\"اختر جنسيتك لإظهار سفارة/قنصلية دولتك تلقائيًا\",systemImage:\"flag.fill\").frame(maxWidth:.infinity,alignment:.trailing) }",
+      "HStack { Image(systemName:\"cross.case.fill\").foregroundStyle(.red); Spacer(); VStack(alignment:.trailing) { Text(\"طوارئ \\(profile.destination.nameArabic)\").font(.headline); if let n = profile.destination.emergencyGeneral { Text(\"الطوارئ العامة: \\(n)\").font(.title3.bold()) } ; Text(profile.destination.emergencyNoteArabic).font(.caption).foregroundStyle(.secondary) } }",
+      "Text(\"قبل التثبيت، راجع التطبيق والناشر في متجر جهازك.\").font(.caption2).foregroundStyle(.secondary)",
+      "Text(\"أدوات المسلم في السفر\").font(.title3.bold())",
+      "NavigationLink(destination:FiqhAssistantView()) { travelLink(\"أحكام السفر — اسأل ساري\", \"sparkles\") }",
+      "Text(profile.destination.muslimMajority ? \"المطاعم والأماكن المميزة\":SariUIStrings.text(\"halal_nearby\", SariLanguage.selected)).font(.headline).foregroundStyle(.primary)",
+      "Text(\"مطاعم، مساجد، صيدليات، مستشفيات، بقالات ونقل — مع بحث حي على الخريطة.\").font(.subheadline).foregroundStyle(.secondary)",
+      "private var helpButton: some View { Button { showHelp = true } label: { Label(\"أحتاج مساعدة\",systemImage:\"sos.circle.fill\").font(.headline).frame(maxWidth:.infinity).padding(.vertical,15) }.buttonStyle(.borderedProminent).tint(.red) }",
+      "private var dataSafetyNote: some View { Text(\"بيانات التأشيرات والسفارات والطوارئ معلومات حساسة ومتغيرة؛ ساري لا يخمّنها، ويجب مزامنتها من دليل موثوق قبل النشر العام.\").font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center).padding(.horizontal,8) }",
+      "Section(\"الجنسية\") {",
+      "Picker(\"الجنسية\", selection: $profile.nationalityCode) {",
+      "Text(\"اختر الجنسية\").tag(\"\")",
+      "Section(\"الرحلة\") {",
+      "\"تاريخ الرحلة\",",
+      "Button(\"إزالة تاريخ الرحلة\", role: .destructive) { profile.tripDate = nil }",
+      "Text(\"الجنسية تُحفظ على جهازك لتحديد بعثة دولتك أثناء السفر، ويمكن تغييرها لاحقًا.\")",
+      "Label(\"اتصال بالطوارئ \\(number)\", systemImage: \"phone.fill\")",
+      "Text(\"بعثة \\(nationality.nameArabic) \\(nationality.flag)\").font(.headline)",
+      "Text(\"لم تتم مزامنة بيانات بعثة موثقة لهذه الوجهة بعد. لا يعرض ساري رقمًا غير متحقق منه.\")",
+      "Text(\"حدد جنسيتك أولًا لإظهار بعثتك.\").foregroundStyle(.secondary)",
+      ".navigationTitle(\"أحتاج مساعدة\")"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "ui": [
+      "Text(\"\\(surah.nameEN) • \\(surah.ayahCount) آية • الجزء \\(surah.juz)\")",
+      "Text(\"\\(surah.nameEN) • \\(surah.ayahCount) آية\")"
+    ],
+    "domain": [],
+    "religious": [
+      "Text(\"\\(ayah.sura_name_ar) • الآية \\(ayah.ayah) • الصفحة \\(ayah.page)\")",
+      "TextField(\"ابحث في نص القرآن أو اسم السورة\", text: $query)",
+      "Text(\"\\(ayah.sura_name_ar) • آية \\(ayah.ayah)\").font(.headline)",
+      "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz)\").font(.caption).foregroundStyle(.secondary)",
+      "Text(\"\\(ayah.sura_name_ar) • آية \\(ayah.ayah)\").font(.headline)",
+      "Text(\"آية \\(ayah.ayah)\")",
+      "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz) • اضغط لعرض التفسير\")",
+      "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz)\").font(.caption).foregroundStyle(.secondary)"
+    ]
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "ui": [
+      "else if weather.isLoading { ProgressView(\"جاري تحديث توقعات الطقس…\").padding(.top, 80) }",
+      "else { ContentUnavailableView(\"تعذر عرض الطقس\", systemImage: \"cloud.slash\", description: Text(weather.errorMessage ?? \"اسمح بالموقع ثم أعد المحاولة.\")) }",
+      ".navigationTitle(\"الطقس ولباس اليوم\").navigationBarTitleDisplayMode(.inline).environment(\\.layoutDirection, .rightToLeft)",
+      "HStack(alignment: .firstTextBaseline) { Text(\"\\(Int(w.temperature.rounded()))°\").font(.system(size: 64, weight: .black, design: .rounded)); Text(\"المحسوسة \\(Int(w.apparentTemperature.rounded()))°\").foregroundStyle(.secondary); Spacer(); if let h = w.high, let l = w.low { Text(\"↑\\(Int(h))°  ↓\\(Int(l))°\").fontWeight(.semibold) } }",
+      "private func hourly(_ w: WeatherSnapshot) -> some View { VStack(alignment: .trailing, spacing: 12) { Text(\"الساعات القادمة\").font(.title3.bold()); ScrollView(.horizontal, showsIndicators: false) { HStack(spacing: 10) { ForEach(w.hourly.prefix(12)) { h in VStack(spacing: 7) { Text(h.time.formatted(date: .omitted, time: .shortened)).font(.caption); Image(systemName: WeatherSnapshot.symbolName(for: h.weatherCode)); Text(\"\\(Int(h.temperature))°\").font(.headline); Label(\"\\(h.precipitationProbability)%\", systemImage: \"drop.fill\").font(.caption2).foregroundStyle(.secondary) }.padding(12).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18)) } } } } }",
+      "private func week(_ w: WeatherSnapshot) -> some View { VStack(alignment: .trailing, spacing: 12) { Text(\"الأيام القادمة\").font(.title3.bold()); VStack(spacing: 0) { ForEach(Array(w.daily.enumerated()), id: \\.element.id) { index, d in HStack { Text(\"\\(d.precipitationProbability)%\").font(.caption).foregroundStyle(.secondary); Image(systemName: WeatherSnapshot.symbolName(for: d.weatherCode)); Text(\"↓\\(Int(d.low))°  ↑\\(Int(d.high))°\").fontWeight(.semibold); Spacer(); Text(d.date.formatted(.dateTime.weekday(.wide))).fontWeight(.medium) }.padding(.vertical, 12); if index < w.daily.count - 1 { Divider() } } }.padding(.horizontal, 16).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 22)) } }",
+      "private func details(_ w: WeatherSnapshot) -> some View { HStack(spacing: 10) { metric(\"الرطوبة\", \"\\(w.humidity)%\", \"humidity.fill\"); metric(\"الرياح\", \"\\(Int(w.windSpeed)) كم/س\", \"wind\"); metric(\"الهبات\", \"\\(Int(w.windGust)) كم/س\", \"wind.circle\") } }"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+    "ui": [
+      "Text(aligned ? \"أنت باتجاه القبلة\" : \"حرّك الهاتف حتى يتجه السهم للأعلى\").font(.title3.bold())",
+      "Text(\"اتجاه القبلة \\(Int(prayer.qiblaBearing.rounded()))°  •  اتجاه الهاتف \\(Int(compass.heading.rounded()))°\").font(.subheadline).foregroundStyle(.secondary)",
+      "if compass.accuracy > 20 { Label(\"حرّك الهاتف بشكل رقم 8 لمعايرة البوصلة\",systemImage:\"iphone.gen3.radiowaves.left.and.right\").font(.caption).foregroundStyle(.orange) }"
+    ],
+    "domain": [],
+    "religious": []
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "ui": [
+      "Section { row(\"الفجر\",t.fajr,\"sunrise.fill\"); row(\"الشروق\",t.sunrise,\"sun.horizon.fill\"); row(\"الظهر\",t.dhuhr,\"sun.max.fill\"); row(\"العصر\",t.asr,\"sun.min.fill\"); row(\"المغرب\",t.maghrib,\"sunset.fill\"); row(\"العشاء\",t.isha,\"moon.stars.fill\") } header: { Text(\"مواقيت اليوم — \\(prayer.locationName)\") }",
+      "Section { LabeledContent(SariUIStrings.text(\"prayer_calc_method\", SariLanguage.selected),value:prayer.effectiveCalculationMethod.title); NavigationLink { QiblaView() } label: { Label(\"بوصلة القبلة\",systemImage:\"location.north.circle.fill\") }; NavigationLink { PrayerSettingsView() } label: { Label(\"الأذان والإقامة\",systemImage:\"bell.badge.fill\") } }",
+      "} else { HStack { ProgressView(); Text(\"جاري حساب المواقيت حسب موقعك…\") } }",
+      "}.navigationTitle(\"الصلاة\").environment(\\.layoutDirection,.rightToLeft).onAppear { prayer.start() }"
+    ],
+    "domain": [],
+    "religious": []
+  }
+]

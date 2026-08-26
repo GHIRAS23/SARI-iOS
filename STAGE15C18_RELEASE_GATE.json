@@ -1,0 +1,109 @@
+{
+  "stage": "15C18",
+  "static_integrity": "PASS",
+  "rendered_device_qa": "REQUIRES_SIMULATOR_OR_DEVICE",
+  "stage15c_closed": false,
+  "ios_ui_candidates": 126,
+  "android_ui_candidates": 102,
+  "ios_top_files": [
+    [
+      "SARI/Sources/Features/Travel/TravelView.swift",
+      31
+    ],
+    [
+      "SARI/Sources/Features/Home/HomeView.swift",
+      18
+    ],
+    [
+      "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+      16
+    ],
+    [
+      "SARI/Sources/Features/Settings/SettingsView.swift",
+      9
+    ],
+    [
+      "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+      8
+    ],
+    [
+      "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+      8
+    ],
+    [
+      "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+      7
+    ],
+    [
+      "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+      7
+    ],
+    [
+      "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+      6
+    ],
+    [
+      "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+      4
+    ],
+    [
+      "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+      4
+    ],
+    [
+      "SARIWidget/SARIWidget.swift",
+      3
+    ]
+  ],
+  "android_top_files": [
+    [
+      "app/src/main/java/com/sari/app/ui/SariApp.kt",
+      38
+    ],
+    [
+      "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+      13
+    ],
+    [
+      "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+      10
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/OnboardingScreen.kt",
+      8
+    ],
+    [
+      "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+      8
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SettingsScreen.kt",
+      7
+    ],
+    [
+      "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+      5
+    ],
+    [
+      "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+      4
+    ],
+    [
+      "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+      4
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SariCalendar.kt",
+      2
+    ],
+    [
+      "app/src/main/java/com/sari/app/prayer/QiblaScreen.kt",
+      2
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SariLanguage.kt",
+      1
+    ]
+  ],
+  "note": "Candidates are intentionally not auto-translated because several are interpolated/domain/religious-adjacent. Rendered QA plus targeted migration is required."
+}

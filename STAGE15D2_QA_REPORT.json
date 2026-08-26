@@ -1,0 +1,37 @@
+{
+  "stage": "15D2_RESPONSIVE_DIRECTION_FIX",
+  "changes": {
+    "SARI/Sources/Features/Settings/PrayerSettingsView.swift": true,
+    "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift": true,
+    "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift": true,
+    "SARI/Sources/Features/Travel/PlacesLocalView.swift": true,
+    "SARI/Sources/Features/Travel/TravelView.swift": true,
+    "SARI/Sources/Features/Weather/WeatherDetailView.swift": true,
+    "SARI/Sources/Features/Prayer/QiblaView.swift": true,
+    "SARI/Sources/Features/Prayer/PrayerTimesView.swift": true
+  },
+  "responsive_changes": [
+    "Fiqh bottom spacer 150 -> minHeight 24",
+    "Android QuickCard fixed 126dp -> heightIn(min=112dp)"
+  ],
+  "remaining_static_layout_risks": {
+    "ios": [
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        62,
+        "forcedRTL",
+        "Text(item.arabic).font(.title3).multilineTextAlignment(.trailing).frame(maxWidth:.infinity,alignment:.trailing).environment(\\.layoutDirection,.rightToLeft)"
+      ]
+    ],
+    "android": []
+  },
+  "intentional_rtl": [
+    "Arabic adhkar source text remains RTL even when UI language is LTR"
+  ],
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "static_responsive_gate_closed": false,
+  "rendered_device_gate": "PENDING_EXTERNAL_RUNTIME"
+}

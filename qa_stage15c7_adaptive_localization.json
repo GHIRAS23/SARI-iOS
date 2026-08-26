@@ -1,0 +1,54 @@
+{
+  "stage": "15C7",
+  "languages": [
+    "ar",
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "layout_cases": [
+    {
+      "name": "small_phone",
+      "width_dp": 320,
+      "font_scale": 1.0
+    },
+    {
+      "name": "phone_large_text",
+      "width_dp": 390,
+      "font_scale": 1.6
+    },
+    {
+      "name": "large_phone",
+      "width_dp": 430,
+      "font_scale": 1.0
+    },
+    {
+      "name": "tablet",
+      "width_dp": 768,
+      "font_scale": 1.0
+    },
+    {
+      "name": "wide_tablet",
+      "width_dp": 1024,
+      "font_scale": 1.3
+    }
+  ],
+  "must_not": [
+    "fixed_screen_width_dependency",
+    "forced_LTR_for_arabic",
+    "single_line_long_translation",
+    "full_width_controls_on_large_screen"
+  ],
+  "special": [
+    "RTL_ar",
+    "long_fr",
+    "long_ru",
+    "CJK_ja_zh",
+    "DynamicType_fontScale"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "stage": "15C23",
+  "status": "IN_PROGRESS",
+  "static_changes": {
+    "ios": {
+      "PrayerSettingsView.swift": 1,
+      "HomeView.swift": 3,
+      "TravelView.swift": 8
+    },
+    "android": {
+      "PrayerSettingsScreen.kt": 1,
+      "SariApp.kt": 1,
+      "TravelScreen.kt": 2
+    }
+  },
+  "dynamic_changes": {
+    "ios_prayer": 2,
+    "ios_home": 2,
+    "ios_travel": 2,
+    "android_prayer": 2,
+    "android_home": 2,
+    "android_travel": 3
+  },
+  "focus_remaining_raw": {
+    "ios": {
+      "PrayerSettingsView.swift": 1,
+      "HomeView.swift": 1,
+      "TravelView.swift": 2
+    },
+    "android": {
+      "PrayerSettingsScreen.kt": 4,
+      "SariApp.kt": 25,
+      "TravelScreen.kt": 34
+    }
+  },
+  "android_travel_catalog_lines_separated": 28,
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "next": "Complete remaining Home/Prayer UI strings; migrate typed Android travel catalog from Kotlin to JSON; then Quran/Fiqh/Onboarding/Settings and rendered QA."
+}

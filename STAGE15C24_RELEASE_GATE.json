@@ -1,0 +1,33 @@
+{
+  "stage": "15C24",
+  "status": "IN_PROGRESS",
+  "ios_focus_changes": {
+    "HomeView.swift": 1,
+    "TravelView.swift": 1
+  },
+  "android_focus_changes": {
+    "SariApp.kt": 21,
+    "PrayerSettingsScreen.kt": 2
+  },
+  "dynamic_changes": {
+    "prayer": 2,
+    "app": 6
+  },
+  "focus_remaining_raw": {
+    "ios": {
+      "PrayerSettingsView.swift": 0,
+      "HomeView.swift": 0,
+      "TravelView.swift": 1
+    },
+    "android": {
+      "PrayerSettingsScreen.kt": 0,
+      "SariApp.kt": 0
+    }
+  },
+  "reciter_names_moved_to_domain_asset": true,
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "next": "Finish remaining Android SariApp interpolated Quran/UI strings; migrate Travel catalog runtime data; then Quran/Fiqh/Onboarding/Settings and rendered QA."
+}

@@ -1,0 +1,86 @@
+{
+  "stage": "15C14",
+  "status": "IN_PROGRESS",
+  "android_dynamic_replacements": {
+    "travel": 1,
+    "home_app": 0,
+    "prayer_settings": 1
+  },
+  "travel_domain_values_separated": 30,
+  "priority_android_remaining": {
+    "TravelScreen.kt": 42,
+    "SariApp.kt": 39,
+    "PrayerSettingsScreen.kt": 10
+  },
+  "quran_fiqh_settings_audit": {
+    "ios": [
+      [
+        "SARI/Sources/Features/Settings/SettingsView.swift",
+        19
+      ],
+      [
+        "SARI/Sources/Features/Quran/QuranView.swift",
+        18
+      ],
+      [
+        "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+        16
+      ],
+      [
+        "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+        15
+      ],
+      [
+        "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+        10
+      ],
+      [
+        "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Core/LocalFiqhPack.swift",
+        7
+      ],
+      [
+        "SARI/Sources/Core/LocalFiqhSearch.swift",
+        4
+      ],
+      [
+        "SARI/Sources/Core/LocalFiqhEngine.swift",
+        3
+      ]
+    ],
+    "android": [
+      [
+        "app/src/main/java/com/sari/app/ui/SettingsScreen.kt",
+        13
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+        13
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+        10
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+        9
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/LocalFiqhEngine.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/LocalFiqhPack.kt",
+        3
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/LocalFiqhSearch.kt",
+        1
+      ]
+    ]
+  },
+  "next": "Migrate remaining genuine UI literals in Quran/Fiqh/Settings and distinguish religious/domain strings; then run final localization/layout release gate."
+}

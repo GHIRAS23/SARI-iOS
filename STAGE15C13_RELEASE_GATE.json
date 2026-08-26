@@ -1,0 +1,29 @@
+{
+  "stage": "15C13",
+  "status": "IN_PROGRESS",
+  "localized_template_keys": [
+    "feels_like",
+    "humidity_value",
+    "wind_speed",
+    "qibla_from_location",
+    "minutes_remaining",
+    "hours_minutes_remaining",
+    "embassy_of",
+    "emergency_in",
+    "adhan_name",
+    "before_prayer_minutes",
+    "after_adhan_minutes"
+  ],
+  "ios_dynamic_replacements": {
+    "home": 5,
+    "travel": 3,
+    "prayer_settings": 3
+  },
+  "travel_domain_literals_separated": 30,
+  "remaining_priority_ios": {
+    "home": 18,
+    "travel": 31,
+    "prayer_settings": 16
+  },
+  "next": "Apply dynamic templates on Android and move remaining domain datasets out of TravelScreen; then re-audit Quran/Fiqh/Settings."
+}

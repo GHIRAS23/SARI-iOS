@@ -1,0 +1,45 @@
+{
+  "stage": "15C21",
+  "mode": "pre-device-finalization",
+  "checks": [
+    {
+      "id": "locale_ar",
+      "expect": "RTL shell; Arabic Quran/source content preserved"
+    },
+    {
+      "id": "locale_fr_ru",
+      "expect": "long labels wrap; actions remain visible"
+    },
+    {
+      "id": "locale_ja_zh",
+      "expect": "CJK labels render and controls retain height"
+    },
+    {
+      "id": "font_160",
+      "expect": "no clipped primary actions"
+    },
+    {
+      "id": "compact_320",
+      "expect": "no horizontal overflow"
+    },
+    {
+      "id": "tablet_768_1024",
+      "expect": "readable max-width and adaptive columns"
+    },
+    {
+      "id": "offline",
+      "expect": "localized errors and retry actions"
+    },
+    {
+      "id": "permissions",
+      "expect": "localized location/notification permission explanations"
+    }
+  ],
+  "cannot_be_static_verified": [
+    "real text clipping",
+    "Dynamic Type rendering",
+    "Compose fontScale rendering",
+    "GPS/compass lifecycle",
+    "notification/adhan background execution"
+  ]
+}

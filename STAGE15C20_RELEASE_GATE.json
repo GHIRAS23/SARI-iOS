@@ -1,0 +1,202 @@
+{
+  "stage": "15C20",
+  "status": "IN_PROGRESS",
+  "static_replacements": {
+    "ios": [
+      [
+        "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+        1
+      ],
+      [
+        "SARI/Sources/Features/Travel/TravelView.swift",
+        2
+      ]
+    ],
+    "android": [
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        2
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/OnboardingScreen.kt",
+        1
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+        1
+      ]
+    ]
+  },
+  "dynamic_replacements": {
+    "ios": {
+      "qibla": 1,
+      "weather": 0,
+      "travel": 2
+    },
+    "android": {
+      "app": 4,
+      "travel": 0
+    }
+  },
+  "remaining_literal_lines": {
+    "ios_total": 123,
+    "ios": [
+      [
+        "SARI/Sources/Features/Travel/TravelView.swift",
+        19
+      ],
+      [
+        "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+        14
+      ],
+      [
+        "SARI/Sources/Features/Home/HomeView.swift",
+        13
+      ],
+      [
+        "SARI/Sources/Features/Quran/QuranView.swift",
+        10
+      ],
+      [
+        "SARI/Sources/Features/Settings/SettingsView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+        6
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        6
+      ],
+      [
+        "SARIWidget/SARIWidget.swift",
+        5
+      ],
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        5
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        5
+      ],
+      [
+        "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+        4
+      ],
+      [
+        "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+        4
+      ],
+      [
+        "SARI/Sources/Core/SariCalendar.swift",
+        2
+      ],
+      [
+        "SARI/Sources/Features/Contacts/ScholarsView.swift",
+        2
+      ],
+      [
+        "SARI/Sources/Features/Prayer/QiblaView.swift",
+        2
+      ],
+      [
+        "SARI/Sources/Core/SariAppearance.swift",
+        1
+      ],
+      [
+        "SARI/Sources/Core/SariLanguage.swift",
+        1
+      ]
+    ],
+    "android_total": 153,
+    "android": [
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        39
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariApp.kt",
+        32
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariFeatureStrings.kt",
+        13
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+        10
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/OnboardingScreen.kt",
+        8
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+        8
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SettingsScreen.kt",
+        6
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        6
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerAlarmReceiver.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerCalculator.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/adhkar/AdhkarScreen.kt",
+        4
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariCalendar.kt",
+        2
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/QiblaScreen.kt",
+        2
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariLanguage.kt",
+        1
+      ],
+      [
+        "app/src/main/java/com/sari/app/location/LocationPrivacy.kt",
+        1
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerAlarmScheduler.kt",
+        1
+      ]
+    ]
+  },
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "next": "Classify/migrate remaining interpolated UI in Travel/Home/Quran/Fiqh/Onboarding; exclude genuine source/domain data; then rendered device QA."
+}

@@ -1,0 +1,52 @@
+{
+  "stage": "15C15",
+  "status": "IN_PROGRESS",
+  "ios_replacements": [
+    [
+      "SettingsView.swift",
+      9
+    ],
+    [
+      "QuranView.swift",
+      10
+    ],
+    [
+      "FiqhAssistantView.swift",
+      3
+    ],
+    [
+      "FiqhPackSetupView.swift",
+      4
+    ]
+  ],
+  "android_replacements": [
+    [
+      "SettingsScreen.kt",
+      7,
+      "ctx"
+    ],
+    [
+      "FiqhScreen.kt",
+      0,
+      "context"
+    ],
+    [
+      "FiqhPackSetupScreen.kt",
+      3,
+      "ctx"
+    ]
+  ],
+  "remaining_ios": {
+    "SettingsView.swift": 10,
+    "QuranView.swift": 12,
+    "FiqhAssistantView.swift": 13,
+    "FiqhPackSetupView.swift": 6
+  },
+  "remaining_android": {
+    "SettingsScreen.kt": 7,
+    "FiqhScreen.kt": 13,
+    "FiqhPackSetupScreen.kt": 6
+  },
+  "policy": "Quran Arabic and fiqh source/domain text are excluded from blind UI translation.",
+  "next": "Translate remaining explanatory/error/interpolated UI strings, then perform whole-project UI-vs-domain audit and RTL/LTR release gate."
+}

@@ -1,0 +1,374 @@
+{
+  "schema": 1,
+  "review_status": "source_audit_completed_with_ui_notes",
+  "categories": [
+    {
+      "id": "morning",
+      "titles": {
+        "ar": "أذكار الصباح",
+        "en": "Morning adhkar",
+        "tr": "Sabah zikirleri",
+        "ms": "Zikir pagi",
+        "id": "Zikir pagi",
+        "ja": "朝のアズカール",
+        "zh": "晨间赞念",
+        "ru": "Утренние азкары",
+        "fr": "Adhkar du matin"
+      },
+      "items": [
+        {
+          "id": "m1",
+          "arabic": "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر.",
+          "transliteration": "Asbahna wa asbahal-mulku lillah, wal-hamdu lillah.",
+          "target": 1,
+          "meanings": {
+            "en": "We have entered the morning, and all sovereignty belongs to Allah; all praise is for Allah.",
+            "tr": "Sabaha ulaştık; mülk Allah'ındır ve hamd Allah'adır.",
+            "ms": "Kami memasuki waktu pagi; segala kerajaan milik Allah dan segala puji bagi Allah.",
+            "id": "Kami memasuki pagi; segala kerajaan milik Allah dan segala puji bagi Allah.",
+            "ja": "朝を迎えました。すべての主権はアッラーのものであり、すべての称賛はアッラーにあります。",
+            "zh": "我们进入清晨；一切主权属于真主，一切赞颂归于真主。",
+            "ru": "Мы вступили в утро; вся власть принадлежит Аллаху, и вся хвала — Аллаху.",
+            "fr": "Nous entrons dans le matin; toute souveraineté appartient à Allah et toute louange revient à Allah."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim / Hisn al-Muslim",
+            "reference": "Muslim 4/2088; Hisn al-Muslim 77",
+            "note_ar": "تم استبدال النص المختصر بالنص الكامل المعتمد لذكر الصباح."
+          }
+        },
+        {
+          "id": "m2",
+          "arabic": "رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.",
+          "transliteration": "Raditu billahi rabban, wa bil-islami dinan, wa bi-Muhammadin ﷺ nabiyya.",
+          "target": 3,
+          "meanings": {
+            "en": "I am pleased with Allah as my Lord, Islam as my religion, and Muhammad ﷺ as my Prophet.",
+            "tr": "Allah'ı Rabbim, İslam'ı dinim ve Muhammed'i ﷺ peygamberim olarak kabul ettim.",
+            "ms": "Aku reda Allah sebagai Tuhanku, Islam sebagai agamaku, dan Muhammad ﷺ sebagai Nabiku.",
+            "id": "Aku rida Allah sebagai Tuhanku, Islam sebagai agamaku, dan Muhammad ﷺ sebagai Nabiku.",
+            "ja": "アッラーを主として、イスラームを宗教として、ムハンマド ﷺ を預言者として満足します。",
+            "zh": "我喜悦真主为我的主，伊斯兰为我的宗教，穆罕默德 ﷺ 为我的先知。",
+            "ru": "Я доволен Аллахом как Господом, исламом как религией и Мухаммадом ﷺ как Пророком.",
+            "fr": "J'agrée Allah comme Seigneur, l'islam comme religion et Muhammad ﷺ comme Prophète."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Musnad Ahmad / Hisn al-Muslim",
+            "reference": "18967; Hisn 87",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        },
+        {
+          "id": "m3",
+          "arabic": "سبحان الله وبحمده.",
+          "transliteration": "Subhan Allahi wa bihamdih.",
+          "target": 100,
+          "meanings": {
+            "en": "Glory and praise be to Allah.",
+            "tr": "Allah'ı hamdiyle tesbih ederim.",
+            "ms": "Maha Suci Allah dan segala puji bagi-Nya.",
+            "id": "Mahasuci Allah dan segala puji bagi-Nya.",
+            "ja": "アッラーに栄光あれ、そしてアッラーに称賛あれ。",
+            "zh": "赞颂真主超绝，并赞美他。",
+            "ru": "Пречист Аллах, и Ему хвала.",
+            "fr": "Gloire et louange à Allah."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim",
+            "reference": "2692",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "titles": {
+        "ar": "أذكار المساء",
+        "en": "Evening adhkar",
+        "tr": "Akşam zikirleri",
+        "ms": "Zikir petang",
+        "id": "Zikir petang",
+        "ja": "夕方のアズカール",
+        "zh": "晚间赞念",
+        "ru": "Вечерние азкары",
+        "fr": "Adhkar du soir"
+      },
+      "items": [
+        {
+          "id": "e1",
+          "arabic": "أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذه الليلة وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة وشر ما بعدها، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر.",
+          "transliteration": "Amsayna wa amsal-mulku lillah, wal-hamdu lillah.",
+          "target": 1,
+          "meanings": {
+            "en": "We have entered the evening, and all sovereignty belongs to Allah; all praise is for Allah.",
+            "tr": "Akşama ulaştık; mülk Allah'ındır ve hamd Allah'adır.",
+            "ms": "Kami memasuki waktu petang; segala kerajaan milik Allah dan segala puji bagi Allah.",
+            "id": "Kami memasuki petang; segala kerajaan milik Allah dan segala puji bagi Allah.",
+            "ja": "夕方を迎えました。すべての主権はアッラーのものであり、すべての称賛はアッラーにあります。",
+            "zh": "我们进入傍晚；一切主权属于真主，一切赞颂归于真主。",
+            "ru": "Мы вступили в вечер; вся власть принадлежит Аллаху, и вся хвала — Аллаху.",
+            "fr": "Nous entrons dans le soir; toute souveraineté appartient à Allah et toute louange revient à Allah."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim / Hisn al-Muslim",
+            "reference": "Muslim 4/2088; Hisn al-Muslim 77",
+            "note_ar": "تم استبدال النص المختصر بصيغة المساء الواردة في مرجع حصن المسلم."
+          }
+        },
+        {
+          "id": "e2",
+          "arabic": "رضيت بالله ربًا، وبالإسلام دينًا، وبمحمد ﷺ نبيًا.",
+          "transliteration": "Raditu billahi rabban, wa bil-islami dinan, wa bi-Muhammadin ﷺ nabiyya.",
+          "target": 3,
+          "meanings": {
+            "en": "I am pleased with Allah as my Lord, Islam as my religion, and Muhammad ﷺ as my Prophet.",
+            "tr": "Allah'ı Rabbim, İslam'ı dinim ve Muhammed'i ﷺ peygamberim olarak kabul ettim.",
+            "ms": "Aku reda Allah sebagai Tuhanku, Islam sebagai agamaku, dan Muhammad ﷺ sebagai Nabiku.",
+            "id": "Aku rida Allah sebagai Tuhanku, Islam sebagai agamaku, dan Muhammad ﷺ sebagai Nabiku.",
+            "ja": "アッラーを主として、イスラームを宗教として、ムハンマド ﷺ を預言者として満足します。",
+            "zh": "我喜悦真主为我的主，伊斯兰为我的宗教，穆罕默德 ﷺ 为我的先知。",
+            "ru": "Я доволен Аллахом как Господом, исламом как религией и Мухаммадом ﷺ как Пророком.",
+            "fr": "J'agrée Allah comme Seigneur, l'islam comme religion et Muhammad ﷺ comme Prophète."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Musnad Ahmad / Hisn al-Muslim",
+            "reference": "18967; Hisn 87",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        },
+        {
+          "id": "e3",
+          "arabic": "سبحان الله وبحمده.",
+          "transliteration": "Subhan Allahi wa bihamdih.",
+          "target": 100,
+          "meanings": {
+            "en": "Glory and praise be to Allah.",
+            "tr": "Allah'ı hamdiyle tesbih ederim.",
+            "ms": "Maha Suci Allah dan segala puji bagi-Nya.",
+            "id": "Mahasuci Allah dan segala puji bagi-Nya.",
+            "ja": "アッラーに栄光あれ、そしてアッラーに称賛あれ。",
+            "zh": "赞颂真主超绝，并赞美他。",
+            "ru": "Пречист Аллах, и Ему хвала.",
+            "fr": "Gloire et louange à Allah."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim",
+            "reference": "2692",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        }
+      ]
+    },
+    {
+      "id": "afterPrayer",
+      "titles": {
+        "ar": "أذكار بعد الصلاة",
+        "en": "After-prayer adhkar",
+        "tr": "Namaz sonrası zikirler",
+        "ms": "Zikir selepas solat",
+        "id": "Zikir setelah salat",
+        "ja": "礼拝後のアズカール",
+        "zh": "礼拜后赞念",
+        "ru": "Азкары после молитвы",
+        "fr": "Adhkar après la prière"
+      },
+      "items": [
+        {
+          "id": "p1",
+          "arabic": "أستغفر الله.",
+          "transliteration": "Astaghfirullah.",
+          "target": 3,
+          "meanings": {
+            "en": "I seek Allah's forgiveness.",
+            "tr": "Allah'tan bağışlanma dilerim.",
+            "ms": "Aku memohon keampunan Allah.",
+            "id": "Aku memohon ampun kepada Allah.",
+            "ja": "アッラーに赦しを求めます。",
+            "zh": "我向真主求饶。",
+            "ru": "Я прошу у Аллаха прощения.",
+            "fr": "Je demande pardon à Allah."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim",
+            "reference": "591",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        },
+        {
+          "id": "p2",
+          "arabic": "اللهم أنت السلام ومنك السلام، تباركت يا ذا الجلال والإكرام.",
+          "transliteration": "Allahumma antas-salam wa minkas-salam, tabarakta ya dhal-jalali wal-ikram.",
+          "target": 1,
+          "meanings": {
+            "en": "O Allah, You are Peace and from You comes peace. Blessed are You, Possessor of majesty and honor.",
+            "tr": "Allah'ım, Sen es-Selâm'sın ve selamet Sendendir. Ey celâl ve ikram sahibi, Sen mübareksin.",
+            "ms": "Ya Allah, Engkaulah As-Salam dan daripada-Mu kesejahteraan. Maha Berkat Engkau, Pemilik keagungan dan kemuliaan.",
+            "id": "Ya Allah, Engkaulah As-Salam dan dari-Mu keselamatan. Mahaberkah Engkau, Pemilik keagungan dan kemuliaan.",
+            "ja": "アッラーよ、あなたこそ平安であり、平安はあなたから来ます。威厳と栄誉の主よ、あなたは祝福されています。",
+            "zh": "真主啊，你是平安，平安来自你。尊严与荣耀的主啊，你至福无比。",
+            "ru": "О Аллах, Ты — Мир, и от Тебя мир. Благословен Ты, Обладатель величия и почета.",
+            "fr": "Ô Allah, Tu es la Paix et de Toi vient la paix. Béni sois-Tu, Détenteur de majesté et d'honneur."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim",
+            "reference": "591",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        },
+        {
+          "id": "p3",
+          "arabic": "سبحان الله، والحمد لله، والله أكبر.",
+          "transliteration": "Subhan Allah, wal-hamdu lillah, wallahu akbar.",
+          "target": 33,
+          "meanings": {
+            "en": "Glory be to Allah; all praise is for Allah; Allah is the Greatest.",
+            "tr": "Allah'ı tesbih ederim; hamd Allah'adır; Allah en büyüktür.",
+            "ms": "Maha Suci Allah; segala puji bagi Allah; Allah Maha Besar.",
+            "id": "Mahasuci Allah; segala puji bagi Allah; Allah Mahabesar.",
+            "ja": "アッラーに栄光あれ。すべての称賛はアッラーに。アッラーは最も偉大です。",
+            "zh": "赞颂真主超绝；一切赞颂归于真主；真主至大。",
+            "ru": "Пречист Аллах; вся хвала Аллаху; Аллах Велик.",
+            "fr": "Gloire à Allah; toute louange à Allah; Allah est le Plus Grand."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih Muslim",
+            "reference": "597a",
+            "note_ar": "الصيغة المعتمدة: التسبيح 33 والتحميد 33 والتكبير 33، ثم تمام المائة بالتهليل. شاشة SARI الحالية تعد المجموعة 33؛ يلزم عرض تمام المائة بوضوح في الواجهة."
+          }
+        }
+      ]
+    },
+    {
+      "id": "sleep",
+      "titles": {
+        "ar": "أذكار النوم",
+        "en": "Before sleep",
+        "tr": "Uyku zikirleri",
+        "ms": "Zikir sebelum tidur",
+        "id": "Zikir sebelum tidur",
+        "ja": "就寝前のアズカール",
+        "zh": "睡前赞念",
+        "ru": "Азкары перед сном",
+        "fr": "Adhkar avant de dormir"
+      },
+      "items": [
+        {
+          "id": "s1",
+          "arabic": "باسمك اللهم أموت وأحيا.",
+          "transliteration": "Bismika Allahumma amutu wa ahya.",
+          "target": 1,
+          "meanings": {
+            "en": "In Your name, O Allah, I die and I live.",
+            "tr": "Allah'ım, Senin adınla ölür ve yaşarım.",
+            "ms": "Dengan nama-Mu, ya Allah, aku mati dan aku hidup.",
+            "id": "Dengan nama-Mu, ya Allah, aku mati dan aku hidup.",
+            "ja": "アッラーよ、あなたの御名によって私は死に、そして生きます。",
+            "zh": "真主啊，我以你的尊名死去并复生。",
+            "ru": "С Твоим именем, о Аллах, я умираю и оживаю.",
+            "fr": "En Ton nom, ô Allah, je meurs et je vis."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih al-Bukhari",
+            "reference": "Hisn al-Muslim: before sleeping",
+            "note_ar": "أصل ذكر النوم ثابت؛ يراجع رقم الحديث التفصيلي في جولة المصادر النهائية."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wake",
+      "titles": {
+        "ar": "أذكار الاستيقاظ",
+        "en": "Upon waking",
+        "tr": "Uyanma zikri",
+        "ms": "Zikir bangun tidur",
+        "id": "Zikir bangun tidur",
+        "ja": "起床時のアズカール",
+        "zh": "醒来赞念",
+        "ru": "Азкар при пробуждении",
+        "fr": "Adhkar au réveil"
+      },
+      "items": [
+        {
+          "id": "w1",
+          "arabic": "الحمد لله الذي أحيانا بعدما أماتنا وإليه النشور.",
+          "transliteration": "Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur.",
+          "target": 1,
+          "meanings": {
+            "en": "All praise is for Allah who gave us life after causing us to die, and to Him is the resurrection.",
+            "tr": "Bizi öldürdükten sonra dirilten Allah'a hamdolsun; dönüş O'nadır.",
+            "ms": "Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami; kepada-Nya kebangkitan.",
+            "id": "Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami; kepada-Nya kebangkitan.",
+            "ja": "私たちを死なせた後に生かしてくださったアッラーにすべての称賛があります。復活は御許へ帰ります。",
+            "zh": "一切赞颂归于真主，他使我们死后复生，复活归于他。",
+            "ru": "Хвала Аллаху, Который оживил нас после того, как умертвил нас; и к Нему — воскресение.",
+            "fr": "Louange à Allah qui nous a rendu la vie après nous avoir fait mourir; vers Lui est la résurrection."
+          },
+          "source": {
+            "status": "verified",
+            "collection": "Sahih al-Bukhari; Sahih Muslim",
+            "reference": "Fath al-Bari 11/113; Muslim 4/2083; Hisn 1",
+            "note_ar": "تمت مطابقة أصل الذكر وعدد التكرار مع المرجع المذكور."
+          }
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "titles": {
+        "ar": "أذكار السفر",
+        "en": "Travel adhkar",
+        "tr": "Yolculuk zikri",
+        "ms": "Zikir perjalanan",
+        "id": "Zikir perjalanan",
+        "ja": "旅行のアズカール",
+        "zh": "旅行赞念",
+        "ru": "Азкар путешествия",
+        "fr": "Adhkar du voyage"
+      },
+      "items": [
+        {
+          "id": "t1",
+          "arabic": "سبحان الذي سخر لنا هذا وما كنا له مقرنين، وإنا إلى ربنا لمنقلبون.",
+          "transliteration": "Subhanal-ladhi sakhkhara lana hadha wa ma kunna lahu muqrinin, wa inna ila rabbina lamunqalibun.",
+          "target": 1,
+          "meanings": {
+            "en": "Glory be to the One who subjected this to us, though we could not have controlled it, and surely to our Lord we will return.",
+            "tr": "Bunu bize boyun eğdireni tesbih ederiz; bizim buna gücümüz yetmezdi. Şüphesiz Rabbimize döneceğiz.",
+            "ms": "Maha Suci Dia yang menundukkan ini untuk kami, sedangkan kami tidak mampu menguasainya; sesungguhnya kepada Tuhan kami, kami akan kembali.",
+            "id": "Mahasuci Dia yang menundukkan ini untuk kami, padahal kami tidak mampu menguasainya; sungguh kepada Tuhan kami kami akan kembali.",
+            "ja": "これを私たちのために従わせてくださった御方に栄光あれ。私たちだけでは制御できませんでした。そして私たちは主のもとへ帰ります。",
+            "zh": "赞颂那为我们制服这一切的主超绝；我们本无力驾驭它，我们终将归于我们的主。",
+            "ru": "Пречист Тот, Кто подчинил это нам, хотя сами мы не смогли бы овладеть этим; и поистине, к нашему Господу мы вернемся.",
+            "fr": "Gloire à Celui qui a soumis ceci pour nous alors que nous n'aurions pu le maîtriser; et certes, vers notre Seigneur nous retournerons."
+          },
+          "source": {
+            "status": "verified_quranic_component",
+            "collection": "Quran",
+            "reference": "43:13-14",
+            "note_ar": "هذا ذكر الركوب القرآني، وليس كامل دعاء السفر النبوي. سيعرض بهذه التسمية لتجنب الخلط."
+          }
+        }
+      ]
+    }
+  ],
+  "source_policy": {
+    "primary_rule_ar": "لا يظهر وسم موثّق للمستخدم إلا بعد مطابقة النص والتكرار والمصدر.",
+    "verified_count": 11,
+    "total_count": 12,
+    "conditional_count": 4,
+    "verified_quranic_component_count": 1,
+    "remaining_unverified_count": 0
+  }
+}

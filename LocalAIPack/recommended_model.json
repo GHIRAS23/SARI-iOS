@@ -1,0 +1,10 @@
+{
+  "status": "recommended-candidate-pending-device-benchmark",
+  "model": "Qwen3.5-2B",
+  "quant": "Q4_K_M",
+  "approxDownloadBytes": 1270000000,
+  "modelURL": "https://huggingface.co/SandLogicTechnologies/Qwen3.5-2B-GGUF/resolve/main/Qwen3.5-2B_Q4_k_m.gguf",
+  "reason": "Better balance than 0.6B/1.7B; multilingual; text-only SARI does not need mmproj.",
+  "fallbackIfDeviceWeak": "Disable local assistant or offer a smaller future validated pack; do not silently downgrade to 0.6B.",
+  "upgradeIfQualityInsufficient": "Qwen3.5-4B Q4/IQ4 optional high-quality pack"
+}

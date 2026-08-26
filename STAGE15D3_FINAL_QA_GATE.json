@@ -1,0 +1,140 @@
+{
+  "stage": "15D3_FINAL_QA_GATE",
+  "static_gate": "PASS",
+  "localization": {
+    "languages": [
+      "ar",
+      "en",
+      "tr",
+      "ms",
+      "id",
+      "ja",
+      "zh",
+      "ru",
+      "fr"
+    ],
+    "missing_values": {
+      "ar": [],
+      "en": [],
+      "tr": [],
+      "ms": [],
+      "id": [],
+      "ja": [],
+      "zh": [],
+      "ru": [],
+      "fr": []
+    }
+  },
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "responsive": {
+    "unresolved_static_issues": [],
+    "intentional_exceptions": [
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        62,
+        "Text(item.arabic).font(.title3).multilineTextAlignment(.trailing).frame(maxWidth:.infinity,alignment:.trailing).environment(\\.layoutDirection,.rightToLeft)"
+      ]
+    ]
+  },
+  "device_test_matrix": [
+    {
+      "area": "Launch / Onboarding",
+      "checks": [
+        "first launch",
+        "skip",
+        "all slides",
+        "Arabic RTL",
+        "English LTR",
+        "long French/Russian",
+        "small screen"
+      ]
+    },
+    {
+      "area": "Home",
+      "checks": [
+        "prayer card",
+        "travel state",
+        "quick cards",
+        "light/dark",
+        "large text"
+      ]
+    },
+    {
+      "area": "Prayer",
+      "checks": [
+        "times",
+        "calculation method",
+        "Adhan/Iqama",
+        "Qibla rotation",
+        "location denied/offline"
+      ]
+    },
+    {
+      "area": "Quran",
+      "checks": [
+        "surah list",
+        "ayah view",
+        "tafsir",
+        "Arabic text RTL under LTR UI",
+        "scroll/performance"
+      ]
+    },
+    {
+      "area": "Adhkar",
+      "checks": [
+        "Arabic source RTL",
+        "translation LTR",
+        "repeat counter",
+        "completed state"
+      ]
+    },
+    {
+      "area": "Fiqh",
+      "checks": [
+        "pack missing",
+        "download/setup",
+        "local question",
+        "source card",
+        "error state",
+        "keyboard/composer"
+      ]
+    },
+    {
+      "area": "Travel",
+      "checks": [
+        "nationality",
+        "destination",
+        "mission info",
+        "weather",
+        "places/maps",
+        "Muslim/non-Muslim destination"
+      ]
+    },
+    {
+      "area": "Settings",
+      "checks": [
+        "9 languages",
+        "theme",
+        "calendar",
+        "Hijri correction",
+        "prayer method",
+        "delete assistant pack"
+      ]
+    },
+    {
+      "area": "Widget iOS",
+      "checks": [
+        "small/medium sizes",
+        "fresh/stale data",
+        "Arabic/English",
+        "dark mode"
+      ]
+    }
+  ],
+  "device_render_gate": "PENDING",
+  "release_status": "READY_FOR_DEVICE_QA",
+  "important": "No claim of final visual/device approval is made until the app is run on actual iOS/Android runtimes."
+}

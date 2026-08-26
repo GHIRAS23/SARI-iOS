@@ -1,0 +1,139 @@
+{
+  "stage": "15C21",
+  "static_integrity": "PASS",
+  "ios": {
+    "classification": {
+      "domain_or_internal": 115,
+      "ui": 90,
+      "religious_or_source": 19,
+      "review": 22
+    },
+    "top_ui_review_files": [
+      [
+        "SARI/Sources/Features/Travel/TravelView.swift",
+        19
+      ],
+      [
+        "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+        14
+      ],
+      [
+        "SARI/Sources/Features/Home/HomeView.swift",
+        13
+      ],
+      [
+        "SARI/Sources/Features/Quran/QuranView.swift",
+        10
+      ],
+      [
+        "SARI/Sources/Features/Settings/SettingsView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+        8
+      ],
+      [
+        "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+        6
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        6
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        5
+      ],
+      [
+        "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+        4
+      ],
+      [
+        "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+        4
+      ],
+      [
+        "SARIWidget/SARIWidget.swift",
+        3
+      ],
+      [
+        "SARI/Sources/Features/Contacts/ScholarsView.swift",
+        2
+      ],
+      [
+        "SARI/Sources/Features/Prayer/QiblaView.swift",
+        2
+      ]
+    ]
+  },
+  "android": {
+    "classification": {
+      "review": 65,
+      "ui": 72,
+      "domain_or_internal": 32,
+      "religious_or_source": 13
+    },
+    "top_ui_review_files": [
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        39
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariApp.kt",
+        32
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariStrings.kt",
+        13
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+        10
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/OnboardingScreen.kt",
+        8
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+        8
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SettingsScreen.kt",
+        6
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        6
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+        5
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariCalendar.kt",
+        2
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/QiblaScreen.kt",
+        2
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariLanguage.kt",
+        1
+      ]
+    ]
+  },
+  "device_gate": "PENDING",
+  "stage15c_closed": false,
+  "next": "Use UI-only review manifests for targeted localization fixes; then execute rendered device/emulator QA."
+}

@@ -1,0 +1,42 @@
+{
+  "stage": "15D4_DEVICE_QA_HANDOFF",
+  "previous_static_gate": "PASS",
+  "ios": {
+    "project_descriptors": [
+      "project.yml"
+    ],
+    "ipa_present": [],
+    "local_xcode_available": false,
+    "status": "SOURCE_READY; REQUIRES XCODE/CLOUD MAC FOR REAL iPHONE BUILD"
+  },
+  "android": {
+    "build_files": [
+      "app/build.gradle.kts",
+      "build.gradle.kts",
+      "settings.gradle.kts"
+    ],
+    "manifests": [
+      "app/src/main/AndroidManifest.xml"
+    ],
+    "apk_present": [],
+    "build_attempt": {
+      "attempted": false,
+      "result": "not_attempted"
+    },
+    "adb_available": false,
+    "status": "SOURCE_READY; APK BUILD STILL REQUIRED"
+  },
+  "device_qa_required": [
+    "Install and launch without crash",
+    "Arabic RTL and English LTR",
+    "small/standard/large screen text clipping",
+    "Light and Dark modes",
+    "Prayer times and calculation-method selection",
+    "Qibla sensor behavior",
+    "Quran, tafsir and Adhkar rendering",
+    "Fiqh pack setup and local assistant flow",
+    "Travel, weather and places flows",
+    "iOS Widget"
+  ],
+  "release_rule": "Do not mark device QA PASS until these flows have been observed on real runtimes."
+}

@@ -1,0 +1,55 @@
+{
+  "stage": "15C",
+  "supported_languages": [
+    "ar",
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "required_checks": {
+    "rtl": [
+      "ar"
+    ],
+    "ltr": [
+      "en",
+      "tr",
+      "ms",
+      "id",
+      "ja",
+      "zh",
+      "ru",
+      "fr"
+    ],
+    "long_text": [
+      "fr",
+      "ru"
+    ],
+    "cjk": [
+      "ja",
+      "zh"
+    ],
+    "offline": [
+      "quran",
+      "tafsir_ar",
+      "adhkar",
+      "prayer_last_location",
+      "qibla_last_location",
+      "calendar",
+      "fiqh_after_pack"
+    ],
+    "error_states": [
+      "no_network",
+      "location_denied",
+      "location_unavailable",
+      "missing_tafsir_pack",
+      "corrupt_tafsir_pack",
+      "fiqh_pack_missing"
+    ]
+  },
+  "rule": "No translated tafsir pack may activate without 6236 unique non-empty entries and SHA-256 verification."
+}

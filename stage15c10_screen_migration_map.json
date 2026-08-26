@@ -1,0 +1,48 @@
+{
+  "Home": {
+    "keys": [
+      "welcome",
+      "next_prayer",
+      "prayer_times",
+      "quran",
+      "adhkar",
+      "qibla",
+      "weather",
+      "travel",
+      "fiqh",
+      "see_all"
+    ]
+  },
+  "Travel": {
+    "keys": [
+      "travel",
+      "travel_mode",
+      "destination",
+      "country_info",
+      "weather",
+      "trip_requirements",
+      "local_apps",
+      "muslim_tools",
+      "embassy",
+      "embassy_numbers",
+      "important_numbers",
+      "loading",
+      "no_data",
+      "retry"
+    ]
+  },
+  "PrayerSettings": {
+    "keys": [
+      "prayer_times",
+      "calculation_method",
+      "asr_method",
+      "standard_asr",
+      "hanafi",
+      "automatic",
+      "prayer_adjustments",
+      "notifications",
+      "location",
+      "permission_required"
+    ]
+  }
+}

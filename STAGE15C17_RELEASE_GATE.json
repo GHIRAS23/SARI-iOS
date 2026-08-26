@@ -1,0 +1,119 @@
+{
+  "stage": "15C17",
+  "static_code_gate": "PASS",
+  "device_render_gate": "PENDING",
+  "stage15c_closed": false,
+  "ios_classification": {
+    "files": 27,
+    "ui_lines": 133,
+    "domain_lines": 129,
+    "religious_lines": 8,
+    "top_ui": [
+      {
+        "file": "SARI/Sources/Features/Travel/TravelView.swift",
+        "count": 31
+      },
+      {
+        "file": "SARI/Sources/Features/Home/HomeView.swift",
+        "count": 18
+      },
+      {
+        "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+        "count": 16
+      },
+      {
+        "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+        "count": 9
+      },
+      {
+        "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+        "count": 8
+      },
+      {
+        "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+        "count": 8
+      },
+      {
+        "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+        "count": 7
+      },
+      {
+        "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        "count": 7
+      },
+      {
+        "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        "count": 6
+      },
+      {
+        "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        "count": 5
+      },
+      {
+        "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+        "count": 4
+      },
+      {
+        "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+        "count": 4
+      }
+    ]
+  },
+  "android_classification": {
+    "files": 23,
+    "ui_lines": 147,
+    "domain_lines": 50,
+    "religious_lines": 0,
+    "top_ui": [
+      {
+        "file": "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        "count": 42
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/ui/SariApp.kt",
+        "count": 38
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+        "count": 13
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+        "count": 10
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/ui/OnboardingScreen.kt",
+        "count": 8
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/ui/SettingsScreen.kt",
+        "count": 7
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        "count": 6
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        "count": 5
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+        "count": 5
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/prayer/PrayerAlarmReceiver.kt",
+        "count": 5
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/adhkar/AdhkarScreen.kt",
+        "count": 4
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/prayer/QiblaScreen.kt",
+        "count": 2
+      }
+    ]
+  },
+  "reason": "Need rendered QA for 9 languages, RTL/LTR, large text and tablet/phone layouts before closure."
+}

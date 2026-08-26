@@ -1,0 +1,284 @@
+{
+  "stage": "15C27",
+  "status": "STATIC_GATE_CLASSIFIED",
+  "changes": {
+    "android_fiqh_setup": 0,
+    "android_travel_checklist": 0,
+    "ios_calendar": 6,
+    "ios_qibla": 2,
+    "ios_prayer_screen": 3
+  },
+  "project_raw_arabic_string_lines": {
+    "ios": 152,
+    "android": 80
+  },
+  "classification": {
+    "ios": {
+      "review_ui": 25,
+      "domain_or_runtime_content": 126,
+      "review": 1
+    },
+    "android": {
+      "review_ui": 23,
+      "domain_or_runtime_content": 56,
+      "review": 1
+    }
+  },
+  "remaining_ui_candidates": {
+    "ios": 25,
+    "android": 23
+  },
+  "remaining_ui_examples": {
+    "ios": [
+      [
+        "SARIWidget/SARIWidget.swift",
+        13,
+        "location:suite?.string(forKey:\"location\") ?? \"افتح ساري لتحديث الموقع\","
+      ],
+      [
+        "SARIWidget/SARIWidget.swift",
+        30,
+        "HStack { Text(\"ساري\").font(.headline); Spacer(); Text(entry.location).font(.caption2).foregroundStyle(.secondary) }"
+      ],
+      [
+        "SARIWidget/SARIWidget.swift",
+        34,
+        "HStack { Label(\"القبلة \\(Int(entry.qibla))°\", systemImage:\"location.north.line\"); Spacer(); Text(entry.prayerTime,style:.relative).monospacedDigit() }.font(.caption)"
+      ],
+      [
+        "SARIWidget/SARIWidget.swift",
+        36,
+        "Text(\"آخر تحديث \\(entry.updated.formatted(date:.omitted,time:.shortened))\").font(.caption2).foregroundStyle(.secondary)"
+      ],
+      [
+        "SARIWidget/SARIWidget.swift",
+        44,
+        ".description(\"الصلاة القادمة، الوقت المتبقي واتجاه القبلة من بيانات ساري.\")"
+      ],
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        6,
+        "\"repeat\":[\"ar\":\"التكرار\",\"en\":\"Repeat\",\"tr\":\"Tekrar\",\"ms\":\"Ulangan\",\"id\":\"Ulangi\",\"ja\":\"回数\",\"zh\":\"重复\",\"ru\":\"Повтор\",\"fr\":\"Répétition\"],"
+      ],
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        7,
+        "\"meaning\":[\"ar\":\"المعنى\",\"en\":\"Meaning\",\"tr\":\"Anlamı\",\"ms\":\"Makna\",\"id\":\"Makna\",\"ja\":\"意味\",\"zh\":\"含义\",\"ru\":\"Смысл\",\"fr\":\"Sens\"],"
+      ],
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        8,
+        "\"pron\":[\"ar\":\"النطق النصي\",\"en\":\"Transliteration\",\"tr\":\"Okunuş\",\"ms\":\"Transliterasi\",\"id\":\"Transliterasi\",\"ja\":\"ローマ字読み\",\"zh\":\"拉丁转写\",\"ru\":\"Транслитерация\",\"fr\":\"Translittération\"],"
+      ],
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        9,
+        "\"done\":[\"ar\":\"تم ✓\",\"en\":\"Done ✓\",\"tr\":\"Tamam ✓\",\"ms\":\"Selesai ✓\",\"id\":\"Selesai ✓\",\"ja\":\"完了 ✓\",\"zh\":\"完成 ✓\",\"ru\":\"Готово ✓\",\"fr\":\"Terminé ✓\"],"
+      ],
+      [
+        "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        10,
+        "\"unavailable\":[\"ar\":\"تعذر تحميل الأذكار\",\"en\":\"Adhkar could not be loaded\",\"tr\":\"Zikirler yüklenemedi\",\"ms\":\"Zikir tidak dapat dimuatkan\",\"id\":\"Zikir tidak dapat dimuat\",\"ja\":\"アズカールを読み込めませんでした\",\"zh\":\"无法加载赞念\",\"ru\":\"Не удалось загрузить азкары\",\"fr\":\"Impossible de charger les adhkar\"]"
+      ],
+      [
+        "SARI/Sources/Features/Contacts/ScholarsView.swift",
+        19,
+        "Link(\"اتصال\", destination: url)"
+      ],
+      [
+        "SARI/Sources/Features/Contacts/ScholarsView.swift",
+        22,
+        "}.navigationTitle(\"أصحاب الفضيلة\")"
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        14,
+        "Text(destination.muslimMajority ? \"يركز ساري على جودة المكان وقربه.\":\"لا يصف ساري مطعمًا بأنه حلال إلا عند وجود تحقق صريح.\")"
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        30,
+        "Text(store.message ?? \"لا توجد نتائج موثقة محفوظة حاليًا.\").foregroundStyle(.secondary)"
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        38,
+        "Text(\"خدمات وتطبيقات الوجهة\").font(.title3.bold())"
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        46,
+        "Text(\"المطاعم، ساعات العمل، حالة الحلال وأرقام الخدمات بيانات متغيرة. ساري لا يخمّنها؛ النتائج الحية تفتح في خدمة الخرائط.\")"
+      ],
+      [
+        "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        49,
+        "}.navigationTitle(\"حولك في \\(destination.nameArabic)\").environment(\\.layoutDirection,.rightToLeft)"
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        11,
+        "else if weather.isLoading { ProgressView(\"جاري تحديث توقعات الطقس…\").padding(.top, 80) }"
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        12,
+        "else { ContentUnavailableView(\"تعذر عرض الطقس\", systemImage: \"cloud.slash\", description: Text(weather.errorMessage ?? \"اسمح بالموقع ثم أعد المحاولة.\")) }"
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        15,
+        ".navigationTitle(\"الطقس ولباس اليوم\").navigationBarTitleDisplayMode(.inline).environment(\\.layoutDirection, .rightToLeft)"
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        20,
+        "HStack(alignment: .firstTextBaseline) { Text(\"\\(Int(w.temperature.rounded()))°\").font(.system(size: 64, weight: .black, design: .rounded)); Text(\"المحسوسة \\(Int(w.apparentTemperature.rounded()))°\").foregroundStyle(.secondary); Spacer(); if let h = w.high, let l = w.low { Text(\"↑\\(Int(h))°  ↓\\(Int(l))°\").fontWeight(.semibold) } }"
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        24,
+        "private func hourly(_ w: WeatherSnapshot) -> some View { VStack(alignment: .trailing, spacing: 12) { Text(\"الساعات القادمة\").font(.title3.bold()); ScrollView(.horizontal, showsIndicators: false) { HStack(spacing: 10) { ForEach(w.hourly.prefix(12)) { h in VStack(spacing: 7) { Text(h.time.formatted(date: .omitted, time: .shortened)).font(.caption); Image(systemName: WeatherSnapshot.symbolName(for: h.weatherCode)); Text(\"\\(Int(h.temperature))°\").font(.headline); Label(\"\\(h.precipitationProbability)%\", systemImage: \"drop.fill\").font(.caption2).foregroundStyle(.secondary) }.padding(12).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18)) } } } } }"
+      ],
+      [
+        "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        26,
+        "private func details(_ w: WeatherSnapshot) -> some View { HStack(spacing: 10) { metric(SariUIStrings.text(\"humidity\", SariLanguage.selected), \"\\(w.humidity)%\", \"humidity.fill\"); metric(SariUIStrings.text(\"wind\", SariLanguage.selected), \"\\(Int(w.windSpeed)) كم/س\", \"wind\"); metric(\"الهبات\", \"\\(Int(w.windGust)) كم/س\", \"wind.circle\") } }"
+      ],
+      [
+        "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+        8,
+        "Section { row(SariUIStrings.text(\"fajr\", SariLanguage.selected),t.fajr,\"sunrise.fill\"); row(SariUIStrings.text(\"sunrise\", SariLanguage.selected),t.sunrise,\"sun.horizon.fill\"); row(SariUIStrings.text(\"dhuhr\", SariLanguage.selected),t.dhuhr,\"sun.max.fill\"); row(SariUIStrings.text(\"asr\", SariLanguage.selected),t.asr,\"sun.min.fill\"); row(SariUIStrings.text(\"maghrib\", SariLanguage.selected),t.maghrib,\"sunset.fill\"); row(SariUIStrings.text(\"isha\", SariLanguage.selected),t.isha,\"moon.stars.fill\") } header: { Text(\"مواقيت اليوم — \\(prayer.locationName)\") }"
+      ],
+      [
+        "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+        9,
+        "Section { LabeledContent(SariUIStrings.text(\"prayer_calc_method\", SariLanguage.selected),value:prayer.effectiveCalculationMethod.title); NavigationLink { QiblaView() } label: { Label(SariUIStrings.text(\"qibla_compass\",SariLanguage.selected),systemImage:\"location.north.circle.fill\") }; NavigationLink { PrayerSettingsView() } label: { Label(\"الأذان والإقامة\",systemImage:\"bell.badge.fill\") } }"
+      ]
+    ],
+    "android": [
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        19,
+        "enum class PlaceKind(val title:String){FOOD(\"المطاعم\"),MOSQUE(\"المساجد\"),PHARMACY(\"الصيدليات\"),HOSPITAL(\"المستشفيات\"),GROCERY(\"البقالات\"),TRANSPORT(\"النقل\")}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        27,
+        "Scaffold(topBar={TopAppBar(title={Text(\"حولك في ${destination.nameArabic}\",fontWeight=FontWeight.Black)},navigationIcon={IconButton(onClick=onBack){Icon(Icons.Default.ArrowBack,null)}})}){pad->"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        29,
+        "item{ElevatedCard(shape=RoundedCornerShape(24.dp)){Column(Modifier.fillMaxWidth().padding(18.dp)){Text(if(destination.muslimMajority)SariUIStrings.text(ctx,\"special_nearby\") else SariUIStrings.text(ctx,\"useful_places\"),fontWeight=FontWeight.Bold);Text(if(destination.muslimMajority)\"يركز ساري على جودة المكان وقربه.\" else \"لا يصف ساري مطعمًا بأنه حلال دون تحقق صريح.\",color=MaterialTheme.colorScheme.onSurfaceVariant,textAlign=TextAlign.End,modifier=Modifier.fillMaxWidth())}}}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        31,
+        "item{ElevatedCard(shape=RoundedCornerShape(24.dp)){Column(Modifier.fillMaxWidth().padding(18.dp)){Text(kind.title,fontWeight=FontWeight.Bold);Text(\"النتائج الحية تُفتح على الخريطة حتى لا يخمّن ساري اسم مكان أو حالة حلال أو ساعات عمل.\",color=MaterialTheme.colorScheme.onSurfaceVariant);Spacer(Modifier.height(12.dp));Button(onClick={openMap},modifier=Modifier.fillMaxWidth()){Icon(Icons.Default.Map,null);Spacer(Modifier.width(8.dp));Text(\"بحث حي في Google Maps\")}}}}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/PlacesLocalScreen.kt",
+        32,
+        "item{Text(\"المطاعم، ساعات العمل، حالة الحلال وأرقام الخدمات بيانات متغيرة؛ لا يعرضها ساري كحقائق إلا بعد التحقق.\",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant,textAlign=TextAlign.Center,modifier=Modifier.fillMaxWidth())}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        126,
+        "@Composable private fun MissionEmergencyCard(d:TravelDestination,n:SariNationality?,onProfile:()->Unit)=TravelCard { Text(SariUIStrings.text(ctx,\"important_numbers2\"),fontSize=19.sp,fontWeight=FontWeight.Bold); if(n==null){TextButton(onClick=onProfile){Text(SariUIStrings.text(ctx,\"travel_nationality_hint\"))}}else{Text(SariUIStrings.format(ctx,\"embassy_of\",mapOf(\"country\" to \"${n.nameArabic} ${n.flag}\")),fontWeight=FontWeight.Bold);Text(SariUIStrings.text(ctx,\"no_verified_mission_cached\"),fontSize=12.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)};HorizontalDivider();Text(SariUIStrings.format(ctx,\"emergency_in\",mapOf(\"country\" to d.nameArabic)),fontWeight=FontWeight.Bold);d.emergencyGeneral?.let{Text(\"الطوارئ العامة: $it\",fontSize=20.sp,fontWeight=FontWeight.Black)};Text(d.emergencyNoteArabic,fontSize=12.sp,color=MaterialTheme.colorScheme.onSurfaceVariant) }"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        128,
+        "@Composable private fun MuslimToolsCard()=TravelCard { Text(SariUIStrings.text(ctx,\"travel_muslim_tools\"),fontSize=19.sp,fontWeight=FontWeight.Bold); Info(SariUIStrings.text(ctx,\"prayer_times\",lang),SariUIStrings.text(ctx,\"based_location\"),Icons.Default.Schedule);Info(SariUIStrings.text(ctx,\"qibla\",lang),SariUIStrings.text(ctx,\"interactive_compass\"),Icons.Default.Explore);Info(SariUIStrings.text(ctx,\"travel_adhkar\"),\"ضمن الأذكار\",Icons.Default.Favorite);Info(SariUIStrings.text(ctx,\"travel_rulings\"),\"اسأل ساري مع المصدر\",Icons.Default.AutoAwesome) }"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        135,
+        "@Composable private fun TravelProfileDialog(nationality:String,destination:String,onDismiss:()->Unit,onSave:(String,String)->Unit){var n by remember{mutableStateOf(nationality)};var d by remember{mutableStateOf(destination)};AlertDialog(onDismissRequest=onDismiss,confirmButton={TextButton(onClick={onSave(n,d)}){Text(SariUIStrings.text(ctx,\"save\"))}},dismissButton={TextButton(onClick=onDismiss){Text(SariUIStrings.text(ctx,\"cancel\"))}},title={Text(SariUIStrings.text(ctx,\"travel_setup\"))},text={Column(verticalArrangement=Arrangement.spacedBy(12.dp)){Text(SariUIStrings.text(ctx,\"nationality\"),fontWeight=FontWeight.Bold);TravelCatalog.nationalities.forEach{x->FilterChip(selected=n==x.code,onClick={n=x.code},label={Text(\"${x.flag} ${x.nameArabic}\")})};Text(SariUIStrings.text(ctx,\"destination\",lang),fontWeight=FontWeight.Bold);TravelCatalog.destinations.take(8).forEach{x->FilterChip(selected=d==x.code,onClick={d=x.code},label={Text(\"${x.flag} ${x.nameArabic}\")})};Text(\"الجنسية تُحفظ على الجهاز لتحديد بعثة دولتك أثناء السفر.\",fontSize=11.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)}})}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        136,
+        "@Composable private fun ChecklistDialog(d:TravelDestination,n:SariNationality?,onDismiss:()->Unit){val rows=listOf(\"تحقق من التأشيرة وصلاحية الجواز ومتطلبات الدخول من مصدر رسمي قبل السفر.\",\"راجع طقس ${d.nameArabic} ولباس الرحلة.\",\"نزّل تطبيقات النقل والخرائط المهمة.\",if(n==null)\"اختر جنسيتك لإظهار بعثتك.\" else \"احفظ بيانات بعثة ${n.nameArabic} عند توفرها من دليل موثوق.\");AlertDialog(onDismissRequest=onDismiss,confirmButton={TextButton(onClick=onDismiss){Text(SariUIStrings.text(ctx,\"done\"))}},title={Text(SariUIStrings.text(ctx,\"before_travel\"))},text={Column{rows.forEach{Row(Modifier.padding(vertical=6.dp)){Icon(Icons.Default.CheckCircle,null,tint=SariGreen);Spacer(Modifier.width(8.dp));Text(it,textAlign=TextAlign.End)}}}})}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        137,
+        "@Composable private fun HelpDialog(d:TravelDestination,n:SariNationality?,onDismiss:()->Unit){AlertDialog(onDismissRequest=onDismiss,confirmButton={TextButton(onClick=onDismiss){Text(SariUIStrings.text(ctx,\"close\"))}},title={Text(SariUIStrings.text(ctx,\"need_help\"))},text={Column(horizontalAlignment=Alignment.End,verticalArrangement=Arrangement.spacedBy(10.dp)){Text(SariUIStrings.format(ctx,\"emergency_in\",mapOf(\"country\" to d.nameArabic)),fontWeight=FontWeight.Bold);d.emergencyGeneral?.let{Text(\"$it\",fontSize=28.sp,fontWeight=FontWeight.Black,color=Color(0xFFC53B3B))};Text(d.emergencyNoteArabic);HorizontalDivider();Text(n?.let{\"بعثة ${it.nameArabic} ${it.flag}\"}?:\"حدد جنسيتك لإظهار بعثتك\",fontWeight=FontWeight.Bold);Text(\"لا يعرض ساري رقم سفارة أو قنصلية غير متحقق منه.\",fontSize=12.sp,color=MaterialTheme.colorScheme.onSurfaceVariant)}})}"
+      ],
+      [
+        "app/src/main/java/com/sari/app/adhkar/AdhkarScreen.kt",
+        21,
+        "\"repeat\" to mapOf(\"ar\" to \"التكرار\",\"en\" to \"Repeat\",\"tr\" to \"Tekrar\",\"ms\" to \"Ulangan\",\"id\" to \"Ulangi\",\"ja\" to \"回数\",\"zh\" to \"重复\",\"ru\" to \"Повтор\",\"fr\" to \"Répétition\"),"
+      ],
+      [
+        "app/src/main/java/com/sari/app/adhkar/AdhkarScreen.kt",
+        22,
+        "\"meaning\" to mapOf(\"ar\" to \"المعنى\",\"en\" to \"Meaning\",\"tr\" to \"Anlamı\",\"ms\" to \"Makna\",\"id\" to \"Makna\",\"ja\" to \"意味\",\"zh\" to \"含义\",\"ru\" to \"Смысл\",\"fr\" to \"Sens\"),"
+      ],
+      [
+        "app/src/main/java/com/sari/app/adhkar/AdhkarScreen.kt",
+        23,
+        "\"pron\" to mapOf(\"ar\" to \"النطق النصي\",\"en\" to \"Transliteration\",\"tr\" to \"Okunuş\",\"ms\" to \"Transliterasi\",\"id\" to \"Transliterasi\",\"ja\" to \"ローマ字読み\",\"zh\" to \"拉丁转写\",\"ru\" to \"Транслитерация\",\"fr\" to \"Translittération\"),"
+      ],
+      [
+        "app/src/main/java/com/sari/app/adhkar/AdhkarScreen.kt",
+        24,
+        "\"unavailable\" to mapOf(\"ar\" to \"تعذر تحميل الأذكار\",\"en\" to \"Adhkar could not be loaded\",\"tr\" to \"Zikirler yüklenemedi\",\"ms\" to \"Zikir tidak dapat dimuatkan\",\"id\" to \"Zikir tidak dapat dimuat\",\"ja\" to \"アズカールを読み込めませんでした\",\"zh\" to \"无法加载赞念\",\"ru\" to \"Не удалось загрузить азкары\",\"fr\" to \"Impossible de charger les adhkar\")"
+      ],
+      [
+        "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+        34,
+        "Text(\"✓ يعمل بدون إنترنت بعد التنزيل\");Text(\"✓ الأسئلة تبقى على جهازك\");Text(\"✓ لا تكلفة لكل سؤال\");Text(\"✓ يمكن حذف الملفات من الإعدادات\")"
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/QiblaScreen.kt",
+        54,
+        "Text(if(aligned) SariUIStrings.text(ctx,\"facing_qibla\") else \"حرّك الهاتف حتى يتجه السهم للأعلى\",fontSize=20.sp,fontWeight=FontWeight.Bold)"
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/QiblaScreen.kt",
+        55,
+        "Text(\"اتجاه القبلة ${bearing.toInt()}°  •  اتجاه الهاتف ${heading.toInt()}°\",color=MaterialTheme.colorScheme.onSurfaceVariant)"
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        26,
+        "Scaffold(topBar={ Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment=Alignment.CenterVertically) { IconButton(onClick=onBack){Icon(Icons.Default.ArrowBack,null)}; Spacer(Modifier.weight(1f)); Text(\"الطقس ولباس اليوم\", style=MaterialTheme.typography.titleLarge, fontWeight=FontWeight.Bold) } }) { pad ->"
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        28,
+        "if (snapshot == null) item { Text(\"حدّث الموقع من الرئيسية أولًا لعرض توقعات الطقس.\", modifier=Modifier.fillMaxWidth(), textAlign=TextAlign.End) }"
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        30,
+        "item { ElevatedCard(shape=RoundedCornerShape(26.dp)) { Column(Modifier.fillMaxWidth().padding(22.dp), horizontalAlignment=Alignment.End) { Text(w.conditionArabic, color=MaterialTheme.colorScheme.onSurfaceVariant); Text(\"${w.temperature.toInt()}°\", fontSize=58.sp, fontWeight=FontWeight.Black); Text(\"المحسوسة ${w.apparentTemperature.toInt()}°  •  ↑${w.high?.toInt()}° ↓${w.low?.toInt()}°\") } } }"
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        33,
+        "item { Text(\"الساعات القادمة\", style=MaterialTheme.typography.titleMedium, fontWeight=FontWeight.Bold, modifier=Modifier.fillMaxWidth(), textAlign=TextAlign.End) }"
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        35,
+        "item { Text(\"الأيام القادمة\", style=MaterialTheme.typography.titleMedium, fontWeight=FontWeight.Bold, modifier=Modifier.fillMaxWidth(), textAlign=TextAlign.End) }"
+      ],
+      [
+        "app/src/main/java/com/sari/app/weather/WeatherDetailScreen.kt",
+        37,
+        "item { Row(Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.spacedBy(10.dp)) { metric(\"الرطوبة\",\"${w.humidity}%\",Modifier.weight(1f)); metric(\"الرياح\",\"${w.windSpeed.toInt()} كم/س\",Modifier.weight(1f)); metric(\"الهبات\",\"${w.windGust.toInt()} كم/س\",Modifier.weight(1f)) } }"
+      ]
+    ]
+  },
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "static_gate_closed": false,
+  "rendered_device_gate": "PENDING",
+  "note": "Raw Arabic in core/domain files includes religious source text, normalization tokens, prayer/domain names, weather/travel data and notification runtime content. It is not automatically UI localization debt."
+}

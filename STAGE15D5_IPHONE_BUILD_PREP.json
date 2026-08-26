@@ -1,0 +1,19 @@
+{
+  "stage": "15D5_IPHONE_BUILD_PREP",
+  "checks": {
+    "project_yml": true,
+    "swift_files": 40,
+    "widget_source": true,
+    "entitlements": true,
+    "localized_location_permissions": true,
+    "cloud_build_script": true,
+    "placeholder_backend": true
+  },
+  "swift_parse_failures": [],
+  "xcode_available_here": false,
+  "xcodegen_available_here": false,
+  "signing_required_for_installation": true,
+  "compile_on_current_environment": false,
+  "status": "READY_FOR_MACOS_COMPILE_AND_SIGN",
+  "next_gate": "Run scripts/build_ios_device.sh on macOS; then sign SARI + Widget with the user's Apple Developer Team and install/TestFlight."
+}

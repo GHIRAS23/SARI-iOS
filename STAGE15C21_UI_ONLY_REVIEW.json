@@ -1,0 +1,674 @@
+[
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 30,
+    "class": "ui",
+    "text": "HStack { Text(\"ساري\").font(.headline); Spacer(); Text(entry.location).font(.caption2).foregroundStyle(.secondary) }"
+  },
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 34,
+    "class": "ui",
+    "text": "HStack { Label(\"القبلة \\(Int(entry.qibla))°\", systemImage:\"location.north.line\"); Spacer(); Text(entry.prayerTime,style:.relative).monospacedDigit() }.font(.caption)"
+  },
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 36,
+    "class": "ui",
+    "text": "Text(\"آخر تحديث \\(entry.updated.formatted(date:.omitted,time:.shortened))\").font(.caption2).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 7,
+    "class": "ui",
+    "text": "Section(\"عرض التاريخ\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 10,
+    "class": "ui",
+    "text": "Section(\"تصحيح التاريخ الهجري\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 11,
+    "class": "review",
+    "text": "Stepper(\"\\(adjustment >= 0 ? \"+\" : \"\")\\(adjustment) يوم\",value:$adjustment,in:-2...2)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 12,
+    "class": "ui",
+    "text": "Button(\"إعادة الضبط\"){adjustment=0}.disabled(adjustment==0)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 14,
+    "class": "ui",
+    "text": "Text(\"يعتمد التاريخ الهجري على تقويم أم القرى. خيار التصحيح يغيّر العرض الهجري فقط ولا يغيّر تاريخ الجهاز أو حساب مواقيت الصلاة.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 16,
+    "class": "ui",
+    "text": "Section(\"معاينة\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 12,
+    "class": "review",
+    "text": "let sounds=[(\"Alnufis\",\"النفيس\"),(\"Alimula\",\"المعيقلي\"),(\"Alqitami\",\"القطامي\")]"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 18,
+    "class": "ui",
+    "text": "Section(\"طريقة حساب المواقيت\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 19,
+    "class": "review",
+    "text": "Picker(\"التقويم / طريقة الحساب\",selection:$calcMethod) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 23,
+    "class": "review",
+    "text": "LabeledContent(\"المستخدم حاليًا\",value:prayer.effectiveCalculationMethod.title)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 25,
+    "class": "review",
+    "text": "Picker(\"حساب العصر\",selection:$asrMethod) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 28,
+    "class": "review",
+    "text": "NavigationLink(\"التعديلات اليدوية ± دقائق\"){ PrayerOffsetsView().environmentObject(prayer) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 29,
+    "class": "ui",
+    "text": "Text(\"يمكن اختيار الطريقة يدويًا أو ترك ساري يختار تلقائيًا حسب الموقع. قد تختلف المواقيت الرسمية محليًا بدقائق قليلة.\").font(.footnote).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 35,
+    "class": "review",
+    "text": "Toggle(\"تفعيل التنبيه المسبق\",isOn:bindingBool(\"prePrayerEnabled\",defaultValue:true)).onChange(of:bindingBool(\"prePrayerEnabled\",defaultValue:true).wrappedValue){_,_ in prayer.schedulePrayerNotifications()}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 39,
+    "class": "review",
+    "text": "Toggle(\"تفعيل تنبيه الإقامة\",isOn:bindingBool(\"iqamaEnabled\",defaultValue:true)).onChange(of:bindingBool(\"iqamaEnabled\",defaultValue:true).wrappedValue){_,_ in prayer.schedulePrayerNotifications()}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 42,
+    "class": "ui",
+    "text": "Section(\"صوت تنبيه الأذان\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 44,
+    "class": "ui",
+    "text": "HStack { Button(\"معاينة — \\(name)\"){ play(file) }; Spacer(); if selectedSound == \"\\(file)_29s.caf\" { Image(systemName:\"checkmark.circle.fill\").foregroundStyle(.tint) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 48,
+    "class": "ui",
+    "text": "Section { Text(\"يمكن تشغيل أو إيقاف الأذان لكل صلاة على حدة. يستخدم iOS صوت إشعار مختصرًا التزامًا بقيود النظام.\").font(.footnote) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 65,
+    "class": "ui",
+    "text": ".navigationTitle(\"تعديل الدقائق\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 72,
+    "class": "review",
+    "text": "Stepper(\"\\(name): \\(value >= 0 ? \"+\" : \"\")\\(value) دقيقة\",value:$value,in:-30...30)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 14,
+    "class": "ui",
+    "text": "Text(\"تلقائي — \\(SariLanguage.device.displayName)\").tag(\"\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 20,
+    "class": "ui",
+    "text": "Section(language.isArabic ? \"التاريخ\":\"Date\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 25,
+    "class": "review",
+    "text": "Picker(language.isArabic ? \"الوضع\":\"Theme\",selection:$appearanceRaw) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 31,
+    "class": "ui",
+    "text": "NavigationLink { PrayerSettingsView() } label:{Label(\"الصلاة والأذان والإقامة\",systemImage:\"bell.badge.fill\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 37,
+    "class": "ui",
+    "text": "Label(\"الحزمة مثبتة\\(pack.installedVersion.map{\" — \\($0)\"} ?? \"\")\",systemImage:\"checkmark.seal.fill\").foregroundStyle(.green)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 38,
+    "class": "ui",
+    "text": "Button(role:.destructive){showDelete=true}label:{Label(\"حذف حزمة المساعد من الجهاز\",systemImage:\"trash\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 48,
+    "class": "review",
+    "text": ".confirmationDialog(\"حذف ملفات المساعد؟\",isPresented:$showDelete,titleVisibility:.visible) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 51,
+    "class": "ui",
+    "text": "} message:{Text(\"يمكن تنزيلها مرة أخرى لاحقًا.\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 45,
+    "class": "ui",
+    "text": "Text(\"ساري\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 100,
+    "class": "ui",
+    "text": "Label(\"القبلة \\(Int(prayer.qiblaBearing))°\", systemImage: \"location.north.circle.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 102,
+    "class": "ui",
+    "text": "Text(\"تنبيه الإقامة قابل للتخصيص\").font(.caption)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 116,
+    "class": "ui",
+    "text": "HStack(spacing: 12) { ProgressView(); Text(\"جاري تحديد موقعك وحساب مواقيت الصلاة…\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 142,
+    "class": "ui",
+    "text": "HStack { Text(\"عرض التفاصيل والتوقعات\").font(.caption.bold()); Image(systemName: \"chevron.left\").font(.caption.bold()) }.foregroundStyle(Color.accentColor)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 144,
+    "class": "ui",
+    "text": "} else if weather.isLoading { HStack { ProgressView(); Text(\"جاري تحديث الطقس ولباس اليوم…\") }.frame(maxWidth: .infinity).padding(20) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 152,
+    "class": "ui",
+    "text": "Text(\"كل ما تحتاجه\").font(.title3.weight(.bold))"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 156,
+    "class": "ui",
+    "text": "NavigationLink(destination: QiblaView()) { ActionCard(title: SariStrings.t(\"qibla\",language), subtitle: \"\\(Int(prayer.qiblaBearing))° من موقعك\", icon: \"location.north.fill\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 164,
+    "class": "ui",
+    "text": "HStack { Text(\"وضع السفر مفعّل\").font(.headline); Spacer(); Image(systemName: \"airplane.circle.fill\").font(.title2) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 165,
+    "class": "ui",
+    "text": "Text(\"ساري سيبرز لك معلومات السفر، التطبيقات المحلية، المطاعم الحلال والتنبيهات المهمة في وجهتك.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 167,
+    "class": "ui",
+    "text": "Button(\"استكشف أدوات السفر\") { }.buttonStyle(.borderedProminent)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 177,
+    "class": "ui",
+    "text": "HStack { NavigationLink(SariUIStrings.text(\"see_all\", SariLanguage.selected)) { PrayerTimesView() }.font(.subheadline.bold()); Spacer(); Text(\"مواقيت اليوم\").font(.title3.weight(.bold)) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 197,
+    "class": "ui",
+    "text": "Text(\"ساري يساعدك بالمعلومة ويعرض مصادرها، ولا يُعد جهة مستقلة للفتوى.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 48,
+    "class": "ui",
+    "text": "Text(\"يبحث ساري في النصوص المفهرسة، ويتحقق من دعم الخلاصة قبل عرضها. إذا لم تكفِ المصادر يتحفظ بدل تخمين الحكم.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 55,
+    "class": "ui",
+    "text": "Label(\"حزمة Qwen3.5-2B والمصادر مثبتة. ربط محرك GGUF المحلي داخل iPhone هو الخطوة المتبقية لتشغيل الإجابة دون خادم.\",systemImage:\"iphone.gen3\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 69,
+    "class": "ui",
+    "text": "TextField(\"اكتب سؤالك بتفاصيله…\",text:$question,axis:.vertical)"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 93,
+    "class": "ui",
+    "text": "Text(\"مطابقة المصادر \\(a.retrieval_confidence)%\").font(.caption.weight(.bold))"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 126,
+    "class": "review",
+    "text": "if level.contains(\"صريح\"){return \"checkmark.seal.fill\"}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 127,
+    "class": "review",
+    "text": "if level.contains(\"استنتاج\"){return \"arrow.triangle.branch\"}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 139,
+    "class": "review",
+    "text": "level: local.sources.isEmpty ? SariUIStrings.text(\"insufficient_source\", SariLanguage.selected) : \"استنتاج من المصادر المحلية\","
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 150,
+    "class": "review",
+    "text": "disclaimer: \"ساري مساعد معرفي يعتمد على المصادر المثبتة على الجهاز، وليس جهة مستقلة للفتوى.\""
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 14,
+    "class": "ui",
+    "text": "Text(\"حمّل ملفات المساعد مرة واحدة. بعد اكتمال التنزيل تعمل المصادر والنموذج على جهازك دون خادم، ويمكن حذف الملفات لاحقًا.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 29,
+    "class": "review",
+    "text": "guard let u=manifestURL else{error=\"رابط حزمة المساعد غير مهيأ في هذه النسخة.\";return}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 30,
+    "class": "review",
+    "text": "Task{do{try await pack.install(from:u)}catch{self.error=\"فشل التنزيل أو التحقق من الملفات. لم يتم تفعيل الحزمة.\"}}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 35,
+    "class": "ui",
+    "text": "Text(\"لن يعتبر ساري الحزمة صالحة إذا لم يطابق حجم الملفات وبصمة SHA-256 القيم المعتمدة.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 12,
+    "class": "ui",
+    "text": "\"ar\":.init(title:SariUIStrings.text(\"welcome\", SariLanguage.selected),subtitle:\"رفيق المسلم في بلده وفي سفره\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 22,
+    "class": "ui",
+    "text": "\"ar\":.init(title:\"صلاتك أينما كنت\",subtitle:\"مواقيت الصلاة والقبلة وطرق الحساب والتنبيهات في مكان واحد\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 32,
+    "class": "ui",
+    "text": "\"ar\":.init(title:\"القرآن والأذكار معك\",subtitle:SariUIStrings.text(\"onboarding_quran_desc\", SariLanguage.selected)),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 42,
+    "class": "ui",
+    "text": "\"ar\":.init(title:\"سافر وأنت مستعد\",subtitle:\"الوجهة والطقس ولباس اليوم ومعلومات البلد ومتطلبات الرحلة والتطبيقات المهمة\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 52,
+    "class": "ui",
+    "text": "\"ar\":.init(title:\"معلومات مهمة عند السفر\",subtitle:\"يعرض ساري السفارة أو القنصلية والمعلومات المناسبة وفق جنسيتك ووجهتك\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 62,
+    "class": "ui",
+    "text": "\"ar\":.init(title:\"مساعدك الفقهي على جهازك\",subtitle:\"نزّل حزمة المساعد لتعمل المصادر والنموذج محليًا على جهازك\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 102,
+    "class": "ui",
+    "text": "Button(word(\"تخطي\",\"Skip\")){finish()}.fontWeight(.semibold)"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 126,
+    "class": "ui",
+    "text": "HStack{Text(page == sariOnboardingPages.count-1 ? word(\"ابدأ مع ساري\",\"Start\") : word(SariUIStrings.text(\"next\", SariLanguage.selected),\"Next\")).fontWeight(.bold);Image(systemName:rtl ? \"arrow.left\":\"arrow.right\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Contacts/ScholarsView.swift",
+    "line": 19,
+    "class": "review",
+    "text": "Link(\"اتصال\", destination: url)"
+  },
+  {
+    "file": "SARI/Sources/Features/Contacts/ScholarsView.swift",
+    "line": 22,
+    "class": "ui",
+    "text": "}.navigationTitle(\"أصحاب الفضيلة\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 14,
+    "class": "ui",
+    "text": "Text(destination.muslimMajority ? \"يركز ساري على جودة المكان وقربه.\":\"لا يصف ساري مطعمًا بأنه حلال إلا عند وجود تحقق صريح.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 30,
+    "class": "ui",
+    "text": "Text(store.message ?? \"لا توجد نتائج موثقة محفوظة حاليًا.\").foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 38,
+    "class": "ui",
+    "text": "Text(\"خدمات وتطبيقات الوجهة\").font(.title3.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 46,
+    "class": "ui",
+    "text": "Text(\"المطاعم، ساعات العمل، حالة الحلال وأرقام الخدمات بيانات متغيرة. ساري لا يخمّنها؛ النتائج الحية تفتح في خدمة الخرائط.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 49,
+    "class": "ui",
+    "text": "}.navigationTitle(\"حولك في \\(destination.nameArabic)\").environment(\\.layoutDirection,.rightToLeft)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 42,
+    "class": "ui",
+    "text": "HStack { Text(profile.destination.flag).font(.system(size:42)); Spacer(); VStack(alignment:.trailing, spacing:3) { Text(\"وجهتك\").font(.caption.bold()).foregroundStyle(.secondary); Text(profile.destination.nameArabic).font(.system(size:30,weight:.black,design:.rounded)); Text(profile.destination.capitalArabic).foregroundStyle(.secondary) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 66,
+    "class": "ui",
+    "text": "HStack { Text(\"طقس الوجهة ولباس اليوم\").font(.title3.bold()); Spacer(); Image(systemName:\"cloud.sun.fill\").symbolRenderingMode(.multicolor) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 71,
+    "class": "ui",
+    "text": "} else if destinationWeather.isLoading { HStack { ProgressView(); Text(\"جاري تحديث طقس الوجهة…\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 72,
+    "class": "ui",
+    "text": "else { Text(\"تعذر تحديث الطقس الآن.\").foregroundStyle(.secondary) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 80,
+    "class": "ui",
+    "text": "HStack { Text(nationality.flag).font(.title2); Spacer(); VStack(alignment:.trailing) { Text(SariUIStrings.format(\"embassy_of\", SariLanguage.selected, [\"country\":nationality.nameArabic])).font(.headline); if let m = TravelCatalog.mission(for:nationality.code,in:profile.destination.code) { Text(m.titleArabic).foregroundStyle(.secondary) } else { Text(\"لا توجد بيانات بعثة موثقة مخزنة لهذه الوجهة في النسخة الحالية. لن يخمّن ساري أرقامًا حساسة.\").font(.caption).foregroundStyle(.secondary) } } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 85,
+    "class": "ui",
+    "text": "HStack { Image(systemName:\"cross.case.fill\").foregroundStyle(.red); Spacer(); VStack(alignment:.trailing) { Text(\"طوارئ \\(profile.destination.nameArabic)\").font(.headline); if let n = profile.destination.emergencyGeneral { Text(SariUIStrings.format(\"general_emergency\",SariLanguage.selected,[\"number\":n])).font(.title3.bold()) } ; Text(profile.destination.emergencyNoteArabic).font(.caption).foregroundStyle(.secondary) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 93,
+    "class": "ui",
+    "text": "Text(\"قبل التثبيت، راجع التطبيق والناشر في متجر جهازك.\").font(.caption2).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 103,
+    "class": "review",
+    "text": "NavigationLink(destination:FiqhAssistantView()) { travelLink(\"أحكام السفر — اسأل ساري\", \"sparkles\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 113,
+    "class": "ui",
+    "text": "Text(profile.destination.muslimMajority ? \"المطاعم والأماكن المميزة\":SariUIStrings.text(\"halal_nearby\", SariLanguage.selected)).font(.headline).foregroundStyle(.primary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 114,
+    "class": "ui",
+    "text": "Text(\"مطاعم، مساجد، صيدليات، مستشفيات، بقالات ونقل — مع بحث حي على الخريطة.\").font(.subheadline).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 122,
+    "class": "ui",
+    "text": "private var dataSafetyNote: some View { Text(\"بيانات التأشيرات والسفارات والطوارئ معلومات حساسة ومتغيرة؛ ساري لا يخمّنها، ويجب مزامنتها من دليل موثوق قبل النشر العام.\").font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center).padding(.horizontal,8) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 140,
+    "class": "ui",
+    "text": "Text(\"اختر الجنسية\").tag(\"\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 146,
+    "class": "ui",
+    "text": "Section(\"الرحلة\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 153,
+    "class": "review",
+    "text": "\"تاريخ الرحلة\","
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 157,
+    "class": "ui",
+    "text": "Button(\"إزالة تاريخ الرحلة\", role: .destructive) { profile.tripDate = nil }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 160,
+    "class": "ui",
+    "text": "Text(\"الجنسية تُحفظ على جهازك لتحديد بعثة دولتك أثناء السفر، ويمكن تغييرها لاحقًا.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 215,
+    "class": "ui",
+    "text": "Text(\"بعثة \\(nationality.nameArabic) \\(nationality.flag)\").font(.headline)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 217,
+    "class": "ui",
+    "text": "Text(\"لم تتم مزامنة بيانات بعثة موثقة لهذه الوجهة بعد. لا يعرض ساري رقمًا غير متحقق منه.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 221,
+    "class": "ui",
+    "text": "Text(\"حدد جنسيتك أولًا لإظهار بعثتك.\").foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 134,
+    "class": "ui",
+    "text": "Text(\"\\(ayah.sura_name_ar) • الآية \\(ayah.ayah) • الصفحة \\(ayah.page)\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 153,
+    "class": "ui",
+    "text": "Text(\"\\(surah.nameEN) • \\(surah.ayahCount) آية • الجزء \\(surah.juz)\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 167,
+    "class": "ui",
+    "text": "TextField(\"ابحث في نص القرآن أو اسم السورة\", text: $query)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 177,
+    "class": "ui",
+    "text": "Text(\"\\(ayah.sura_name_ar) • آية \\(ayah.ayah)\").font(.headline)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 179,
+    "class": "ui",
+    "text": "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz)\").font(.caption).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 198,
+    "class": "ui",
+    "text": "Text(\"\\(ayah.sura_name_ar) • آية \\(ayah.ayah)\").font(.headline)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 219,
+    "class": "ui",
+    "text": "Text(\"\\(surah.nameEN) • \\(surah.ayahCount) آية\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 239,
+    "class": "ui",
+    "text": "Text(\"آية \\(ayah.ayah)\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 249,
+    "class": "ui",
+    "text": "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz) • اضغط لعرض التفسير\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 283,
+    "class": "ui",
+    "text": "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz)\").font(.caption).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 11,
+    "class": "review",
+    "text": "else if weather.isLoading { ProgressView(\"جاري تحديث توقعات الطقس…\").padding(.top, 80) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 12,
+    "class": "ui",
+    "text": "else { ContentUnavailableView(\"تعذر عرض الطقس\", systemImage: \"cloud.slash\", description: Text(weather.errorMessage ?? \"اسمح بالموقع ثم أعد المحاولة.\")) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 15,
+    "class": "ui",
+    "text": ".navigationTitle(\"الطقس ولباس اليوم\").navigationBarTitleDisplayMode(.inline).environment(\\.layoutDirection, .rightToLeft)"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 20,
+    "class": "ui",
+    "text": "HStack(alignment: .firstTextBaseline) { Text(\"\\(Int(w.temperature.rounded()))°\").font(.system(size: 64, weight: .black, design: .rounded)); Text(\"المحسوسة \\(Int(w.apparentTemperature.rounded()))°\").foregroundStyle(.secondary); Spacer(); if let h = w.high, let l = w.low { Text(\"↑\\(Int(h))°  ↓\\(Int(l))°\").fontWeight(.semibold) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 24,
+    "class": "ui",
+    "text": "private func hourly(_ w: WeatherSnapshot) -> some View { VStack(alignment: .trailing, spacing: 12) { Text(\"الساعات القادمة\").font(.title3.bold()); ScrollView(.horizontal, showsIndicators: false) { HStack(spacing: 10) { ForEach(w.hourly.prefix(12)) { h in VStack(spacing: 7) { Text(h.time.formatted(date: .omitted, time: .shortened)).font(.caption); Image(systemName: WeatherSnapshot.symbolName(for: h.weatherCode)); Text(\"\\(Int(h.temperature))°\").font(.headline); Label(\"\\(h.precipitationProbability)%\", systemImage: \"drop.fill\").font(.caption2).foregroundStyle(.secondary) }.padding(12).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18)) } } } } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 26,
+    "class": "review",
+    "text": "private func details(_ w: WeatherSnapshot) -> some View { HStack(spacing: 10) { metric(SariUIStrings.text(\"humidity\", SariLanguage.selected), \"\\(w.humidity)%\", \"humidity.fill\"); metric(SariUIStrings.text(\"wind\", SariLanguage.selected), \"\\(Int(w.windSpeed)) كم/س\", \"wind\"); metric(\"الهبات\", \"\\(Int(w.windGust)) كم/س\", \"wind.circle\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+    "line": 34,
+    "class": "ui",
+    "text": "Text(aligned ? SariUIStrings.text(\"facing_qibla\", SariLanguage.selected) : \"حرّك الهاتف حتى يتجه السهم للأعلى\").font(.title3.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+    "line": 36,
+    "class": "ui",
+    "text": "if compass.accuracy > 20 { Label(\"حرّك الهاتف بشكل رقم 8 لمعايرة البوصلة\",systemImage:\"iphone.gen3.radiowaves.left.and.right\").font(.caption).foregroundStyle(.orange) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 8,
+    "class": "ui",
+    "text": "Section { row(SariUIStrings.text(\"fajr\", SariLanguage.selected),t.fajr,\"sunrise.fill\"); row(SariUIStrings.text(\"sunrise\", SariLanguage.selected),t.sunrise,\"sun.horizon.fill\"); row(SariUIStrings.text(\"dhuhr\", SariLanguage.selected),t.dhuhr,\"sun.max.fill\"); row(SariUIStrings.text(\"asr\", SariLanguage.selected),t.asr,\"sun.min.fill\"); row(SariUIStrings.text(\"maghrib\", SariLanguage.selected),t.maghrib,\"sunset.fill\"); row(SariUIStrings.text(\"isha\", SariLanguage.selected),t.isha,\"moon.stars.fill\") } header: { Text(\"مواقيت اليوم — \\(prayer.locationName)\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 9,
+    "class": "ui",
+    "text": "Section { LabeledContent(SariUIStrings.text(\"prayer_calc_method\", SariLanguage.selected),value:prayer.effectiveCalculationMethod.title); NavigationLink { QiblaView() } label: { Label(\"بوصلة القبلة\",systemImage:\"location.north.circle.fill\") }; NavigationLink { PrayerSettingsView() } label: { Label(\"الأذان والإقامة\",systemImage:\"bell.badge.fill\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 10,
+    "class": "ui",
+    "text": "} else { HStack { ProgressView(); Text(\"جاري حساب المواقيت حسب موقعك…\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 11,
+    "class": "ui",
+    "text": "}.navigationTitle(\"الصلاة\").environment(\\.layoutDirection,.rightToLeft).onAppear { prayer.start() }"
+  }
+]

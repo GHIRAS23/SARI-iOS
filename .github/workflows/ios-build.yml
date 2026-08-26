@@ -1,0 +1,70 @@
+name: SARI iOS Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Resolve Swift packages
+        run: xcodebuild -project SARI.xcodeproj -scheme SARI -resolvePackageDependencies
+
+      - name: Build SARI for iPhone without signing
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project SARI.xcodeproj \
+            -scheme SARI \
+            -configuration Debug \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/SARIDerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tee "$RUNNER_TEMP/sari-build.log"
+
+      - name: Package unsigned app payload
+        if: success()
+        run: |
+          APP_PATH=$(find "$RUNNER_TEMP/SARIDerivedData/Build/Products/Debug-iphoneos" -maxdepth 1 -name "SARI.app" -print -quit)
+          test -n "$APP_PATH"
+          mkdir -p "$RUNNER_TEMP/Payload"
+          cp -R "$APP_PATH" "$RUNNER_TEMP/Payload/"
+          cd "$RUNNER_TEMP"
+          zip -qry SARI-unsigned.ipa Payload
+          cp sari-build.log SARI-build.log
+
+      - name: Upload unsigned IPA
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SARI-iPhone-unsigned
+          path: |
+            ${{ runner.temp }}/SARI-unsigned.ipa
+            ${{ runner.temp }}/SARI-build.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload failure log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SARI-iOS-build-failure-log
+          path: ${{ runner.temp }}/sari-build.log
+          if-no-files-found: ignore
+          retention-days: 7

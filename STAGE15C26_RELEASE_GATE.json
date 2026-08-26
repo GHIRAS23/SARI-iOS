@@ -1,0 +1,51 @@
+{
+  "stage": "15C26",
+  "static_integrity": "PASS",
+  "target_ui_raw_counts": {
+    "ios": {
+      "QuranView.swift": 0,
+      "FiqhAssistantView.swift": 0,
+      "OnboardingView.swift": 0,
+      "SettingsView.swift": 0
+    },
+    "android": {
+      "FiqhScreen.kt": 0,
+      "FiqhPackSetupScreen.kt": 1,
+      "OnboardingScreen.kt": 0,
+      "SettingsScreen.kt": 0,
+      "TravelScreen.kt": 5
+    }
+  },
+  "static_replacements": {
+    "ios": {
+      "QuranView.swift": 0,
+      "FiqhAssistantView.swift": 0,
+      "OnboardingView.swift": 2,
+      "SettingsView.swift": 2
+    },
+    "android": {
+      "FiqhScreen.kt": 12,
+      "FiqhPackSetupScreen.kt": 3,
+      "OnboardingScreen.kt": 2,
+      "SettingsScreen.kt": 6,
+      "TravelScreen.kt": 5
+    }
+  },
+  "dynamic_replacements": {
+    "ios": {
+      "quran": 4,
+      "onboarding": 0,
+      "settings": 2
+    },
+    "android": {
+      "onboarding": 0,
+      "settings": 3,
+      "travel": 0
+    }
+  },
+  "android_travel_catalog_runtime_json": true,
+  "stage15c_static_gate": "NEAR_CLOSED",
+  "rendered_device_gate": "PENDING",
+  "stage15c_closed": false,
+  "next": "One final project-wide classification: exclude domain/religious content, resolve any genuine UI leftovers, then execute rendered device/emulator QA."
+}
