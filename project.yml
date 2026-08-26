@@ -15,9 +15,9 @@ targets:
     platform: iOS
     sources:
       - SARI/Sources
-      - ../shared/data
     resources:
       - SARI/Resources
+      - SharedResources/data
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app
