@@ -1,49 +1,87 @@
 name: SARI
+
 options:
   bundleIdPrefix: sa.sari
+  minimumXcodeGenVersion: 2.45.4
+
 packages:
   SwiftLlama:
     url: https://github.com/profclaw/swift-llama
-    from: 0.1.0
+    exactVersion: 0.1.0
+
 settings:
   base:
     SWIFT_VERSION: 6.0
     IPHONEOS_DEPLOYMENT_TARGET: 17.0
+
 targets:
   SARI:
     type: application
     platform: iOS
+    info:
+      path: SARI/Info.plist
+      properties:
+        CFBundleDisplayName: ساري
+        NSLocationWhenInUseUsageDescription: SARI uses your location to calculate prayer times, Qibla, and nearby travel services.
+        SARI_API_BASE_URL: https://YOUR-SARI-BACKEND.example
+        UILaunchScreen: {}
+        UIApplicationSupportsIndirectInputEvents: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
     sources:
-      - SARI/Sources
-    resources:
-      - SARI/Resources
-      - SARI/PrivacyInfo.xcprivacy
-      - SharedResources/data
+      - path: SARI/Sources
+      - path: SARI/Resources
+        buildPhase: resources
+      - path: SharedResources/data
+        buildPhase: resources
+      - path: SARI/PrivacyInfo.xcprivacy
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app
+        PRODUCT_NAME: SARI
         MARKETING_VERSION: 0.6.0
         CURRENT_PROJECT_VERSION: 6
-        INFOPLIST_KEY_CFBundleDisplayName: ساري
-        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: SARI uses your location to calculate prayer times, Qibla, and nearby travel services.
-        INFOPLIST_KEY_SARI_API_BASE_URL: https://YOUR-SARI-BACKEND.example
+        GENERATE_INFOPLIST_FILE: "NO"
+        INFOPLIST_FILE: SARI/Info.plist
         CODE_SIGN_ENTITLEMENTS: SARI/SARI.entitlements
     dependencies:
       - package: SwiftLlama
       - sdk: libsqlite3.tbd
       - target: SARIWidgetExtension
+
   SARIWidgetExtension:
     type: app-extension
     platform: iOS
+    info:
+      path: SARIWidget/Info.plist
+      properties:
+        CFBundleDisplayName: ساري
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
     sources:
-      - SARIWidget
-    resources:
-      - SARIWidget/PrivacyInfo.xcprivacy
+      - path: SARIWidget
+        excludes:
+          - Info.plist
+          - PrivacyInfo.xcprivacy
+          - SARIWidget.entitlements
+      - path: SARIWidget/PrivacyInfo.xcprivacy
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app.widget
-        INFOPLIST_KEY_CFBundleDisplayName: ساري
-        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: SARI uses your location to calculate prayer times, Qibla, and nearby travel services.
+        PRODUCT_NAME: SARIWidgetExtension
+        MARKETING_VERSION: 0.6.0
+        CURRENT_PROJECT_VERSION: 6
+        GENERATE_INFOPLIST_FILE: "NO"
+        INFOPLIST_FILE: SARIWidget/Info.plist
+        APPLICATION_EXTENSION_API_ONLY: "YES"
+        SKIP_INSTALL: "YES"
         CODE_SIGN_ENTITLEMENTS: SARIWidget/SARIWidget.entitlements
-    entitlements:
-      path: SARIWidget/SARIWidget.entitlements

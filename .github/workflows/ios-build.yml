@@ -12,19 +12,61 @@ jobs:
   build-ios:
     runs-on: macos-15
     timeout-minutes: 45
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
+      HOMEBREW_NO_AUTO_UPDATE: "1"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Show Xcode version
-        run: xcodebuild -version
+      - name: Verify pinned Xcode
+        run: |
+          test -d "$DEVELOPER_DIR"
+          xcodebuild -version
+          swiftc --version
 
       - name: Install XcodeGen
-        run: brew install xcodegen
+        run: |
+          brew untap aws/tap >/dev/null 2>&1 || true
+          if ! command -v xcodegen >/dev/null 2>&1; then
+            brew install xcodegen
+          fi
+          xcodegen --version
 
       - name: Generate Xcode project
         run: xcodegen generate
+
+      - name: Validate generated project inputs
+        run: |
+          plutil -lint SARI/Info.plist
+          plutil -lint SARIWidget/Info.plist
+          plutil -lint SARI/PrivacyInfo.xcprivacy
+          plutil -lint SARIWidget/PrivacyInfo.xcprivacy
+          plutil -lint SARI/SARI.entitlements
+          plutil -lint SARIWidget/SARIWidget.entitlements
+
+          xcodebuild \
+            -project SARI.xcodeproj \
+            -target SARI \
+            -configuration Debug \
+            -showBuildSettings > "$RUNNER_TEMP/sari-app-build-settings.txt"
+
+          xcodebuild \
+            -project SARI.xcodeproj \
+            -target SARIWidgetExtension \
+            -configuration Debug \
+            -showBuildSettings > "$RUNNER_TEMP/sari-widget-build-settings.txt"
+
+          grep -Fq "INFOPLIST_FILE = SARI/Info.plist" "$RUNNER_TEMP/sari-app-build-settings.txt"
+          grep -Fq "GENERATE_INFOPLIST_FILE = NO" "$RUNNER_TEMP/sari-app-build-settings.txt"
+          grep -Fq "INFOPLIST_FILE = SARIWidget/Info.plist" "$RUNNER_TEMP/sari-widget-build-settings.txt"
+          grep -Fq "GENERATE_INFOPLIST_FILE = NO" "$RUNNER_TEMP/sari-widget-build-settings.txt"
+
+          grep -Fq "quran_tafseer.json" SARI.xcodeproj/project.pbxproj
+          grep -Fq "ui_strings.json" SARI.xcodeproj/project.pbxproj
+          grep -Fq "scholars.json" SARI.xcodeproj/project.pbxproj
+          grep -Fq "PrivacyInfo.xcprivacy" SARI.xcodeproj/project.pbxproj
 
       - name: Resolve Swift packages
         run: xcodebuild -project SARI.xcodeproj -scheme SARI -resolvePackageDependencies
@@ -41,11 +83,39 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build | tee "$RUNNER_TEMP/sari-build.log"
 
+      - name: Verify built bundles
+        if: success()
+        run: |
+          APP_PATH="$RUNNER_TEMP/SARIDerivedData/Build/Products/Debug-iphoneos/SARI.app"
+          WIDGET_PATH="$APP_PATH/PlugIns/SARIWidgetExtension.appex"
+
+          test -d "$APP_PATH"
+          test -f "$APP_PATH/Info.plist"
+          test -d "$WIDGET_PATH"
+          test -f "$WIDGET_PATH/Info.plist"
+
+          plutil -lint "$APP_PATH/Info.plist"
+          plutil -lint "$WIDGET_PATH/Info.plist"
+
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist")" = "sa.sari.app"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$WIDGET_PATH/Info.plist")" = "sa.sari.app.widget"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :NSExtension:NSExtensionPointIdentifier' "$WIDGET_PATH/Info.plist")" = "com.apple.widgetkit-extension"
+
+          APP_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PATH/Info.plist")"
+          WIDGET_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$WIDGET_PATH/Info.plist")"
+          test "$APP_VERSION" = "$WIDGET_VERSION"
+
+          for resource in ui_strings.json adhkar.json quran_tafseer.json scholars.json Alimula.mp3 Alimula_29s.caf; do
+            test -n "$(find "$APP_PATH" -name "$resource" -print -quit)"
+          done
+
+          test -n "$(find "$APP_PATH" -name PrivacyInfo.xcprivacy -print -quit)"
+          test -f "$WIDGET_PATH/PrivacyInfo.xcprivacy"
+
       - name: Package unsigned app payload
         if: success()
         run: |
-          APP_PATH=$(find "$RUNNER_TEMP/SARIDerivedData/Build/Products/Debug-iphoneos" -maxdepth 1 -name "SARI.app" -print -quit)
-          test -n "$APP_PATH"
+          APP_PATH="$RUNNER_TEMP/SARIDerivedData/Build/Products/Debug-iphoneos/SARI.app"
           mkdir -p "$RUNNER_TEMP/Payload"
           cp -R "$APP_PATH" "$RUNNER_TEMP/Payload/"
           cd "$RUNNER_TEMP"
@@ -60,14 +130,19 @@ jobs:
           path: |
             ${{ runner.temp }}/SARI-unsigned.ipa
             ${{ runner.temp }}/SARI-build.log
+            ${{ runner.temp }}/sari-app-build-settings.txt
+            ${{ runner.temp }}/sari-widget-build-settings.txt
           if-no-files-found: error
           retention-days: 7
 
-      - name: Upload failure log
+      - name: Upload failure diagnostics
         if: failure()
         uses: actions/upload-artifact@v6
         with:
-          name: SARI-iOS-build-failure-log
-          path: ${{ runner.temp }}/sari-build.log
+          name: SARI-iOS-build-failure-diagnostics
+          path: |
+            ${{ runner.temp }}/sari-build.log
+            ${{ runner.temp }}/sari-app-build-settings.txt
+            ${{ runner.temp }}/sari-widget-build-settings.txt
           if-no-files-found: ignore
           retention-days: 7

@@ -50,7 +50,7 @@ struct PrayerSettingsView: View {
         }
     }
     private func bindingBool(_ key:String,defaultValue:Bool)->Binding<Bool>{ Binding(get:{ let d=UserDefaults(suiteName:"group.sa.sari.app")!; return d.object(forKey:key)==nil ? defaultValue:d.bool(forKey:key)},set:{UserDefaults(suiteName:"group.sa.sari.app")?.set($0,forKey:key)}) }
-    private func play(_ f:String){ guard let u=Bundle.main.url(forResource:f,withExtension:"mp3",subdirectory:"audio") else{return}; player=try? AVAudioPlayer(contentsOf:u); player?.play() }
+    private func play(_ f:String){ guard let u=Bundle.main.sariResourceURL(name:f,extension:"mp3",subdirectory:"audio") else{return}; player=try? AVAudioPlayer(contentsOf:u); player?.play() }
 }
 private struct PrayerToggleRow: View {
     @EnvironmentObject var prayer:PrayerStore; let id:String; let name:String

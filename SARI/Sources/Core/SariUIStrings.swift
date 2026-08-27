@@ -4,9 +4,9 @@ enum SariUIStrings {
 
     private static let cache: [String: [String: String]] = {
 
-        guard let url = Bundle.main.url(
-            forResource: "ui_strings",
-            withExtension: "json",
+        guard let url = Bundle.main.sariResourceURL(
+            name: "ui_strings",
+            extension: "json",
             subdirectory: "data"
         ),
         let data = try? Data(contentsOf: url),

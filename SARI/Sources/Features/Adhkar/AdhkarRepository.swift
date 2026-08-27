@@ -5,7 +5,7 @@ struct AdhkarSource:Codable { let status:String;let collection:String?;let refer
 struct AdhkarDataItem:Codable { let id:String;let arabic:String;let transliteration:String;let target:Int;let meanings:[String:String];let source:AdhkarSource? }
 enum AdhkarRepository {
  static func loadBundled()->AdhkarDataFile? {
-  guard let u=Bundle.main.url(forResource:"adhkar",withExtension:"json",subdirectory:"data"),
+  guard let u=Bundle.main.sariResourceURL(name:"adhkar",extension:"json",subdirectory:"data"),
         let d=try? Data(contentsOf:u) else{return nil}
   return try? JSONDecoder().decode(AdhkarDataFile.self,from:d)
  }

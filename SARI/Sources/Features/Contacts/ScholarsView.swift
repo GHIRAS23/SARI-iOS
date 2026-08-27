@@ -4,7 +4,7 @@ struct Scholar: Codable, Identifiable { var id: String { phone }; let name: Stri
 
 struct ScholarsView: View {
     private let scholars: [Scholar] = {
-        guard let url = Bundle.main.url(forResource: "scholars", withExtension: "json"),
+        guard let url = Bundle.main.sariResourceURL(name: "scholars", extension: "json", subdirectory: "data"),
               let data = try? Data(contentsOf: url),
               let list = try? JSONDecoder().decode([Scholar].self, from: data) else { return [] }
         return list

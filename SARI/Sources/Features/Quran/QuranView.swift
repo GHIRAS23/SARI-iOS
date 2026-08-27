@@ -38,7 +38,7 @@ final class QuranStore: ObservableObject {
     }
 
     func load() {
-        guard let url = Bundle.main.url(forResource: "quran_tafseer", withExtension: "json", subdirectory: "data"),
+        guard let url = Bundle.main.sariResourceURL(name: "quran_tafseer", extension: "json", subdirectory: "data"),
               let data = try? Data(contentsOf: url),
               let decoded = try? JSONDecoder().decode([Ayah].self, from: data) else { return }
         ayat = decoded
