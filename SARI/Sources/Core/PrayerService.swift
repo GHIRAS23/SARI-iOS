@@ -867,14 +867,16 @@ final class PrayerStore:
     }
 
     func requestNotifications() {
-        UNUserNotificationCenter.current()
-            .requestAuthorization(
-                options: [
-                    .alert,
-                    .sound,
-                    .badge
-                ]
-            ) { _, _ in }
+        Task { @MainActor in
+            _ = try? await UNUserNotificationCenter.current()
+                .requestAuthorization(
+                    options: [
+                        .alert,
+                        .sound,
+                        .badge
+                    ]
+                )
+        }
     }
 
     func schedulePrayerNotifications() {

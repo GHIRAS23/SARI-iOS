@@ -2,7 +2,7 @@ import SwiftUI
 import CoreLocation
 
 @MainActor
-final class CompassStore: NSObject, ObservableObject, @preconcurrency CLLocationManagerDelegate {
+final class CompassStore: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     @Published var heading: Double = 0
     @Published var accuracy: Double = -1
@@ -24,15 +24,19 @@ final class CompassStore: NSObject, ObservableObject, @preconcurrency CLLocation
         manager.stopUpdatingHeading()
     }
 
-    func locationManager(
+    nonisolated func locationManager(
         _ manager: CLLocationManager,
         didUpdateHeading newHeading: CLHeading
     ) {
-        heading = newHeading.trueHeading >= 0
+        let resolvedHeading = newHeading.trueHeading >= 0
             ? newHeading.trueHeading
             : newHeading.magneticHeading
+        let resolvedAccuracy = newHeading.headingAccuracy
 
-        accuracy = newHeading.headingAccuracy
+        Task { @MainActor [weak self] in
+            self?.heading = resolvedHeading
+            self?.accuracy = resolvedAccuracy
+        }
     }
 }
 
