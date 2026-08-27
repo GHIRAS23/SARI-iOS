@@ -33,3 +33,10 @@ Static audit for Swift 6 / Xcode 16.4 / GitHub Actions build readiness.
 
 ## Runtime configuration still required
 SARI_API_BASE_URL is intentionally a placeholder in project.yml. Online fiqh/backend functionality remains unconfigured until a real HTTPS backend URL is supplied.
+
+## Build #6 full-log follow-up
+- Reviewed the complete 823-line Xcode build log from commit `97fcde5`.
+- The only explicit Swift compiler diagnostics were two references to an out-of-scope `language` identifier in `QuranView.swift` (lines 290 and 319 in that build).
+- Replaced both with `SariLanguage.selected`.
+- Re-ran Swift parser validation across every `.swift` file under `SARI` and `SARIWidget`: no syntax errors.
+- The log contained no `warning:` diagnostics from Swift/Xcode. `exit code 65` is the build result, not an independent source-code error.
