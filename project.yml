@@ -26,6 +26,9 @@ targets:
         SARI_API_BASE_URL: https://YOUR-SARI-BACKEND.example
         UILaunchScreen: {}
         UIApplicationSupportsIndirectInputEvents: true
+        UIAppFonts:
+          - KFGQPCAnRegular.ttf
+          - KFGQPCHafsUthmanic.ttf
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
           - UIInterfaceOrientationLandscapeLeft
@@ -47,8 +50,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app
         PRODUCT_NAME: SARI
-        MARKETING_VERSION: 0.6.0
-        CURRENT_PROJECT_VERSION: 6
+        MARKETING_VERSION: 0.9.0
+        CURRENT_PROJECT_VERSION: 9
         GENERATE_INFOPLIST_FILE: "NO"
         INFOPLIST_FILE: SARI/Info.plist
         CODE_SIGN_ENTITLEMENTS: SARI/SARI.entitlements
@@ -78,8 +81,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app.widget
         PRODUCT_NAME: SARIWidgetExtension
-        MARKETING_VERSION: 0.6.0
-        CURRENT_PROJECT_VERSION: 6
+        MARKETING_VERSION: 0.9.0
+        CURRENT_PROJECT_VERSION: 9
         GENERATE_INFOPLIST_FILE: "NO"
         INFOPLIST_FILE: SARIWidget/Info.plist
         APPLICATION_EXTENSION_API_ONLY: "YES"

@@ -1,14 +1,33 @@
 {
-  "Alnufis": {
-    "ar": "النفيس",
-    "display": "Al-Nufais"
-  },
-  "Alimula": {
-    "ar": "المعيقلي",
-    "display": "Al-Muaiqly"
-  },
-  "Alqitami": {
-    "ar": "القطامي",
-    "display": "Al-Qatami"
-  }
+  "schema": 2,
+  "sounds": [
+    {
+      "id": "AdhanDughariri",
+      "name_ar": "الدغريري",
+      "name_en": "Al-Dughariri",
+      "preview": "AdhanDughariri.m4a",
+      "notification": "AdhanDughariri.caf"
+    },
+    {
+      "id": "AdhanQatami",
+      "name_ar": "القطامي",
+      "name_en": "Al-Qatami",
+      "preview": "AdhanQatami.m4a",
+      "notification": "AdhanQatami.caf"
+    },
+    {
+      "id": "AdhanBaafif",
+      "name_ar": "عبدالله باعفيف",
+      "name_en": "Abdullah Baafif",
+      "preview": "AdhanBaafif.m4a",
+      "notification": "AdhanBaafif.caf"
+    },
+    {
+      "id": "AdhanAliMulla",
+      "name_ar": "علي ملا",
+      "name_en": "Ali Mulla",
+      "preview": "AdhanAliMulla.m4a",
+      "notification": "AdhanAliMulla.caf"
+    }
+  ]
 }

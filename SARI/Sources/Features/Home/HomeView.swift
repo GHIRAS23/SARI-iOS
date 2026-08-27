@@ -42,7 +42,7 @@ struct HomeView: View {
     private var header: some View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .trailing, spacing: 4) {
-                Text(SariUIStrings.text("brand_sari",SariLanguage.selected))
+                Text(SariUIStrings.text("brand_sari",language))
                     .font(.system(size: 34, weight: .black, design: .rounded))
                 HStack(spacing: 5) {
                     Image(systemName: "location.fill")
@@ -82,41 +82,67 @@ struct HomeView: View {
 
     @ViewBuilder private var prayerHero: some View {
         if let times = prayer.times {
-            let next = times.next()
-            TimelineView(.periodic(from: .now, by: 60)) { context in
-                VStack(alignment: .trailing, spacing: 13) {
+            TimelineView(.periodic(from: .now, by: 30)) { context in
+                let state = prayerCountdownState(times: times, now: context.date)
+                VStack(alignment: language.isArabic ? .trailing : .leading, spacing: 13) {
                     HStack {
-                        Label(SariStrings.t("nextPrayer",language), systemImage: "clock.fill").font(.headline)
+                        Label(state.isIqama ? iqamaLabel : SariStrings.t("nextPrayer",language), systemImage: state.isIqama ? "hourglass.circle.fill" : "clock.fill")
+                            .font(.headline)
                         Spacer()
-                        Text(timeRemaining(until: next.1, now: context.date))
+                        Text(timeRemaining(until: state.date, now: context.date))
                             .font(.caption.weight(.bold))
                             .padding(.horizontal, 10).padding(.vertical, 6)
                             .background(.white.opacity(0.16), in: Capsule())
                     }
-                    Text(next.0).font(.system(size: 38, weight: .black, design: .rounded))
-                    Text(next.1.formatted(date: .omitted, time: .shortened))
+                    Text(SariContentText.prayerName(state.id, language: language))
+                        .font(.system(size: 38, weight: .black, design: .rounded))
+                    Text(state.date.formatted(date: .omitted, time: .shortened))
                         .font(.title3.weight(.semibold)).opacity(0.9)
                     HStack(spacing: 14) {
-                        Label(SariUIStrings.format("qibla_from_location",SariLanguage.selected,["value":"\(Int(prayer.qiblaBearing))"]), systemImage: "location.north.circle.fill")
+                        Label(SariUIStrings.format("qibla_from_location",language,["value":"\(Int(prayer.qiblaBearing))"]), systemImage: "location.north.circle.fill")
                         Spacer()
-                        Text(SariUIStrings.text("iqama_customizable", SariLanguage.selected)).font(.caption)
+                        Text(state.isIqama ? iqamaEnabledLabel : SariUIStrings.text("iqama_customizable", language)).font(.caption)
                     }
                     .font(.subheadline.weight(.medium))
                 }
                 .foregroundStyle(.white)
                 .padding(22)
-                .background(
-                    SariDesign.hero,
-                    in: RoundedRectangle(cornerRadius: 28, style: .continuous)
-                )
+                .background(SariDesign.hero, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius:28).stroke(SariDesign.gold.opacity(0.34),lineWidth:1))
                 .shadow(color:SariDesign.deep.opacity(0.22),radius:22,y:12)
             }
         } else {
-            HStack(spacing: 12) { ProgressView(); Text(SariUIStrings.text("locating_prayer", SariLanguage.selected)) }
-                .frame(maxWidth: .infinity, alignment: .trailing).padding(20)
+            HStack(spacing: 12) { ProgressView(); Text(SariUIStrings.text("locating_prayer", language)) }
+                .frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading).padding(20)
                 .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 24))
         }
+    }
+
+    private var iqamaLabel: String {
+        SariContentText.pick(language,[.ar:"باقي على الإقامة",.en:"Time to Iqama",.tr:"Kamete kalan",.ms:"Masa ke Iqamah",.id:"Menuju Iqamah",.ja:"イカーマまで",.zh:"距离成拜",.ru:"До икамата",.fr:"Avant l’Iqama"])
+    }
+
+    private var iqamaEnabledLabel: String {
+        SariContentText.pick(language,[.ar:"عداد الإقامة مفعل",.en:"Iqama countdown enabled",.tr:"Kamet sayacı açık",.ms:"Kiraan Iqamah aktif",.id:"Hitung mundur Iqamah aktif",.ja:"イカーマのカウントダウン有効",.zh:"成拜倒计时已开启",.ru:"Отсчёт до икамата включён",.fr:"Compte à rebours Iqama activé"])
+    }
+
+    private func prayerCountdownState(times: PrayerTimes, now: Date) -> (id: String, date: Date, isIqama: Bool) {
+        let suite = UserDefaults(suiteName: "group.sa.sari.app")
+        let iqamaEnabled = suite?.object(forKey: "iqamaEnabled") == nil ? true : (suite?.bool(forKey: "iqamaEnabled") ?? true)
+        let rows: [(String, Date)] = [("fajr",times.fajr),("dhuhr",times.dhuhr),("asr",times.asr),("maghrib",times.maghrib),("isha",times.isha)]
+        if iqamaEnabled {
+            for (id, prayerDate) in rows {
+                let custom = suite?.integer(forKey: "iqama_\(id)") ?? 0
+                let fallback = suite?.integer(forKey: "iqamaMinutes") ?? 15
+                let minutes = custom > 0 ? custom : (fallback > 0 ? fallback : 15)
+                if let iqamaDate = Calendar.current.date(byAdding: .minute, value: minutes, to: prayerDate), now >= prayerDate, now < iqamaDate {
+                    return (id, iqamaDate, true)
+                }
+            }
+        }
+        let upcoming = rows.first(where: { $0.1 > now })
+        if let upcoming { return (upcoming.0, upcoming.1, false) }
+        return ("fajr", Calendar.current.date(byAdding: .day, value: 1, to: times.fajr) ?? times.fajr, false)
     }
 
     private var weatherCard: some View {
@@ -125,23 +151,23 @@ struct HomeView: View {
                 if let w = weather.snapshot {
                     VStack(alignment: .trailing, spacing: 16) {
                         HStack(alignment: .top) {
-                            VStack(alignment: .trailing, spacing: 4) { Text(SariStrings.t("weather",language)).font(.headline); Text(w.conditionArabic).foregroundStyle(.secondary) }
+                            VStack(alignment: .trailing, spacing: 4) { Text(SariStrings.t("weather",language)).font(.headline); Text(w.condition(language)).foregroundStyle(.secondary) }
                             Spacer(); Image(systemName: w.symbolName).font(.system(size: 34)).symbolRenderingMode(.multicolor)
                         }
                         HStack(alignment: .firstTextBaseline) {
                             Text("\(Int(w.temperature.rounded()))°").font(.system(size: 44, weight: .black, design: .rounded))
-                            Text(SariUIStrings.format("feels_like", SariLanguage.selected, ["value":"\(Int(w.apparentTemperature.rounded()))"])).font(.subheadline).foregroundStyle(.secondary)
+                            Text(SariUIStrings.format("feels_like", language, ["value":"\(Int(w.apparentTemperature.rounded()))"])).font(.subheadline).foregroundStyle(.secondary)
                             Spacer(); if let hi = w.high, let lo = w.low { Text("↑\(Int(hi.rounded()))°  ↓\(Int(lo.rounded()))°").font(.subheadline.weight(.semibold)) }
                         }
                         Divider().opacity(0.5)
                         HStack(alignment: .top, spacing: 10) {
                             Image(systemName: "tshirt.fill").font(.title3)
-                            VStack(alignment: .trailing, spacing: 4) { Text(SariStrings.t("clothes",language)).font(.subheadline.weight(.bold)); Text(w.clothingAdviceArabic).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true) }
+                            VStack(alignment: .trailing, spacing: 4) { Text(SariStrings.t("clothes",language)).font(.subheadline.weight(.bold)); Text(w.clothingAdvice(language)).font(.subheadline).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true) }
                         }
-                        HStack { Label(SariUIStrings.format("humidity_value", SariLanguage.selected, ["value":"\(w.humidity)"]), systemImage: "humidity.fill"); Spacer(); Label(SariUIStrings.format("wind_speed", SariLanguage.selected, ["value":"\(Int(w.windSpeed.rounded()))"]), systemImage: "wind") }.font(.caption.weight(.medium)).foregroundStyle(.secondary)
-                        HStack { Text(SariUIStrings.text("view_details", SariLanguage.selected)).font(.caption.bold()); Image(systemName: "chevron.left").font(.caption.bold()) }.foregroundStyle(Color.accentColor)
+                        HStack { Label(SariUIStrings.format("humidity_value", language, ["value":"\(w.humidity)"]), systemImage: "humidity.fill"); Spacer(); Label(SariUIStrings.format("wind_speed", language, ["value":"\(Int(w.windSpeed.rounded()))"]), systemImage: "wind") }.font(.caption.weight(.medium)).foregroundStyle(.secondary)
+                        HStack { Text(SariUIStrings.text("view_details", language)).font(.caption.bold()); Image(systemName: language.isArabic ? "chevron.left" : "chevron.right").font(.caption.bold()) }.foregroundStyle(Color.accentColor)
                     }.padding(20).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-                } else if weather.isLoading { HStack { ProgressView(); Text(SariUIStrings.text("updating_weather", SariLanguage.selected)) }.frame(maxWidth: .infinity).padding(20) }
+                } else if weather.isLoading { HStack { ProgressView(); Text(SariUIStrings.text("updating_weather", language)) }.frame(maxWidth: .infinity).padding(20) }
                 else if let message = weather.errorMessage { Label(message, systemImage: "cloud.slash").frame(maxWidth: .infinity, alignment: .trailing).padding(20) }
             }
         }.buttonStyle(.plain)
@@ -149,11 +175,11 @@ struct HomeView: View {
 
     private var quickActions: some View {
         VStack(alignment: .trailing, spacing: 12) {
-            Text(SariUIStrings.text("everything_needed", SariLanguage.selected)).font(.title3.weight(.bold))
+            Text(SariUIStrings.text("everything_needed", language)).font(.title3.weight(.bold))
             LazyVGrid(columns: columns, spacing: 12) {
                 NavigationLink(destination: FiqhAssistantView()) { ActionCard(title: SariStrings.t("ask",language), subtitle: SariStrings.t("fiqhSubtitle",language), icon: "sparkles") }
                 NavigationLink(destination: QuranView()) { ActionCard(title: SariStrings.t("quran",language), subtitle: SariStrings.t("quranSubtitle",language), icon: "book.closed.fill") }
-                NavigationLink(destination: QiblaView()) { ActionCard(title: SariStrings.t("qibla",language), subtitle: SariUIStrings.format("qibla_from_location",SariLanguage.selected,["value":"\(Int(prayer.qiblaBearing))"]), icon: "location.north.fill") }
+                NavigationLink(destination: QiblaView()) { ActionCard(title: SariStrings.t("qibla",language), subtitle: SariUIStrings.format("qibla_from_location",language,["value":"\(Int(prayer.qiblaBearing))"]), icon: "location.north.fill") }
                 NavigationLink(destination: AdhkarView()) { ActionCard(title: SariStrings.t("adhkar",language), subtitle: SariStrings.t("adhkarSubtitle",language), icon: "hands.sparkles.fill") }
             }
         }
@@ -161,10 +187,10 @@ struct HomeView: View {
 
     private var travelCard: some View {
         VStack(alignment: .trailing, spacing: 11) {
-            HStack { Text(SariUIStrings.text("travel_enabled", SariLanguage.selected)).font(.headline); Spacer(); Image(systemName: "airplane.circle.fill").font(.title2) }
-            Text(SariUIStrings.text("travel_home_desc", SariLanguage.selected))
+            HStack { Text(SariUIStrings.text("travel_enabled", language)).font(.headline); Spacer(); Image(systemName: "airplane.circle.fill").font(.title2) }
+            Text(SariUIStrings.text("travel_home_desc", language))
                 .font(.subheadline).foregroundStyle(.secondary)
-            Button(SariUIStrings.text("explore_travel", SariLanguage.selected)) { }.buttonStyle(.borderedProminent)
+            Button(SariUIStrings.text("explore_travel", language)) { }.buttonStyle(.borderedProminent)
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(20)
@@ -174,13 +200,13 @@ struct HomeView: View {
     @ViewBuilder private var prayerStrip: some View {
         if let t = prayer.times {
             VStack(alignment: .trailing, spacing: 12) {
-                HStack { NavigationLink(SariUIStrings.text("see_all", SariLanguage.selected)) { PrayerTimesView() }.font(.subheadline.bold()); Spacer(); Text(SariUIStrings.text("today_prayers", SariLanguage.selected)).font(.title3.weight(.bold)) }
+                HStack { NavigationLink(SariUIStrings.text("see_all", language)) { PrayerTimesView() }.font(.subheadline.bold()); Spacer(); Text(SariUIStrings.text("today_prayers", language)).font(.title3.weight(.bold)) }
                 HStack(spacing: 0) {
-                    prayerTime(SariUIStrings.text("fajr", SariLanguage.selected), t.fajr)
-                    prayerTime(SariUIStrings.text("dhuhr", SariLanguage.selected), t.dhuhr)
-                    prayerTime(SariUIStrings.text("asr", SariLanguage.selected), t.asr)
-                    prayerTime(SariUIStrings.text("maghrib", SariLanguage.selected), t.maghrib)
-                    prayerTime(SariUIStrings.text("isha", SariLanguage.selected), t.isha)
+                    prayerTime(SariContentText.prayerName("fajr", language: language), t.fajr)
+                    prayerTime(SariContentText.prayerName("dhuhr", language: language), t.dhuhr)
+                    prayerTime(SariContentText.prayerName("asr", language: language), t.asr)
+                    prayerTime(SariContentText.prayerName("maghrib", language: language), t.maghrib)
+                    prayerTime(SariContentText.prayerName("isha", language: language), t.isha)
                 }
                 .padding(14)
                 .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
@@ -194,14 +220,14 @@ struct HomeView: View {
     }
 
     private var safetyFooter: some View {
-        Text(SariUIStrings.text("sari_fatwa_note", SariLanguage.selected))
+        Text(SariUIStrings.text("sari_fatwa_note", language))
             .font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center).padding(.top, 4)
     }
 
     private func timeRemaining(until date: Date, now: Date) -> String {
         let mins = max(0, Int(date.timeIntervalSince(now) / 60))
-        if mins >= 60 { return SariUIStrings.format("hours_minutes_remaining", SariLanguage.selected, ["hours":"\(mins / 60)","minutes":"\(mins % 60)"]) }
-        return SariUIStrings.format("minutes_remaining", SariLanguage.selected, ["value":"\(mins)"])
+        if mins >= 60 { return SariUIStrings.format("hours_minutes_remaining", language, ["hours":"\(mins / 60)","minutes":"\(mins % 60)"]) }
+        return SariUIStrings.format("minutes_remaining", language, ["value":"\(mins)"])
     }
 }
 

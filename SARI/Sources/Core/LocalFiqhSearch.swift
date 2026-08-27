@@ -8,8 +8,18 @@ struct LocalFiqhSource: Identifiable {
     let text: String
     let pdfFile: String
 
-    var label: String {
-        "السلسبيل — الجزء \(part)، الصفحة \(page)"
+    func label(_ language: SariLanguage) -> String {
+        SariContentText.pick(language, [
+            .ar: "السلسبيل — الجزء \(part)، الصفحة \(page)",
+            .en: "Al-Salsabil — part \(part), page \(page)",
+            .tr: "Es-Selsebil — bölüm \(part), sayfa \(page)",
+            .ms: "Al-Salsabil — bahagian \(part), halaman \(page)",
+            .id: "Al-Salsabil — bagian \(part), halaman \(page)",
+            .ja: "アル・サルサビール — 第\(part)部・\(page)ページ",
+            .zh: "《السلسبيل》— 第\(part)册，第\(page)页",
+            .ru: "«Ас-Сальсабиль» — часть \(part), стр. \(page)",
+            .fr: "Al-Salsabil — partie \(part), page \(page)"
+        ])
     }
 }
 
@@ -30,14 +40,14 @@ final class LocalFiqhSearch {
         self.dbURL = dbURL
     }
 
-    func search(_ question: String, limit: Int = 4) throws -> [LocalFiqhSource] {
+    func search(_ question: String, language: SariLanguage = .ar, limit: Int = 4) throws -> [LocalFiqhSource] {
         var db: OpaquePointer?
         guard sqlite3_open_v2(dbURL.path, &db, SQLITE_OPEN_READONLY, nil) == SQLITE_OK, let db else {
             throw LocalFiqhSearchError.openFailed
         }
         defer { sqlite3_close(db) }
 
-        let terms = Self.terms(question)
+        let terms = Self.terms(question, language: language)
         guard !terms.isEmpty else { return [] }
 
         let score = terms.map { _ in
@@ -78,21 +88,57 @@ final class LocalFiqhSearch {
         return result
     }
 
-    private static func terms(_ question: String) -> [String] {
-        let normalized = question.lowercased()
+    private static func terms(_ question: String, language: SariLanguage) -> [String] {
+        let normalized = normalizeArabic(question.lowercased())
+        let stop: Set<String> = [
+            "من", "في", "على", "الى", "هل", "ما", "هو", "هي", "عن", "ثم", "بعد", "قبل",
+            "the", "a", "an", "is", "are", "to", "of", "in", "and", "or", "for", "with"
+        ]
+        var output = normalized
+            .split { !$0.isLetter && !$0.isNumber }
+            .map(String.init)
+            .filter { $0.count >= 3 && !stop.contains($0) }
+
+        // For non-Arabic UI languages, add conservative Arabic fiqh keywords for common topics.
+        // This does not translate rulings; it only helps retrieve relevant Arabic source passages.
+        if language != .ar {
+            let lower = question.lowercased()
+            for (aliases, arabic) in multilingualAliases where aliases.contains(where: { lower.contains($0) }) {
+                output.append(contentsOf: arabic.map(normalizeArabic))
+            }
+        }
+
+        var seen = Set<String>()
+        return output.filter { seen.insert($0).inserted }.prefix(10).map { $0 }
+    }
+
+    private static func normalizeArabic(_ value: String) -> String {
+        value
             .replacingOccurrences(of: "أ", with: "ا")
             .replacingOccurrences(of: "إ", with: "ا")
             .replacingOccurrences(of: "آ", with: "ا")
             .replacingOccurrences(of: "ة", with: "ه")
-        let stop: Set<String> = [
-            "من", "في", "على", "الى", "إلى", "هل", "ما", "هو", "هي", "عن", "ثم", "بعد", "قبل",
-            "the", "a", "an", "is", "are", "to", "of", "in", "and", "or"
-        ]
-        return normalized
-            .split { !$0.isLetter && !$0.isNumber }
-            .map(String.init)
-            .filter { $0.count >= 3 && !stop.contains($0) }
-            .prefix(8)
-            .map { $0 }
     }
+
+    private static let multilingualAliases: [([String], [String])] = [
+        (["prayer", "salah", "salat", "namaz", "namazı", "solat", "礼拝", "礼拜", "молит", "prière"], ["صلاة"]),
+        (["fajr", "subuh", "fecr", "фаджр"], ["فجر", "صلاة"]),
+        (["fast", "fasting", "ramadan", "oruç", "puasa", "断食", "斋戒", "пост", "jeûne"], ["صيام", "صوم"]),
+        (["wudu", "wudhu", "ablution", "abdest", "وضوء", "小净", "омовен", "ablutions"], ["وضوء", "طهارة"]),
+        (["tayammum", "teyemmüm", "tayamum", "土净", "таяммум"], ["تيمم"]),
+        (["travel", "traveler", "journey", "sefer", "seyahat", "musafir", "perjalanan", "旅行", "旅行中", "путеше", "voyage"], ["سفر"]),
+        (["qasr", "shorten", "kısalt", "jamak", "jama", "combine", "جمع", "قصر", "сокращ", "regrouper"], ["قصر", "جمع", "سفر"]),
+        (["zakat", "zekât", "zakat", "天课", "закят"], ["زكاة"]),
+        (["hajj", "hac", "haji", "朝觐", "хадж"], ["حج"]),
+        (["umrah", "umre", "umrah", "副朝", "умра"], ["عمرة"]),
+        (["marriage", "nikah", "nikâh", "nikah", "婚姻", "брак", "mariage"], ["نكاح", "زواج"]),
+        (["divorce", "talaq", "talak", "boşan", "离婚", "развод", "divorce"], ["طلاق"]),
+        (["interest", "riba", "faiz", "usury", "利息", "риба", "intérêt"], ["ربا"]),
+        (["halal", "haram", "helal", "haram", "清真", "حلال", "халяль"], ["حلال", "حرام"]),
+        (["slaughter", "zabiha", "zabihah", "kesim", "sembelih", "屠宰", "забой", "abattage"], ["ذبح"]),
+        (["menstru", "haid", "hayız", "月经", "менстру", "menstru"], ["حيض"]),
+        (["friday", "jumu", "cuma", "jumaat", "jumat", "星期五", "пятнич", "vendredi"], ["جمعة", "صلاة"]),
+        (["mosque", "masjid", "cami", "masjid", "清真寺", "мечет", "mosquée"], ["مسجد"])
+    ]
+
 }

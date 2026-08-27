@@ -66,7 +66,26 @@ jobs:
           grep -Fq "quran_tafseer.json" SARI.xcodeproj/project.pbxproj
           grep -Fq "ui_strings.json" SARI.xcodeproj/project.pbxproj
           grep -Fq "scholars.json" SARI.xcodeproj/project.pbxproj
+          grep -Fq "countries.json" SARI.xcodeproj/project.pbxproj
+          grep -Fq "fiqh_pages.sqlite3" SARI.xcodeproj/project.pbxproj
+          grep -Fq "KFGQPCHafsUthmanic.ttf" SARI.xcodeproj/project.pbxproj
+          grep -Fq "AdhanAliMulla.caf" SARI.xcodeproj/project.pbxproj
           grep -Fq "PrivacyInfo.xcprivacy" SARI.xcodeproj/project.pbxproj
+
+          python3 - <<'PYDATA'
+          import json
+          q = json.load(open("SARI/Resources/data/quran_tafseer.json", encoding="utf-8"))
+          c = json.load(open("SARI/Resources/data/countries.json", encoding="utf-8"))
+          a = json.load(open("SARI/Resources/data/adhkar.json", encoding="utf-8"))
+          s = json.load(open("SARI/Resources/data/scholars.json", encoding="utf-8"))
+          assert len(q) == 6236 and len({x["id"] for x in q}) == 6236
+          assert {x["page"] for x in q} == set(range(1, 605))
+          assert all(1 <= x["line_start"] <= 15 and 1 <= x["line_end"] <= 15 for x in q)
+          assert len(c) == 195 and len({x["code"] for x in c}) == 195
+          assert "IL" not in {x["code"] for x in c} and "PS" in {x["code"] for x in c}
+          assert sum(len(x["items"]) for x in a["categories"]) >= 50
+          assert len(s["items"]) == 17
+          PYDATA
 
       - name: Resolve Swift packages
         run: xcodebuild -project SARI.xcodeproj -scheme SARI -resolvePackageDependencies
@@ -105,7 +124,7 @@ jobs:
           WIDGET_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$WIDGET_PATH/Info.plist")"
           test "$APP_VERSION" = "$WIDGET_VERSION"
 
-          for resource in ui_strings.json adhkar.json quran_tafseer.json scholars.json Alimula.mp3 Alimula_29s.caf; do
+          for resource in ui_strings.json adhkar.json quran_tafseer.json scholars.json countries.json fiqh_pages.sqlite3 KFGQPCHafsUthmanic.ttf AdhanAliMulla.caf AdhanQatami.caf AdhanBaafif.caf AdhanDughariri.caf; do
             test -n "$(find "$APP_PATH" -name "$resource" -print -quit)"
           done
 

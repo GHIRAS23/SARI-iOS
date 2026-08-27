@@ -38,22 +38,14 @@ struct WeatherSnapshot: Equatable {
     let hourly: [WeatherHour]
     let daily: [WeatherDay]
 
-    var conditionArabic: String { Self.conditionArabic(for: weatherCode) }
+    var conditionArabic: String { condition(.ar) }
+
+    func condition(_ language: SariLanguage = .selected) -> String {
+        SariContentText.weatherCondition(weatherCode, language: language)
+    }
 
     static func conditionArabic(for code: Int) -> String {
-        switch code {
-        case 0: return "صحو"
-        case 1, 2: return "غائم جزئيًا"
-        case 3: return "غائم"
-        case 45, 48: return "ضباب"
-        case 51, 53, 55, 56, 57: return "رذاذ"
-        case 61, 63, 65, 66, 67: return "أمطار"
-        case 71, 73, 75, 77: return "ثلوج"
-        case 80, 81, 82: return "زخات مطر"
-        case 85, 86: return "زخات ثلج"
-        case 95, 96, 99: return "عواصف رعدية"
-        default: return "طقس متغير"
-        }
+        SariContentText.weatherCondition(code, language: .ar)
     }
 
     static func symbolName(for code: Int) -> String {
@@ -71,34 +63,29 @@ struct WeatherSnapshot: Equatable {
 
     var symbolName: String { Self.symbolName(for: weatherCode) }
 
-    var clothingAdviceArabic: String {
-        var pieces: [String] = []
-        switch apparentTemperature {
-        case 34...:
-            pieces += ["ملابس خفيفة وفضفاضة", "يفضل الألوان الفاتحة"]
-        case 27..<34: pieces += ["ملابس صيفية خفيفة"]
-        case 20..<27: pieces += ["ملابس خفيفة مع طبقة بسيطة للمساء"]
-        case 13..<20: pieces += ["جاكيت خفيف أو كنزة"]
-        case 6..<13: pieces += ["جاكيت متوسط وملابس دافئة"]
-        default: pieces += ["معطف دافئ وطبقات متعددة"]
-        }
+    var clothingAdviceArabic: String { clothingAdvice(.ar) }
+
+    func clothingAdvice(_ language: SariLanguage = .selected) -> String {
         let rainRisk = daily.first?.precipitationProbability ?? 0
-        if precipitation >= 0.2 || rainRisk >= 45 || [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].contains(weatherCode) {
-            pieces += ["خذ مظلة أو معطفًا مقاومًا للمطر"]
-        }
-        if max(windSpeed, windGust) >= 35 { pieces += ["الرياح قوية؛ اختر طبقة خارجية ثابتة"] }
-        if let today = daily.first, today.high - today.low >= 10 { pieces += ["الحرارة تتغير بوضوح اليوم؛ خذ طبقة إضافية للمساء"] }
-        if let uv = daily.first?.uvIndexMax, uv >= 7 { pieces += ["الشمس قوية؛ قبعة وواقي شمس مناسبان للخروج الطويل"] }
-        return pieces.joined(separator: "، ") + "."
+        let rain = precipitation >= 0.2 || rainRisk >= 45 || [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].contains(weatherCode)
+        let windy = max(windSpeed, windGust) >= 35
+        let swing = daily.first.map { $0.high - $0.low >= 10 } ?? false
+        let uvHigh = (daily.first?.uvIndexMax ?? 0) >= 7
+        return SariContentText.clothingAdvice(apparent: apparentTemperature, rain: rain, windy: windy, swing: swing, uvHigh: uvHigh, language: language)
     }
 
-    var smartAlertArabic: String? {
-        if let d = daily.first, d.precipitationProbability >= 70 { return "احتمال المطر مرتفع اليوم؛ خطط للخروج مع مظلة." }
-        if windGust >= 50 { return "هبات الرياح قوية؛ انتبه في الأماكن المفتوحة." }
-        if let uv = daily.first?.uvIndexMax, uv >= 8 { return "مؤشر الأشعة فوق البنفسجية مرتفع؛ قلل التعرض المباشر وقت الظهيرة." }
-        if let d = daily.first, d.high >= 40 { return "حرارة شديدة متوقعة؛ تجنب المجهود الطويل وقت الذروة." }
-        return nil
+    var smartAlertArabic: String? { smartAlert(.ar) }
+
+    func smartAlert(_ language: SariLanguage = .selected) -> String? {
+        SariContentText.smartWeatherAlert(
+            rain: (daily.first?.precipitationProbability ?? 0) >= 70,
+            wind: windGust >= 50,
+            uv: (daily.first?.uvIndexMax ?? 0) >= 8,
+            heat: (daily.first?.high ?? -100) >= 40,
+            language: language
+        )
     }
+
 }
 
 @MainActor final class WeatherStore: ObservableObject {
@@ -165,10 +152,10 @@ struct WeatherSnapshot: Equatable {
             .init(name: "daily", value: "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_probability_max,wind_speed_10m_max,uv_index_max,sunrise,sunset"),
             .init(name: "forecast_days", value: "7"), .init(name: "timezone", value: "auto")
         ]
-        guard let url = components.url else { errorMessage = "تعذر تكوين طلب الطقس"; return }
+        guard let url = components.url else { errorMessage = SariContentText.pick(SariLanguage.selected,[.ar:"تعذر تكوين طلب الطقس",.en:"Could not prepare the weather request",.tr:"Hava durumu isteği hazırlanamadı",.ms:"Permintaan cuaca tidak dapat disediakan",.id:"Permintaan cuaca tidak dapat disiapkan",.ja:"天気リクエストを準備できませんでした",.zh:"无法准备天气请求",.ru:"Не удалось подготовить запрос погоды",.fr:"Impossible de préparer la requête météo"]); return }
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
-            guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { errorMessage = "تعذر تحديث الطقس الآن"; return }
+            guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { errorMessage = SariContentText.pick(SariLanguage.selected,[.ar:"تعذر تحديث الطقس الآن",.en:"Weather could not be updated right now",.tr:"Hava şu anda güncellenemiyor",.ms:"Cuaca tidak dapat dikemas kini sekarang",.id:"Cuaca tidak dapat diperbarui sekarang",.ja:"現在、天気を更新できません",.zh:"目前无法更新天气",.ru:"Сейчас не удалось обновить погоду",.fr:"Impossible de mettre à jour la météo maintenant"]); return }
             let decoded = try JSONDecoder().decode(Response.self, from: data)
             let now = Date().addingTimeInterval(-3600)
             let hours = decoded.hourly.time.indices.compactMap { i -> WeatherHour? in
@@ -186,8 +173,8 @@ struct WeatherSnapshot: Equatable {
         } catch {
             if let cached=WeatherCache.load() {
                 snapshot=cached.0;cachedAt=cached.1;isUsingCachedData=true
-                errorMessage="لا يوجد اتصال — يتم عرض آخر طقس محفوظ."
-            } else { errorMessage="تعذر تحديث الطقس الآن ولا توجد بيانات محفوظة." }
+                errorMessage=SariContentText.pick(SariLanguage.selected,[.ar:"لا يوجد اتصال — يتم عرض آخر طقس محفوظ.",.en:"Offline — showing the last saved weather.",.tr:"Çevrimdışı — son kaydedilen hava gösteriliyor.",.ms:"Luar talian — memaparkan cuaca terakhir disimpan.",.id:"Offline — menampilkan cuaca terakhir tersimpan.",.ja:"オフライン — 保存済みの最新天気を表示しています。",.zh:"离线 — 正在显示上次保存的天气。",.ru:"Нет сети — показана последняя сохранённая погода.",.fr:"Hors ligne — dernière météo enregistrée affichée."])
+            } else { errorMessage=SariContentText.pick(SariLanguage.selected,[.ar:"تعذر تحديث الطقس الآن ولا توجد بيانات محفوظة.",.en:"Weather could not be updated and no saved data is available.",.tr:"Hava güncellenemedi ve kayıtlı veri yok.",.ms:"Cuaca tidak dapat dikemas kini dan tiada data tersimpan.",.id:"Cuaca tidak dapat diperbarui dan tidak ada data tersimpan.",.ja:"天気を更新できず、保存データもありません。",.zh:"无法更新天气，也没有保存的数据。",.ru:"Не удалось обновить погоду, сохранённых данных нет.",.fr:"Impossible de mettre à jour la météo et aucune donnée enregistrée."]) }
         }
     }
 }

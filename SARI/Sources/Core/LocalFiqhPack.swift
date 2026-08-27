@@ -44,8 +44,23 @@ final class LocalFiqhPack: ObservableObject {
         root.appendingPathComponent("model.gguf")
     }
 
-    var libraryURL: URL {
+    private var writableLibraryURL: URL {
         root.appendingPathComponent("fiqh_pages.sqlite3")
+    }
+
+    private var bundledLibraryURL: URL? {
+        Bundle.main.sariResourceURL(name: "fiqh_pages", extension: "sqlite3", subdirectory: "data")
+    }
+
+    /// Prefer a verified downloaded library when present; otherwise read the bundled source database directly.
+    /// This avoids copying a large database on first launch.
+    var libraryURL: URL {
+        if fm.fileExists(atPath: writableLibraryURL.path) { return writableLibraryURL }
+        return bundledLibraryURL ?? writableLibraryURL
+    }
+
+    var hasModel: Bool {
+        fm.fileExists(atPath: modelURL.path)
     }
 
     private var versionURL: URL {
@@ -53,22 +68,18 @@ final class LocalFiqhPack: ObservableObject {
     }
 
     func refresh() {
-        installed =
-            fm.fileExists(atPath: modelURL.path)
-            && fm.fileExists(atPath: libraryURL.path)
+        installed = fm.fileExists(atPath: libraryURL.path)
 
-        installedVersion = (
-            try? String(
-                contentsOf: versionURL,
-                encoding: .utf8
-            )
-        )?.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
+        installedVersion = (try? String(contentsOf: versionURL, encoding: .utf8))?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        status = installed
-            ? "جاهز للعمل بدون إنترنت"
-            : "غير مثبت"
+        if installed {
+            status = hasModel
+                ? "جاهز للعمل محليًا بالنموذج والمصادر"
+                : "المصادر الفقهية المحلية جاهزة"
+        } else {
+            status = "تعذر تجهيز المصادر المحلية"
+        }
     }
 
     func remove() throws {
@@ -76,10 +87,9 @@ final class LocalFiqhPack: ObservableObject {
             try fm.removeItem(at: root)
         }
 
-        installed = false
         installedVersion = nil
         progress = 0
-        status = "تم حذف الملفات"
+        refresh()
     }
 
     func install(
@@ -206,7 +216,7 @@ final class LocalFiqhPack: ObservableObject {
 
             try atomicReplace(
                 stagedLibrary,
-                libraryURL
+                writableLibraryURL
             )
 
             try manifest.version.write(
