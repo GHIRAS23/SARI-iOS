@@ -17,6 +17,7 @@ targets:
       - SARI/Sources
     resources:
       - SARI/Resources
+      - SARI/PrivacyInfo.xcprivacy
       - SharedResources/data
     settings:
       base:
@@ -24,6 +25,7 @@ targets:
         MARKETING_VERSION: 0.6.0
         CURRENT_PROJECT_VERSION: 6
         INFOPLIST_KEY_CFBundleDisplayName: ساري
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: SARI uses your location to calculate prayer times, Qibla, and nearby travel services.
         INFOPLIST_KEY_SARI_API_BASE_URL: https://YOUR-SARI-BACKEND.example
         CODE_SIGN_ENTITLEMENTS: SARI/SARI.entitlements
     dependencies:
@@ -35,10 +37,13 @@ targets:
     platform: iOS
     sources:
       - SARIWidget
+    resources:
+      - SARIWidget/PrivacyInfo.xcprivacy
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app.widget
         INFOPLIST_KEY_CFBundleDisplayName: ساري
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: SARI uses your location to calculate prayer times, Qibla, and nearby travel services.
         CODE_SIGN_ENTITLEMENTS: SARIWidget/SARIWidget.entitlements
     entitlements:
       path: SARIWidget/SARIWidget.entitlements

@@ -5,6 +5,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   build-ios:
     runs-on: macos-15
@@ -12,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Show Xcode version
         run: xcodebuild -version
@@ -51,7 +54,7 @@ jobs:
 
       - name: Upload unsigned IPA
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: SARI-iPhone-unsigned
           path: |
@@ -62,7 +65,7 @@ jobs:
 
       - name: Upload failure log
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: SARI-iOS-build-failure-log
           path: ${{ runner.temp }}/sari-build.log
