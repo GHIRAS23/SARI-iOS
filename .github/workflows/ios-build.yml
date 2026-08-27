@@ -120,7 +120,6 @@ jobs:
           cp -R "$APP_PATH" "$RUNNER_TEMP/Payload/"
           cd "$RUNNER_TEMP"
           zip -qry SARI-unsigned.ipa Payload
-          cp sari-build.log SARI-build.log
 
       - name: Upload unsigned IPA
         if: success()
@@ -129,7 +128,7 @@ jobs:
           name: SARI-iPhone-unsigned
           path: |
             ${{ runner.temp }}/SARI-unsigned.ipa
-            ${{ runner.temp }}/SARI-build.log
+            ${{ runner.temp }}/sari-build.log
             ${{ runner.temp }}/sari-app-build-settings.txt
             ${{ runner.temp }}/sari-widget-build-settings.txt
           if-no-files-found: error
