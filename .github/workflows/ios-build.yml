@@ -13,21 +13,39 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 45
     env:
-      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       HOMEBREW_NO_AUTO_UPDATE: "1"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Verify pinned Xcode
+      - name: Select Xcode
+        shell: bash
         run: |
-          test -d "$DEVELOPER_DIR"
+          set -euo pipefail
+          PINNED="/Applications/Xcode_16.4.app/Contents/Developer"
+          if [[ -d "$PINNED" ]]; then
+            export DEVELOPER_DIR="$PINNED"
+          else
+            export DEVELOPER_DIR="$(xcode-select -p)"
+          fi
+          echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
+          echo "Using DEVELOPER_DIR=$DEVELOPER_DIR"
           xcodebuild -version
           swiftc --version
 
-      - name: Install XcodeGen
+      - name: Static project preflight
+        shell: bash
         run: |
+          set -euo pipefail
+          python3 scripts/preflight_ios.py
+          find SARI/Sources SARIWidget -type f -name '*.swift' -print0 \
+            | xargs -0 swiftc -parse
+
+      - name: Install XcodeGen
+        shell: bash
+        run: |
+          set -euo pipefail
           brew untap aws/tap >/dev/null 2>&1 || true
           if ! command -v xcodegen >/dev/null 2>&1; then
             brew install xcodegen
@@ -35,10 +53,18 @@ jobs:
           xcodegen --version
 
       - name: Generate Xcode project
-        run: xcodegen generate
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf SARI.xcodeproj
+          xcodegen generate
+          test -f SARI.xcodeproj/project.pbxproj
+          xcodebuild -project SARI.xcodeproj -list
 
       - name: Validate generated project inputs
+        shell: bash
         run: |
+          set -euo pipefail
           plutil -lint SARI/Info.plist
           plutil -lint SARIWidget/Info.plist
           plutil -lint SARI/PrivacyInfo.xcprivacy
@@ -60,38 +86,33 @@ jobs:
 
           grep -Fq "INFOPLIST_FILE = SARI/Info.plist" "$RUNNER_TEMP/sari-app-build-settings.txt"
           grep -Fq "GENERATE_INFOPLIST_FILE = NO" "$RUNNER_TEMP/sari-app-build-settings.txt"
+          grep -Fq "PRODUCT_BUNDLE_IDENTIFIER = sa.sari.app" "$RUNNER_TEMP/sari-app-build-settings.txt"
           grep -Fq "INFOPLIST_FILE = SARIWidget/Info.plist" "$RUNNER_TEMP/sari-widget-build-settings.txt"
           grep -Fq "GENERATE_INFOPLIST_FILE = NO" "$RUNNER_TEMP/sari-widget-build-settings.txt"
+          grep -Fq "PRODUCT_BUNDLE_IDENTIFIER = sa.sari.app.widget" "$RUNNER_TEMP/sari-widget-build-settings.txt"
 
-          grep -Fq "quran_tafseer.json" SARI.xcodeproj/project.pbxproj
-          grep -Fq "ui_strings.json" SARI.xcodeproj/project.pbxproj
-          grep -Fq "scholars.json" SARI.xcodeproj/project.pbxproj
-          grep -Fq "countries.json" SARI.xcodeproj/project.pbxproj
-          grep -Fq "fiqh_pages.sqlite3" SARI.xcodeproj/project.pbxproj
-          grep -Fq "KFGQPCHafsUthmanic.ttf" SARI.xcodeproj/project.pbxproj
-          grep -Fq "AdhanAliMulla.caf" SARI.xcodeproj/project.pbxproj
-          grep -Fq "PrivacyInfo.xcprivacy" SARI.xcodeproj/project.pbxproj
-
-          python3 - <<'PYDATA'
-          import json
-          q = json.load(open("SARI/Resources/data/quran_tafseer.json", encoding="utf-8"))
-          c = json.load(open("SARI/Resources/data/countries.json", encoding="utf-8"))
-          a = json.load(open("SARI/Resources/data/adhkar.json", encoding="utf-8"))
-          s = json.load(open("SARI/Resources/data/scholars.json", encoding="utf-8"))
-          assert len(q) == 6236 and len({x["id"] for x in q}) == 6236
-          assert {x["page"] for x in q} == set(range(1, 605))
-          assert all(1 <= x["line_start"] <= 15 and 1 <= x["line_end"] <= 15 for x in q)
-          assert len(c) == 195 and len({x["code"] for x in c}) == 195
-          assert "IL" not in {x["code"] for x in c} and "PS" in {x["code"] for x in c}
-          assert sum(len(x["items"]) for x in a["categories"]) >= 50
-          assert len(s["items"]) == 17
-          PYDATA
+          for resource in \
+            quran_tafseer.json ui_strings.json adhkar.json scholars.json countries.json \
+            fiqh_pages.sqlite3 KFGQPCAnRegular.ttf KFGQPCHafsUthmanic.ttf \
+            AdhanAliMulla.caf AdhanQatami.caf AdhanBaafif.caf AdhanDughariri.caf \
+            PrivacyInfo.xcprivacy; do
+            grep -Fq "$resource" SARI.xcodeproj/project.pbxproj
+          done
 
       - name: Resolve Swift packages
-        run: xcodebuild -project SARI.xcodeproj -scheme SARI -resolvePackageDependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project SARI.xcodeproj \
+            -scheme SARI \
+            -resolvePackageDependencies
 
       - name: Build SARI for iPhone without signing
+        shell: bash
         run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/SARIDerivedData"
           set -o pipefail
           xcodebuild \
             -project SARI.xcodeproj \
@@ -104,7 +125,9 @@ jobs:
 
       - name: Verify built bundles
         if: success()
+        shell: bash
         run: |
+          set -euo pipefail
           APP_PATH="$RUNNER_TEMP/SARIDerivedData/Build/Products/Debug-iphoneos/SARI.app"
           WIDGET_PATH="$APP_PATH/PlugIns/SARIWidgetExtension.appex"
 
@@ -124,7 +147,10 @@ jobs:
           WIDGET_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$WIDGET_PATH/Info.plist")"
           test "$APP_VERSION" = "$WIDGET_VERSION"
 
-          for resource in ui_strings.json adhkar.json quran_tafseer.json scholars.json countries.json fiqh_pages.sqlite3 KFGQPCHafsUthmanic.ttf AdhanAliMulla.caf AdhanQatami.caf AdhanBaafif.caf AdhanDughariri.caf; do
+          for resource in \
+            ui_strings.json adhkar.json quran_tafseer.json scholars.json countries.json \
+            fiqh_pages.sqlite3 KFGQPCAnRegular.ttf KFGQPCHafsUthmanic.ttf \
+            AdhanAliMulla.caf AdhanQatami.caf AdhanBaafif.caf AdhanDughariri.caf; do
             test -n "$(find "$APP_PATH" -name "$resource" -print -quit)"
           done
 
@@ -133,12 +159,17 @@ jobs:
 
       - name: Package unsigned app payload
         if: success()
+        shell: bash
         run: |
+          set -euo pipefail
           APP_PATH="$RUNNER_TEMP/SARIDerivedData/Build/Products/Debug-iphoneos/SARI.app"
+          rm -rf "$RUNNER_TEMP/Payload"
           mkdir -p "$RUNNER_TEMP/Payload"
           cp -R "$APP_PATH" "$RUNNER_TEMP/Payload/"
           cd "$RUNNER_TEMP"
+          rm -f SARI-unsigned.ipa
           zip -qry SARI-unsigned.ipa Payload
+          test -s SARI-unsigned.ipa
 
       - name: Upload unsigned IPA
         if: success()

@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+"""Static release preflight for the SARI iOS project.
+
+Runs without third-party Python packages so GitHub Actions can execute it before
+XcodeGen/Xcode. It catches the resource-collision class that previously caused
+xcodebuild exit 65, plus malformed bundled data and version drift.
+"""
+from __future__ import annotations
+
+import json
+import plistlib
+import sqlite3
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+ERRORS: list[str] = []
+
+
+def fail(message: str) -> None:
+    ERRORS.append(message)
+
+
+def require(path: str) -> Path:
+    p = ROOT / path
+    if not p.exists():
+        fail(f"Missing required file: {path}")
+    return p
+
+
+def load_json(path: str):
+    p = require(path)
+    if not p.exists():
+        return None
+    try:
+        with p.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as exc:
+        fail(f"Invalid JSON: {path}: {exc}")
+        return None
+
+
+def check_plists() -> None:
+    for rel in (
+        "SARI/Info.plist",
+        "SARIWidget/Info.plist",
+        "SARI/PrivacyInfo.xcprivacy",
+        "SARIWidget/PrivacyInfo.xcprivacy",
+        "SARI/SARI.entitlements",
+        "SARIWidget/SARIWidget.entitlements",
+    ):
+        p = require(rel)
+        if not p.exists():
+            continue
+        try:
+            with p.open("rb") as f:
+                plistlib.load(f)
+        except Exception as exc:
+            fail(f"Invalid plist: {rel}: {exc}")
+
+
+def output_key(path: Path) -> str:
+    # .lproj contents intentionally keep their language directory in the app
+    # bundle, so equal names across different localizations are not collisions.
+    for parent in path.parents:
+        if parent.suffix == ".lproj":
+            return f"{parent.name}/{path.name}"
+    # Xcode's Copy Bundle Resources flattens ordinary group paths. Two ordinary
+    # resources with the same basename therefore produce the same bundle output.
+    return path.name
+
+
+def check_app_resource_collisions() -> None:
+    roots = [ROOT / "SARI/Resources", ROOT / "SharedResources/data"]
+    outputs: dict[str, list[Path]] = defaultdict(list)
+    for base in roots:
+        if not base.exists():
+            continue
+        for p in base.rglob("*"):
+            if p.is_file():
+                outputs[output_key(p)].append(p)
+
+    for key, paths in sorted(outputs.items()):
+        if len(paths) > 1:
+            pretty = ", ".join(str(p.relative_to(ROOT)) for p in paths)
+            fail(f"Duplicate app bundle resource output '{key}': {pretty}")
+
+
+def check_bundled_data() -> None:
+    quran = load_json("SARI/Resources/data/quran_tafseer.json")
+    if isinstance(quran, list):
+        if len(quran) != 6236:
+            fail(f"Quran rows must be 6236, got {len(quran)}")
+        ids = [x.get("id") for x in quran if isinstance(x, dict)]
+        if len(set(ids)) != 6236:
+            fail("Quran verse ids are not unique/complete")
+        pages = {x.get("page") for x in quran if isinstance(x, dict)}
+        if pages != set(range(1, 605)):
+            fail("Quran pages must cover exactly 1...604")
+        for row in quran:
+            if not isinstance(row, dict):
+                fail("Quran contains a non-object row")
+                break
+            ls, le = row.get("line_start"), row.get("line_end")
+            if not isinstance(ls, int) or not isinstance(le, int) or not (1 <= ls <= 15 and 1 <= le <= 15):
+                fail(f"Invalid Quran line range in verse id {row.get('id')}: {ls}...{le}")
+                break
+
+    countries = load_json("SARI/Resources/data/countries.json")
+    if isinstance(countries, list):
+        codes = [x.get("code") for x in countries if isinstance(x, dict)]
+        if len(countries) != 195 or len(set(codes)) != 195:
+            fail(f"Countries must contain 195 unique codes, got {len(countries)} rows / {len(set(codes))} unique")
+        if "IL" in set(codes):
+            fail("countries.json must not contain code IL")
+        if "PS" not in set(codes):
+            fail("countries.json must contain Palestine (PS)")
+
+        # Keep the Swift travel selector exactly aligned with countries.json.
+        import re
+        travel_swift = (ROOT / "SARI/Sources/Core/TravelService.swift").read_text(encoding="utf-8")
+        match = re.search(r'private static let sovereignCodes: \[String\] = """\s*(.*?)\s*"""\.split', travel_swift, re.S)
+        if not match:
+            fail("Unable to locate TravelCatalog.sovereignCodes in TravelService.swift")
+        else:
+            swift_codes = match.group(1).split()
+            if len(swift_codes) != 195 or len(set(swift_codes)) != 195:
+                fail(f"TravelCatalog must contain 195 unique codes, got {len(swift_codes)} rows / {len(set(swift_codes))} unique")
+            if set(swift_codes) != set(codes):
+                missing = sorted(set(codes) - set(swift_codes))
+                extra = sorted(set(swift_codes) - set(codes))
+                fail(f"TravelCatalog/countries.json mismatch. Missing={missing}, extra={extra}")
+
+    adhkar = load_json("SARI/Resources/data/adhkar.json")
+    if isinstance(adhkar, dict):
+        categories = adhkar.get("categories", [])
+        count = sum(len(x.get("items", [])) for x in categories if isinstance(x, dict))
+        if count < 50:
+            fail(f"Adhkar library unexpectedly small: {count}")
+
+    scholars = load_json("SARI/Resources/data/scholars.json")
+    if isinstance(scholars, dict):
+        items = scholars.get("items", [])
+        if len(items) != 17:
+            fail(f"Scholars list must contain 17 contacts, got {len(items)}")
+        phones = [x.get("phone") for x in items if isinstance(x, dict)]
+        if len(set(phones)) != len(phones):
+            fail("Duplicate scholar phone number found")
+
+    sounds = load_json("SARI/Resources/data/adhan_reciters.json")
+    if isinstance(sounds, dict):
+        entries = sounds.get("sounds", [])
+        if len(entries) != 4:
+            fail(f"Expected 4 Adhan options, got {len(entries)}")
+        for item in entries:
+            if not isinstance(item, dict):
+                fail("Invalid Adhan sound entry")
+                continue
+            preview = item.get("preview", "")
+            notification = item.get("notification", "")
+            if not (ROOT / "SARI/Resources/audio" / preview).is_file():
+                fail(f"Missing Adhan preview: {preview}")
+            if not (ROOT / "SARI/Resources" / notification).is_file():
+                fail(f"Missing Adhan notification sound: {notification}")
+
+
+def check_sqlite() -> None:
+    p = require("SARI/Resources/data/fiqh_pages.sqlite3")
+    if not p.exists():
+        return
+    try:
+        con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
+        integrity = con.execute("PRAGMA integrity_check").fetchone()
+        if not integrity or integrity[0] != "ok":
+            fail(f"fiqh_pages.sqlite3 integrity_check failed: {integrity}")
+        table = con.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='pages'").fetchone()
+        if not table:
+            fail("fiqh_pages.sqlite3 is missing pages table")
+        else:
+            count = con.execute("SELECT COUNT(*) FROM pages").fetchone()[0]
+            if count != 4099:
+                fail(f"Expected 4099 fiqh pages, got {count}")
+        con.close()
+    except Exception as exc:
+        fail(f"Unable to validate fiqh_pages.sqlite3: {exc}")
+
+
+def check_project_config() -> None:
+    p = require("project.yml")
+    if not p.exists():
+        return
+    text = p.read_text(encoding="utf-8")
+    required = (
+        "SWIFT_VERSION: 6.0",
+        "IPHONEOS_DEPLOYMENT_TARGET: 17.0",
+        "PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app",
+        "PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app.widget",
+        'GENERATE_INFOPLIST_FILE: "NO"',
+        "INFOPLIST_FILE: SARI/Info.plist",
+        "INFOPLIST_FILE: SARIWidget/Info.plist",
+        "exactVersion: 0.1.0",
+    )
+    for token in required:
+        if token not in text:
+            fail(f"project.yml is missing required setting: {token}")
+    if text.count("MARKETING_VERSION: 0.9.1") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.1")
+    if text.count("CURRENT_PROJECT_VERSION: 10") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 10")
+
+
+def check_required_files() -> None:
+    for rel in (
+        ".github/workflows/ios-build.yml",
+        "SARI/Resources/KFGQPCAnRegular.ttf",
+        "SARI/Resources/KFGQPCHafsUthmanic.ttf",
+        "SharedResources/data/travel_directory_schema.json",
+    ):
+        require(rel)
+
+
+check_required_files()
+check_plists()
+check_app_resource_collisions()
+check_bundled_data()
+check_sqlite()
+check_project_config()
+
+if ERRORS:
+    print("SARI iOS preflight FAILED:", file=sys.stderr)
+    for i, error in enumerate(ERRORS, 1):
+        print(f"  {i}. {error}", file=sys.stderr)
+    sys.exit(1)
+
+print("SARI iOS preflight OK")
+print("- no duplicate app resource outputs")
+print("- plists/resources/data/sqlite validated")
+print("- app/widget version and core XcodeGen settings aligned")
