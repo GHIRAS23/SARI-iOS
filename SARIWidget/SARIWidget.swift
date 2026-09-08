@@ -8,6 +8,7 @@ struct PrayerEntry: TimelineEntry {
     let location: String
     let updated: Date
     let qibla: Double
+    let timeZoneID: String
 }
 
 struct Provider: TimelineProvider {
@@ -21,64 +22,43 @@ struct Provider: TimelineProvider {
         return PrayerEntry(
             date: .now,
             prayer: storedPrayer?.isEmpty == false ? storedPrayer! : "Next Prayer",
-            prayerTime: storedPrayerTime > 0
-                ? Date(timeIntervalSince1970: storedPrayerTime)
-                : .now,
+            prayerTime: storedPrayerTime > 0 ? Date(timeIntervalSince1970: storedPrayerTime) : .now,
             location: suite?.string(forKey: "location") ?? "SARI",
-            updated: storedUpdatedAt > 0
-                ? Date(timeIntervalSince1970: storedUpdatedAt)
-                : .now,
-            qibla: suite?.double(forKey: "qiblaBearing") ?? 0
+            updated: storedUpdatedAt > 0 ? Date(timeIntervalSince1970: storedUpdatedAt) : .now,
+            qibla: suite?.double(forKey: "qiblaBearing") ?? 0,
+            timeZoneID: suite?.string(forKey: "timeZoneID") ?? TimeZone.current.identifier
         )
     }
 
-    func placeholder(in context: Context) -> PrayerEntry {
-        entry()
-    }
+    func placeholder(in context: Context) -> PrayerEntry { entry() }
 
-    func getSnapshot(
-        in context: Context,
-        completion: @escaping (PrayerEntry) -> Void
-    ) {
+    func getSnapshot(in context: Context, completion: @escaping (PrayerEntry) -> Void) {
         completion(entry())
     }
 
-    func getTimeline(
-        in context: Context,
-        completion: @escaping (Timeline<PrayerEntry>) -> Void
-    ) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<PrayerEntry>) -> Void) {
         let currentEntry = entry()
-
         let refreshDate = max(
             Date().addingTimeInterval(300),
-            min(
-                currentEntry.prayerTime.addingTimeInterval(60),
-                Date().addingTimeInterval(1800)
-            )
+            min(currentEntry.prayerTime.addingTimeInterval(60), Date().addingTimeInterval(1800))
         )
-
-        completion(
-            Timeline(
-                entries: [currentEntry],
-                policy: .after(refreshDate)
-            )
-        )
+        completion(Timeline(entries: [currentEntry], policy: .after(refreshDate)))
     }
 }
 
 struct SARIWidgetView: View {
     @Environment(\.widgetFamily) private var family
-
     let entry: PrayerEntry
+
+    private var timeZone: TimeZone {
+        TimeZone(identifier: entry.timeZoneID) ?? .current
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("SARI")
-                    .font(.headline)
-
+                Text("SARI").font(.headline)
                 Spacer()
-
                 Text(entry.location)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
@@ -96,30 +76,20 @@ struct SARIWidgetView: View {
 
             if family == .systemMedium {
                 HStack {
-                    Label(
-                        "\(Int(entry.qibla.rounded()))°",
-                        systemImage: "location.north.line"
-                    )
-
+                    Label("\(Int(entry.qibla.rounded()))°", systemImage: "location.north.line")
                     Spacer()
-
-                    Text(entry.prayerTime, style: .relative)
-                        .monospacedDigit()
+                    Text(entry.prayerTime, style: .relative).monospacedDigit()
                 }
                 .font(.caption)
             }
 
             Spacer(minLength: 0)
 
-            Text(
-                entry.updated.formatted(
-                    date: .omitted,
-                    time: .shortened
-                )
-            )
-            .font(.caption2)
-            .foregroundStyle(.secondary)
+            Text(entry.updated.formatted(date: .omitted, time: .shortened))
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
+        .environment(\.timeZone, timeZone)
         .containerBackground(.fill.tertiary, for: .widget)
     }
 }
@@ -129,17 +99,11 @@ struct SARIWidget: Widget {
     let kind = "SARI.PrayerWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(
-            kind: kind,
-            provider: Provider()
-        ) { entry in
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
             SARIWidgetView(entry: entry)
         }
         .configurationDisplayName("SARI")
         .description("Prayer times and Qibla")
-        .supportedFamilies([
-            .systemSmall,
-            .systemMedium
-        ])
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

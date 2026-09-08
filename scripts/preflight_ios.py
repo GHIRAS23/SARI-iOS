@@ -204,10 +204,28 @@ def check_project_config() -> None:
     for token in required:
         if token not in text:
             fail(f"project.yml is missing required setting: {token}")
-    if text.count("MARKETING_VERSION: 0.9.1") != 2:
-        fail("App and widget MARKETING_VERSION must both be 0.9.1")
-    if text.count("CURRENT_PROJECT_VERSION: 10") != 2:
-        fail("App and widget CURRENT_PROJECT_VERSION must both be 10")
+    if text.count("MARKETING_VERSION: 0.9.2") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.2")
+    if text.count("CURRENT_PROJECT_VERSION: 11") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 11")
+
+
+def check_local_ai_config() -> None:
+    model = load_json("LocalAIPack/recommended_model.json")
+    if not isinstance(model, dict):
+        return
+    expected_sha = "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+    expected_url = "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf"
+    if model.get("sha256") != expected_sha:
+        fail("Offline AI model SHA-256 drifted from the verified Qwen2.5 3B Q4_K_M file")
+    if model.get("modelURL") != expected_url:
+        fail("Offline AI model URL drifted from the validated Hugging Face asset")
+
+    swift = require("SARI/Sources/Core/LocalFiqhPack.swift")
+    if swift.exists():
+        text = swift.read_text(encoding="utf-8")
+        if expected_sha not in text or expected_url not in text:
+            fail("LocalFiqhPack.swift does not match LocalAIPack/recommended_model.json")
 
 
 def check_required_files() -> None:
@@ -216,6 +234,9 @@ def check_required_files() -> None:
         "SARI/Resources/KFGQPCAnRegular.ttf",
         "SARI/Resources/KFGQPCHafsUthmanic.ttf",
         "SharedResources/data/travel_directory_schema.json",
+        "SARI/Sources/Core/MushafPageRepository.swift",
+        "SARI/Sources/Core/LocalFiqhEngine.swift",
+        "LocalAIPack/recommended_model.json",
     ):
         require(rel)
 
@@ -226,6 +247,7 @@ check_app_resource_collisions()
 check_bundled_data()
 check_sqlite()
 check_project_config()
+check_local_ai_config()
 
 if ERRORS:
     print("SARI iOS preflight FAILED:", file=sys.stderr)

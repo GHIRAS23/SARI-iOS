@@ -39,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/preflight_ios.py
+          python3 scripts/validate_prayer_math.py
           find SARI/Sources SARIWidget -type f -name '*.swift' -print0 \
             | xargs -0 swiftc -parse
 

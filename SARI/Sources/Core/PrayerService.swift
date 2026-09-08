@@ -11,26 +11,24 @@ struct PrayerTimes: Codable {
     let maghrib: Date
     let isha: Date
 
-    func next(after now: Date = .now) -> (String, Date) {
-        let items = [
-            ("الفجر", fajr),
-            ("الظهر", dhuhr),
-            ("العصر", asr),
-            ("المغرب", maghrib),
-            ("العشاء", isha)
+    func next(after now: Date = .now, timeZone: TimeZone = .current) -> (id: String, date: Date) {
+        let items: [(String, Date)] = [
+            ("fajr", fajr),
+            ("dhuhr", dhuhr),
+            ("asr", asr),
+            ("maghrib", maghrib),
+            ("isha", isha)
         ]
 
         if let next = items.first(where: { $0.1 > now }) {
-            return next
+            return (next.0, next.1)
         }
 
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
         return (
-            "الفجر",
-            Calendar.current.date(
-                byAdding: .day,
-                value: 1,
-                to: fajr
-            ) ?? fajr
+            "fajr",
+            calendar.date(byAdding: .day, value: 1, to: fajr) ?? fajr
         )
     }
 }
@@ -161,19 +159,14 @@ enum PrayerCalculationMethod: String, CaseIterable, Identifiable {
             return (17.7, 14, 0)
 
         case .custom:
-            let defaults = UserDefaults(
-                suiteName: "group.sa.sari.app"
-            )
-
-            return (
-                defaults?.double(
-                    forKey: "customFajrAngle"
-                ) ?? 18,
-                defaults?.double(
-                    forKey: "customIshaAngle"
-                ) ?? 17,
-                0
-            )
+            let defaults = UserDefaults(suiteName: "group.sa.sari.app")
+            let fajr = defaults?.object(forKey: "customFajrAngle") != nil
+                ? defaults?.double(forKey: "customFajrAngle") ?? 18
+                : 18
+            let isha = defaults?.object(forKey: "customIshaAngle") != nil
+                ? defaults?.double(forKey: "customIshaAngle") ?? 17
+                : 17
+            return (fajr, isha, 0)
         }
     }
 
@@ -182,13 +175,7 @@ enum PrayerCalculationMethod: String, CaseIterable, Identifiable {
         longitude: Double
     ) -> PrayerCalculationMethod {
 
-        if latitude >= 16,
-           latitude <= 33,
-           longitude >= 34,
-           longitude <= 56 {
-            return .ummAlQura
-        }
-
+        // Check the smaller Gulf regions before the wider Saudi bounding box.
         if latitude >= 24,
            latitude <= 27,
            longitude >= 50,
@@ -208,6 +195,13 @@ enum PrayerCalculationMethod: String, CaseIterable, Identifiable {
            longitude >= 54,
            longitude <= 56.5 {
             return .dubai
+        }
+
+        if latitude >= 16,
+           latitude <= 33,
+           longitude >= 34,
+           longitude <= 56 {
+            return .ummAlQura
         }
 
         if latitude >= 1,
@@ -261,6 +255,10 @@ enum AsrJuristicMethod: String, CaseIterable, Identifiable {
 
 enum PrayerCalculator {
 
+    /// NOAA-style solar calculation using local civil time.
+    /// The previous implementation double-applied longitude in Julian-day conversion,
+    /// which shifted Makkah prayer times by many hours. This implementation derives
+    /// solar noon, sunrise/sunset and twilight angles directly in local minutes.
     static func calculate(
         date: Date,
         latitude: Double,
@@ -270,236 +268,98 @@ enum PrayerCalculator {
         asrMethod: AsrJuristicMethod = .standard,
         offsets: [String: Int] = [:]
     ) -> PrayerTimes {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
 
-        let calendar = Calendar(
-            identifier: .gregorian
+        let dayOfYear = calendar.ordinality(of: .day, in: .year, for: date) ?? 1
+        let daysInYear = calendar.range(of: .day, in: .year, for: date)?.count ?? 365
+        let gamma = 2.0 * Double.pi / Double(daysInYear) * Double(dayOfYear - 1)
+
+        let equationOfTime = 229.18 * (
+            0.000075
+            + 0.001868 * cos(gamma)
+            - 0.032077 * sin(gamma)
+            - 0.014615 * cos(2 * gamma)
+            - 0.040849 * sin(2 * gamma)
         )
 
-        let components = calendar.dateComponents(
-            in: timeZone,
-            from: date
-        )
+        let declination =
+            0.006918
+            - 0.399912 * cos(gamma)
+            + 0.070257 * sin(gamma)
+            - 0.006758 * cos(2 * gamma)
+            + 0.000907 * sin(2 * gamma)
+            - 0.002697 * cos(3 * gamma)
+            + 0.00148 * sin(3 * gamma)
 
-        let year = components.year!
-        let month = components.month!
-        let day = components.day!
+        let zoneMinutes = Double(timeZone.secondsFromGMT(for: date)) / 60.0
+        let solarNoonMinutes = 720.0 - (4.0 * longitude) - equationOfTime + zoneMinutes
 
-        let julian = julianDay(
-            year,
-            month,
-            day
-        ) - longitude / 360.0
-
-        let n = julian - 2451545.0 + 0.0008
-        let jStar = n - longitude / 360.0
-
-        let meanAnomaly = norm(
-            357.5291 + 0.98560028 * jStar
-        )
-
-        let equationCenter =
-            1.9148 * sinD(meanAnomaly)
-            + 0.0200 * sinD(2 * meanAnomaly)
-            + 0.0003 * sinD(3 * meanAnomaly)
-
-        let lambda = norm(
-            meanAnomaly
-            + equationCenter
-            + 180
-            + 102.9372
-        )
-
-        let jTransit =
-            2451545.0
-            + jStar
-            + 0.0053 * sinD(meanAnomaly)
-            - 0.0069 * sinD(2 * lambda)
-
-        let delta =
-            asin(
-                sinD(lambda) * sinD(23.44)
-            ) * 180 / .pi
-
-        func hourAngle(
-            _ altitude: Double
-        ) -> Double {
-
-            let numerator =
-                sinD(altitude)
-                - sinD(latitude) * sinD(delta)
-
-            let denominator =
-                cosD(latitude) * cosD(delta)
-
-            return acos(
-                max(
-                    -1,
-                    min(
-                        1,
-                        numerator / denominator
-                    )
-                )
-            ) * 180 / .pi
+        func hourAngle(altitudeDegrees: Double) -> Double {
+            let latitudeRadians = latitude * Double.pi / 180
+            let altitudeRadians = altitudeDegrees * Double.pi / 180
+            let numerator = sin(altitudeRadians) - sin(latitudeRadians) * sin(declination)
+            let denominator = cos(latitudeRadians) * cos(declination)
+            guard abs(denominator) > 0.0000001 else { return 90 }
+            let cosine = max(-1.0, min(1.0, numerator / denominator))
+            return acos(cosine) * 180 / Double.pi
         }
 
-        let parameters = method.parameters(
-            latitude: latitude,
-            longitude: longitude
-        )
+        func localDate(minutes: Double) -> Date {
+            let start = calendar.startOfDay(for: date)
+            return start.addingTimeInterval(minutes * 60.0)
+        }
 
-        let sunAngle = hourAngle(-0.833)
-        let fajrAngle = hourAngle(
-            -parameters.fajr
-        )
+        let effectiveMethod = method == .auto
+            ? PrayerCalculationMethod.autoMethod(latitude: latitude, longitude: longitude)
+            : method
+        let parameters = effectiveMethod.parameters(latitude: latitude, longitude: longitude)
 
-        let transit = fromJulian(
-            jTransit,
-            timeZone
-        )
+        let sunriseAngle = hourAngle(altitudeDegrees: -0.833)
+        let fajrHourAngle = hourAngle(altitudeDegrees: -parameters.fajr)
 
-        let sunrise = fromJulian(
-            jTransit - sunAngle / 360,
-            timeZone
-        )
+        let declinationDegrees = declination * 180 / Double.pi
+        let asrAltitude = atan(
+            1.0 / (
+                asrMethod.factor
+                + tan(abs((latitude - declinationDegrees) * Double.pi / 180))
+            )
+        ) * 180 / Double.pi
+        let asrHourAngle = hourAngle(altitudeDegrees: asrAltitude)
 
-        let sunset = fromJulian(
-            jTransit + sunAngle / 360,
-            timeZone
-        )
-
-        let fajr = fromJulian(
-            jTransit - fajrAngle / 360,
-            timeZone
-        )
+        let fajr = localDate(minutes: solarNoonMinutes - 4.0 * fajrHourAngle)
+        let sunrise = localDate(minutes: solarNoonMinutes - 4.0 * sunriseAngle)
+        let dhuhr = localDate(minutes: solarNoonMinutes)
+        let asr = localDate(minutes: solarNoonMinutes + 4.0 * asrHourAngle)
+        let sunset = localDate(minutes: solarNoonMinutes + 4.0 * sunriseAngle)
 
         let isha: Date
-
         if let angle = parameters.ishaAngle {
-            isha = fromJulian(
-                jTransit
-                + hourAngle(-angle) / 360,
-                timeZone
-            )
+            let angleValue = hourAngle(altitudeDegrees: -angle)
+            isha = localDate(minutes: solarNoonMinutes + 4.0 * angleValue)
         } else {
-            isha = Calendar.current.date(
-                byAdding: .minute,
-                value: parameters.ishaMinutes,
-                to: sunset
-            ) ?? sunset
+            // Umm al-Qura uses 90 minutes after Maghrib, commonly 120 in Ramadan.
+            var islamic = Calendar(identifier: .islamicUmmAlQura)
+            islamic.timeZone = timeZone
+            let ramadan = islamic.component(.month, from: date) == 9
+            let minutes = effectiveMethod == .ummAlQura && ramadan
+                ? 120
+                : parameters.ishaMinutes
+            isha = calendar.date(byAdding: .minute, value: minutes, to: sunset) ?? sunset
         }
 
-        let asrAltitude =
-            -atan(
-                1.0 / (
-                    asrMethod.factor
-                    + tan(
-                        abs(
-                            (latitude - delta)
-                            * .pi / 180
-                        )
-                    )
-                )
-            ) * 180 / .pi
-
-        let asr = fromJulian(
-            jTransit
-            + hourAngle(asrAltitude) / 360,
-            timeZone
-        )
-
-        func adjusted(
-            _ date: Date,
-            _ key: String
-        ) -> Date {
-            Calendar.current.date(
-                byAdding: .minute,
-                value: offsets[key] ?? 0,
-                to: date
-            ) ?? date
+        func adjusted(_ value: Date, _ key: String) -> Date {
+            calendar.date(byAdding: .minute, value: offsets[key] ?? 0, to: value) ?? value
         }
 
         return PrayerTimes(
             fajr: adjusted(fajr, "fajr"),
-            sunrise: adjusted(
-                sunrise,
-                "sunrise"
-            ),
-            dhuhr: adjusted(
-                transit,
-                "dhuhr"
-            ),
+            sunrise: adjusted(sunrise, "sunrise"),
+            dhuhr: adjusted(dhuhr, "dhuhr"),
             asr: adjusted(asr, "asr"),
-            maghrib: adjusted(
-                sunset,
-                "maghrib"
-            ),
+            maghrib: adjusted(sunset, "maghrib"),
             isha: adjusted(isha, "isha")
         )
-    }
-
-    private static func julianDay(
-        _ year: Int,
-        _ month: Int,
-        _ day: Int
-    ) -> Double {
-
-        var y = year
-        var m = month
-
-        if m <= 2 {
-            y -= 1
-            m += 12
-        }
-
-        let a = y / 100
-        let b = 2 - a + a / 4
-
-        return floor(
-            365.25 * Double(y + 4716)
-        )
-        + floor(
-            30.6001 * Double(m + 1)
-        )
-        + Double(day + b)
-        - 1524.5
-    }
-
-    private static func fromJulian(
-        _ julian: Double,
-        _ timeZone: TimeZone
-    ) -> Date {
-        Date(
-            timeIntervalSince1970:
-                (julian - 2440587.5)
-                * 86400.0
-        )
-    }
-
-    private static func norm(
-        _ value: Double
-    ) -> Double {
-        var result = value
-            .truncatingRemainder(
-                dividingBy: 360
-            )
-
-        if result < 0 {
-            result += 360
-        }
-
-        return result
-    }
-
-    private static func sinD(
-        _ value: Double
-    ) -> Double {
-        sin(value * .pi / 180)
-    }
-
-    private static func cosD(
-        _ value: Double
-    ) -> Double {
-        cos(value * .pi / 180)
     }
 }
 
@@ -518,6 +378,10 @@ final class PrayerStore:
     @Published var locationMessage:
         String?
     @Published var locationDenied = false
+    @Published private(set) var timeZone: TimeZone = .current
+    @Published private(set) var lastCalculationDate: Date?
+
+    private var lastCalculatedDayKey: String?
 
     private let manager =
         CLLocationManager()
@@ -531,8 +395,12 @@ final class PrayerStore:
         super.init()
 
         manager.delegate = self
-        manager.desiredAccuracy =
-            kCLLocationAccuracyKilometer
+        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+
+        if let savedTimeZoneID = suite?.string(forKey: "lastTimeZone"),
+           let savedTimeZone = TimeZone(identifier: savedTimeZoneID) {
+            timeZone = savedTimeZone
+        }
 
         if let latitude =
             suite?.object(
@@ -556,6 +424,8 @@ final class PrayerStore:
     }
 
     func start() {
+        refreshForToday()
+
         switch manager.authorizationStatus {
 
         case .notDetermined:
@@ -683,9 +553,16 @@ final class PrayerStore:
                         .administrativeArea
                     ?? SariContentText.pick(SariLanguage.selected,[.ar:"موقعك",.en:"Your location",.tr:"Konumunuz",.ms:"Lokasi anda",.id:"Lokasi Anda",.ja:"現在地",.zh:"您的位置",.ru:"Ваше местоположение",.fr:"Votre position"])
 
+                let resolvedTimeZone = placemarks?.first?.timeZone
+
                 Task { @MainActor in
-                    self?.locationName = name
-                    self?.saveWidget()
+                    guard let self else { return }
+                    self.locationName = name
+                    if let resolvedTimeZone {
+                        self.timeZone = resolvedTimeZone
+                        self.suite?.set(resolvedTimeZone.identifier, forKey: "lastTimeZone")
+                    }
+                    self.recalculate()
                 }
             }
     }
@@ -758,17 +635,65 @@ final class PrayerStore:
                     }
             )
 
-        times =
-            PrayerCalculator.calculate(
-                date: .now,
-                latitude:
-                    coordinate.latitude,
-                longitude:
-                    coordinate.longitude,
-                method: method,
-                asrMethod: asrMethod,
-                offsets: offsets
-            )
+        let now = Date()
+        times = PrayerCalculator.calculate(
+            date: now,
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
+            timeZone: timeZone,
+            method: method,
+            asrMethod: asrMethod,
+            offsets: offsets
+        )
+        lastCalculationDate = now
+        lastCalculatedDayKey = dayKey(for: now)
+    }
+
+    /// Recalculate whenever the civil day changes, when the app becomes active,
+    /// or when settings/location/time-zone change. This prevents stale "fixed" times.
+    func refreshForToday(force: Bool = false) {
+        guard let coordinate else { return }
+        let currentKey = dayKey(for: Date())
+        if force || currentKey != lastCalculatedDayKey {
+            applyCoordinate(coordinate, persist: false)
+            saveWidget()
+            schedulePrayerNotifications()
+        }
+    }
+
+    /// Refresh localized place name and widget text after an in-app language switch.
+    func refreshForLanguage() {
+        guard let coordinate else {
+            saveWidget()
+            return
+        }
+
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let language = SariLanguage.selected
+        CLGeocoder().reverseGeocodeLocation(
+            location,
+            preferredLocale: Locale(identifier: SariContentText.localeIdentifier(language))
+        ) { [weak self] placemarks, _ in
+            let name = placemarks?.first?.locality
+                ?? placemarks?.first?.administrativeArea
+            let resolvedTimeZone = placemarks?.first?.timeZone
+            Task { @MainActor in
+                guard let self else { return }
+                if let name { self.locationName = name }
+                if let resolvedTimeZone {
+                    self.timeZone = resolvedTimeZone
+                    self.suite?.set(resolvedTimeZone.identifier, forKey: "lastTimeZone")
+                }
+                self.refreshForToday(force: true)
+            }
+        }
+    }
+
+    private func dayKey(for date: Date) -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        return "\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)-\(timeZone.identifier)"
     }
 
     private func qibla(
@@ -820,19 +745,19 @@ final class PrayerStore:
             return
         }
 
-        let next = times.next()
-
-        let prayerID: String = [
-            "الفجر":"fajr", "الظهر":"dhuhr", "العصر":"asr", "المغرب":"maghrib", "العشاء":"isha"
-        ][next.0] ?? "fajr"
+        let next = times.next(timeZone: timeZone)
+        let prayerID = next.id
 
         suite?.set(
             SariContentText.prayerName(prayerID, language: SariLanguage.selected),
             forKey: "nextPrayer"
         )
+        suite?.set(prayerID, forKey: "nextPrayerID")
+        suite?.set(SariLanguage.selected.rawValue, forKey: "widgetLanguage")
+        suite?.set(timeZone.identifier, forKey: "timeZoneID")
 
         suite?.set(
-            next.1.timeIntervalSince1970,
+            next.date.timeIntervalSince1970,
             forKey: "nextPrayerTime"
         )
 
@@ -1092,24 +1017,21 @@ final class PrayerStore:
             content.sound = .default
         }
 
-        let components =
-            Calendar.current
-                .dateComponents(
-                    [
-                        .year,
-                        .month,
-                        .day,
-                        .hour,
-                        .minute
-                    ],
-                    from: date
-                )
+        // Build notification components in the prayer-location time zone. Using
+        // Calendar.current here can schedule the correct absolute Date at the wrong
+        // wall-clock time while travelling or when automatic time-zone switching lags.
+        var notificationCalendar = Calendar(identifier: .gregorian)
+        notificationCalendar.timeZone = timeZone
+        var components = notificationCalendar.dateComponents(
+            [.year, .month, .day, .hour, .minute],
+            from: date
+        )
+        components.timeZone = timeZone
 
-        let trigger =
-            UNCalendarNotificationTrigger(
-                dateMatching: components,
-                repeats: false
-            )
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: components,
+            repeats: false
+        )
 
         let request =
             UNNotificationRequest(

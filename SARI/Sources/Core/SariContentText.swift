@@ -82,9 +82,7 @@ enum SariContentText {
     }
 
     static func localeIdentifier(_ language: SariLanguage) -> String {
-        switch language {
-        case .ar: return "ar_SA"; case .en: return "en_US"; case .tr: return "tr_TR"; case .ms: return "ms_MY"; case .id: return "id_ID"; case .ja: return "ja_JP"; case .zh: return "zh_CN"; case .ru: return "ru_RU"; case .fr: return "fr_FR"
-        }
+        language.localeIdentifier
     }
 
     static func countryName(_ code: String, language: SariLanguage) -> String {

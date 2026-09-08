@@ -57,11 +57,11 @@ struct SariLanguageEnvironment: ViewModifier {
         content
             .environment(
                 \.locale,
-                Locale(identifier: language.rawValue)
+                Locale(identifier: language.localeIdentifier)
             )
             .environment(
                 \.layoutDirection,
-                language.isArabic
+                language.isRTL
                     ? .rightToLeft
                     : .leftToRight
             )

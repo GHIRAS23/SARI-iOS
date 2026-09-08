@@ -2321,15 +2321,15 @@
     "fr": "SARI recherche les textes indexés et vérifie l’appui des sources avant d’afficher une conclusion. Si elles sont insuffisantes, il s’abstient plutôt que de deviner."
   },
   "fiqh_gguf_pending": {
-    "ar": "حزمة Qwen3.5-2B والمصادر مثبتة. ربط محرك GGUF المحلي داخل iPhone هو الخطوة المتبقية لتشغيل الإجابة دون خادم.",
-    "en": "The Qwen3.5-2B pack and sources are installed. Connecting the local GGUF engine on iPhone is the remaining step for serverless answers.",
-    "tr": "Qwen3.5-2B paketi ve kaynaklar kurulu. iPhone'da yerel GGUF motorunu bağlamak sunucusuz yanıtlar için kalan adımdır.",
-    "ms": "Pek Qwen3.5-2B dan sumber telah dipasang. Menyambungkan enjin GGUF tempatan pada iPhone ialah langkah terakhir untuk jawapan tanpa pelayan.",
-    "id": "Paket Qwen3.5-2B dan sumber sudah terpasang. Menghubungkan mesin GGUF lokal di iPhone adalah langkah tersisa untuk jawaban tanpa server.",
-    "ja": "Qwen3.5-2Bパックと資料はインストール済みです。iPhone上のローカルGGUFエンジン接続が、サーバーなしで回答するための残りの手順です。",
-    "zh": "Qwen3.5-2B 包和来源已安装。将 iPhone 上的本地 GGUF 引擎接入后即可无服务器回答。",
-    "ru": "Пакет Qwen3.5-2B и источники установлены. Осталось подключить локальный движок GGUF на iPhone для ответов без сервера.",
-    "fr": "Le pack Qwen3.5-2B et les sources sont installés. Il reste à connecter le moteur GGUF local sur iPhone pour répondre sans serveur."
+    "ar": "نموذج Qwen2.5-3B المحلي والمصادر جاهزان للعمل على iPhone دون خادم بعد تنزيل النموذج والتحقق منه.",
+    "en": "The local Qwen2.5-3B model and sources work on iPhone without a server after the model is downloaded and verified.",
+    "tr": "Yerel Qwen2.5-3B modeli ve kaynaklar, model indirilip doğrulandıktan sonra iPhone’da sunucu olmadan çalışır.",
+    "ms": "Model tempatan Qwen2.5-3B dan sumber berfungsi pada iPhone tanpa pelayan selepas model dimuat turun dan disahkan.",
+    "id": "Model lokal Qwen2.5-3B dan sumber bekerja di iPhone tanpa server setelah model diunduh dan diverifikasi.",
+    "ja": "ローカルQwen2.5-3Bモデルと資料は、モデルのダウンロードと検証後、iPhone上でサーバーなしに動作します。",
+    "zh": "本地 Qwen2.5-3B 模型和资料在模型下载并校验后，可直接在 iPhone 上无服务器运行。",
+    "ru": "Локальная модель Qwen2.5-3B и источники работают на iPhone без сервера после загрузки и проверки модели.",
+    "fr": "Le modèle local Qwen2.5-3B et les sources fonctionnent sur iPhone sans serveur après téléchargement et vérification du modèle."
   },
   "question_details": {
     "ar": "اكتب سؤالك بتفاصيله…",

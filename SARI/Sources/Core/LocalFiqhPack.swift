@@ -13,8 +13,17 @@ struct FiqhPackManifest: Codable {
 
 @MainActor
 final class LocalFiqhPack: ObservableObject {
-
     static let shared = LocalFiqhPack()
+
+    /// Verified multilingual GGUF used by the offline assistant.
+    /// The model is downloaded after installation so the IPA stays reasonably small.
+    static let recommendedModelName = "Qwen2.5-3B Instruct Q4_K_M"
+    static let recommendedModelURL = URL(
+        string: "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf"
+    )!
+    static let recommendedModelSHA256 = "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
+    static let recommendedModelVersion = "qwen2.5-3b-instruct-q4km-2026.09"
+    static let recommendedApproxBytes: Int64 = 2_060_000_000
 
     @Published private(set) var installed = false
     @Published private(set) var downloading = false
@@ -24,225 +33,190 @@ final class LocalFiqhPack: ObservableObject {
 
     private let fm = FileManager.default
 
-    private init() {
-        refresh()
-    }
+    private init() { refresh() }
 
     private var root: URL {
-        let base = fm.urls(
-            for: .applicationSupportDirectory,
-            in: .userDomainMask
-        )[0]
-
-        return base.appendingPathComponent(
-            "SARI/FiqhAssistant",
-            isDirectory: true
-        )
+        fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("SARI/FiqhAssistant", isDirectory: true)
     }
 
-    var modelURL: URL {
-        root.appendingPathComponent("model.gguf")
-    }
+    var modelURL: URL { root.appendingPathComponent("model.gguf") }
 
     private var writableLibraryURL: URL {
         root.appendingPathComponent("fiqh_pages.sqlite3")
     }
 
     private var bundledLibraryURL: URL? {
-        Bundle.main.sariResourceURL(name: "fiqh_pages", extension: "sqlite3", subdirectory: "data")
+        Bundle.main.sariResourceURL(
+            name: "fiqh_pages",
+            extension: "sqlite3",
+            subdirectory: "data"
+        )
     }
 
-    /// Prefer a verified downloaded library when present; otherwise read the bundled source database directly.
-    /// This avoids copying a large database on first launch.
+    /// Prefer a verified downloaded library when present; otherwise use the bundled source DB.
     var libraryURL: URL {
         if fm.fileExists(atPath: writableLibraryURL.path) { return writableLibraryURL }
         return bundledLibraryURL ?? writableLibraryURL
     }
 
-    var hasModel: Bool {
-        fm.fileExists(atPath: modelURL.path)
+    var hasModel: Bool { fm.fileExists(atPath: modelURL.path) }
+    var readyForInference: Bool {
+        installed && hasModel && installedVersion == Self.recommendedModelVersion
     }
 
-    private var versionURL: URL {
-        root.appendingPathComponent("version.txt")
-    }
+    private var versionURL: URL { root.appendingPathComponent("version.txt") }
 
     func refresh() {
         installed = fm.fileExists(atPath: libraryURL.path)
-
         installedVersion = (try? String(contentsOf: versionURL, encoding: .utf8))?
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
         if installed {
-            status = hasModel
-                ? "جاهز للعمل محليًا بالنموذج والمصادر"
-                : "المصادر الفقهية المحلية جاهزة"
+            if readyForInference {
+                status = "جاهز للعمل محليًا بالنموذج والمصادر"
+            } else if hasModel {
+                status = "يتوفر نموذج قديم — يلزم تحديث النموذج المحلي"
+            } else {
+                status = "المصادر جاهزة — نزّل النموذج المحلي مرة واحدة"
+            }
         } else {
             status = "تعذر تجهيز المصادر المحلية"
         }
     }
 
     func remove() throws {
-        if fm.fileExists(atPath: root.path) {
-            try fm.removeItem(at: root)
-        }
-
+        if fm.fileExists(atPath: root.path) { try fm.removeItem(at: root) }
         installedVersion = nil
         progress = 0
         refresh()
     }
 
-    func install(
-        from manifestURL: URL
-    ) async throws {
+    /// One-tap install for SARI's validated offline multilingual model.
+    /// The bundled fiqh database is kept in the app; only the GGUF is downloaded.
+    func installRecommendedModel() async throws {
+        guard !downloading else { return }
+        guard installed else { throw URLError(.fileDoesNotExist) }
 
-        guard !downloading else {
-            return
+        downloading = true
+        progress = 0.02
+        status = "التحقق من مساحة الجهاز…"
+        defer { downloading = false }
+
+        try fm.createDirectory(at: root, withIntermediateDirectories: true)
+
+        let values = try root.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        if let free = values.volumeAvailableCapacityForImportantUsage,
+           free < 3_200_000_000 {
+            throw URLError(.dataLengthExceedsMaximum)
         }
 
+        let stagedModel = root.appendingPathComponent("model.gguf.new")
+        try? fm.removeItem(at: stagedModel)
+
+        do {
+            progress = 0.08
+            try await fetch(
+                Self.recommendedModelURL,
+                to: stagedModel,
+                expectedBytes: 0,
+                sha256: Self.recommendedModelSHA256,
+                base: 0.08,
+                span: 0.84,
+                label: "تنزيل نموذج المساعد المحلي…"
+            )
+
+            status = "التحقق من سلامة النموذج…"
+            progress = max(progress, 0.94)
+            try atomicReplace(stagedModel, modelURL)
+            try Self.recommendedModelVersion.write(
+                to: versionURL,
+                atomically: true,
+                encoding: .utf8
+            )
+        } catch {
+            try? fm.removeItem(at: stagedModel)
+            throw error
+        }
+
+        progress = 1
+        installedVersion = Self.recommendedModelVersion
+        status = "جاهز للعمل بدون إنترنت"
+        refresh()
+    }
+
+    /// Keeps compatibility with a future signed manifest hosted by the project.
+    func install(from manifestURL: URL) async throws {
+        guard !downloading else { return }
         downloading = true
         progress = 0
         status = "جلب معلومات الحزمة…"
+        defer { downloading = false }
 
-        defer {
-            downloading = false
-        }
-
-        try fm.createDirectory(
-            at: root,
-            withIntermediateDirectories: true
-        )
-
+        try fm.createDirectory(at: root, withIntermediateDirectories: true)
         guard manifestURL.scheme?.lowercased() == "https" else {
             throw URLError(.secureConnectionFailed)
         }
 
-        let values = try root.resourceValues(
-            forKeys: [
-                .volumeAvailableCapacityForImportantUsageKey
-            ]
-        )
-
-        if let free =
-            values.volumeAvailableCapacityForImportantUsage,
+        let values = try root.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+        if let free = values.volumeAvailableCapacityForImportantUsage,
            free < 3_000_000_000 {
             throw URLError(.dataLengthExceedsMaximum)
         }
 
-        let (manifestData, response) =
-            try await URLSession.shared.data(
-                from: manifestURL
-            )
-
-        guard let http =
-                response as? HTTPURLResponse,
-              (200..<300).contains(
-                http.statusCode
-              ) else {
+        let (manifestData, response) = try await URLSession.shared.data(from: manifestURL)
+        guard let http = response as? HTTPURLResponse,
+              (200..<300).contains(http.statusCode) else {
             throw URLError(.badServerResponse)
         }
 
-        let manifest =
-            try JSONDecoder().decode(
-                FiqhPackManifest.self,
-                from: manifestData
-            )
-
-        guard
-            manifest.modelURL.scheme?.lowercased()
-                == "https",
-            manifest.libraryURL.scheme?.lowercased()
-                == "https"
-        else {
+        let manifest = try JSONDecoder().decode(FiqhPackManifest.self, from: manifestData)
+        guard manifest.modelURL.scheme?.lowercased() == "https",
+              manifest.libraryURL.scheme?.lowercased() == "https" else {
             throw URLError(.secureConnectionFailed)
         }
-
-        guard
-            manifest.modelBytes > 0,
-            manifest.libraryBytes > 0
-        else {
+        guard manifest.modelBytes > 0, manifest.libraryBytes > 0 else {
             throw URLError(.cannotParseResponse)
         }
 
-        let stagedModel =
-            root.appendingPathComponent(
-                "model.gguf.new"
-            )
-
-        let stagedLibrary =
-            root.appendingPathComponent(
-                "fiqh_pages.sqlite3.new"
-            )
-
-        try? fm.removeItem(
-            at: stagedModel
-        )
-
-        try? fm.removeItem(
-            at: stagedLibrary
-        )
+        let stagedModel = root.appendingPathComponent("model.gguf.new")
+        let stagedLibrary = root.appendingPathComponent("fiqh_pages.sqlite3.new")
+        try? fm.removeItem(at: stagedModel)
+        try? fm.removeItem(at: stagedLibrary)
 
         do {
             try await fetch(
                 manifest.modelURL,
                 to: stagedModel,
-                expectedBytes:
-                    manifest.modelBytes,
-                sha256:
-                    manifest.modelSHA256,
+                expectedBytes: manifest.modelBytes,
+                sha256: manifest.modelSHA256,
                 base: 0,
                 span: 0.82,
-                label:
-                    "تنزيل نموذج المساعد…"
+                label: "تنزيل نموذج المساعد…"
             )
-
             try await fetch(
                 manifest.libraryURL,
                 to: stagedLibrary,
-                expectedBytes:
-                    manifest.libraryBytes,
-                sha256:
-                    manifest.librarySHA256,
+                expectedBytes: manifest.libraryBytes,
+                sha256: manifest.librarySHA256,
                 base: 0.82,
                 span: 0.18,
-                label:
-                    "تنزيل مكتبة المصادر…"
+                label: "تنزيل مكتبة المصادر…"
             )
 
-            try atomicReplace(
-                stagedModel,
-                modelURL
-            )
-
-            try atomicReplace(
-                stagedLibrary,
-                writableLibraryURL
-            )
-
-            try manifest.version.write(
-                to: versionURL,
-                atomically: true,
-                encoding: .utf8
-            )
-
+            try atomicReplace(stagedModel, modelURL)
+            try atomicReplace(stagedLibrary, writableLibraryURL)
+            try manifest.version.write(to: versionURL, atomically: true, encoding: .utf8)
         } catch {
-            try? fm.removeItem(
-                at: stagedModel
-            )
-
-            try? fm.removeItem(
-                at: stagedLibrary
-            )
-
+            try? fm.removeItem(at: stagedModel)
+            try? fm.removeItem(at: stagedLibrary)
             throw error
         }
 
         progress = 1
-        installed = true
-        installedVersion =
-            manifest.version
-        status =
-            "جاهز للعمل بدون إنترنت"
+        installedVersion = manifest.version
+        status = "جاهز للعمل بدون إنترنت"
+        refresh()
     }
 
     private func fetch(
@@ -254,112 +228,61 @@ final class LocalFiqhPack: ObservableObject {
         span: Double,
         label: String
     ) async throws {
+        guard url.scheme?.lowercased() == "https" else {
+            throw URLError(.secureConnectionFailed)
+        }
 
         status = label
-
-        let (temp, response) =
-            try await URLSession.shared.download(
-                from: url
-            )
-
-        guard let http =
-                response as? HTTPURLResponse,
-              (200..<300).contains(
-                http.statusCode
-              ) else {
+        let (temp, response) = try await URLSession.shared.download(from: url)
+        guard let http = response as? HTTPURLResponse,
+              (200..<300).contains(http.statusCode) else {
             throw URLError(.badServerResponse)
         }
 
-        let attrs =
-            try fm.attributesOfItem(
-                atPath: temp.path
-            )
-
-        let bytes =
-            (attrs[.size] as? NSNumber)?
-                .int64Value ?? 0
-
-        guard
-            expectedBytes <= 0
-            || bytes == expectedBytes
-        else {
-            throw URLError(
-                .cannotDecodeContentData
-            )
+        let attrs = try fm.attributesOfItem(atPath: temp.path)
+        let bytes = (attrs[.size] as? NSNumber)?.int64Value ?? 0
+        guard expectedBytes <= 0 || bytes == expectedBytes else {
+            throw URLError(.cannotDecodeContentData)
         }
 
-        let digest =
-            try sha256File(temp)
-
-        guard
-            digest.caseInsensitiveCompare(
-                sha256
-            ) == .orderedSame
-        else {
-            throw URLError(
-                .cannotDecodeContentData
-            )
+        status = "التحقق من SHA‑256…"
+        let digest = try sha256File(temp)
+        guard digest.caseInsensitiveCompare(sha256) == .orderedSame else {
+            throw URLError(.cannotDecodeContentData)
         }
 
-        if fm.fileExists(
-            atPath: destination.path
-        ) {
-            try fm.removeItem(
-                at: destination
-            )
-        }
-
-        try fm.moveItem(
-            at: temp,
-            to: destination
-        )
-
+        if fm.fileExists(atPath: destination.path) { try fm.removeItem(at: destination) }
+        try fm.moveItem(at: temp, to: destination)
         try? fm.setAttributes(
-            [
-                .protectionKey:
-                    FileProtectionType
-                        .completeUntilFirstUserAuthentication
-            ],
-            ofItemAtPath:
-                destination.path
+            [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
+            ofItemAtPath: destination.path
         )
-
-        progress =
-            min(
-                1,
-                base + span
-            )
+        progress = min(1, base + span)
     }
 
-    private func sha256File(
-        _ url: URL
-    ) throws -> String {
+    /// Incremental SHA-256 avoids loading a multi-gigabyte model into RAM.
+    private func sha256File(_ url: URL) throws -> String {
+        guard let stream = InputStream(url: url) else { throw URLError(.cannotOpenFile) }
+        stream.open()
+        defer { stream.close() }
 
-        let data =
-            try Data(
-                contentsOf: url,
-                options: .mappedIfSafe
-            )
+        var hasher = SHA256()
+        let bufferSize = 1024 * 1024
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+        defer { buffer.deallocate() }
 
-        return SHA256
-            .hash(data: data)
-            .map {
-                String(
-                    format: "%02x",
-                    $0
-                )
-            }
-            .joined()
+        while true {
+            let count = stream.read(buffer, maxLength: bufferSize)
+            if count < 0 { throw stream.streamError ?? URLError(.cannotDecodeContentData) }
+            if count == 0 { break }
+            hasher.update(bufferPointer: UnsafeRawBufferPointer(start: buffer, count: count))
+        }
+
+        return hasher.finalize().map { String(format: "%02x", $0) }.joined()
     }
 
-    private func atomicReplace(
-        _ source: URL,
-        _ destination: URL
-    ) throws {
-
-        if fm.fileExists(
-            atPath: destination.path
-        ) {
+    private func atomicReplace(_ source: URL, _ destination: URL) throws {
+        if fm.fileExists(atPath: destination.path) {
             _ = try fm.replaceItemAt(
                 destination,
                 withItemAt: source,
@@ -367,20 +290,12 @@ final class LocalFiqhPack: ObservableObject {
                 options: []
             )
         } else {
-            try fm.moveItem(
-                at: source,
-                to: destination
-            )
+            try fm.moveItem(at: source, to: destination)
         }
 
         try? fm.setAttributes(
-            [
-                .protectionKey:
-                    FileProtectionType
-                        .completeUntilFirstUserAuthentication
-            ],
-            ofItemAtPath:
-                destination.path
+            [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
+            ofItemAtPath: destination.path
         )
     }
 }

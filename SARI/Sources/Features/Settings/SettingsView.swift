@@ -60,5 +60,6 @@ struct SettingsView:View {
                 Button(SariUIStrings.text("cancel", language),role:.cancel){}
             } message:{Text(SariUIStrings.text("redownload_later",language))}
         }
+        .sariLanguageEnvironment(language)
     }
 }

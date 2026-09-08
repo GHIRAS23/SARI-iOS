@@ -1,10 +1,11 @@
 {
-  "status": "recommended-candidate-pending-device-benchmark",
-  "model": "Qwen3.5-2B",
+  "status": "validated-for-swift-llama-0.1.0",
+  "model": "Qwen2.5-3B-Instruct",
   "quant": "Q4_K_M",
-  "approxDownloadBytes": 1270000000,
-  "modelURL": "https://huggingface.co/SandLogicTechnologies/Qwen3.5-2B-GGUF/resolve/main/Qwen3.5-2B_Q4_k_m.gguf",
-  "reason": "Better balance than 0.6B/1.7B; multilingual; text-only SARI does not need mmproj.",
-  "fallbackIfDeviceWeak": "Disable local assistant or offer a smaller future validated pack; do not silently downgrade to 0.6B.",
-  "upgradeIfQualityInsufficient": "Qwen3.5-4B Q4/IQ4 optional high-quality pack"
+  "approxDownloadBytes": 2060000000,
+  "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d",
+  "modelURL": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf",
+  "reason": "Qwen2.5 3B is explicitly listed by SwiftLlama 0.1.0 as a supported Qwen model and supports Arabic plus the app's multilingual response flow.",
+  "runtime": "SwiftLlama 0.1.0 / ChatML / Metal",
+  "notes": "Downloaded and SHA-256 verified on device; fiqh sources stay bundled and inference is source-bound."
 }

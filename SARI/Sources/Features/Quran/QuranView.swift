@@ -1,4 +1,5 @@
 import SwiftUI
+import WebKit
 
 struct Ayah: Codable, Identifiable, Hashable {
     let id: Int
@@ -127,7 +128,7 @@ struct QuranView: View {
                 if let last = store.lastReadID, let ayah = store.ayah(id: last) {
                     ToolbarItem(placement: .topBarLeading) {
                         NavigationLink(destination: MushafReaderView(startPage: ayah.page, store: store)) {
-                            Label(SariUIStrings.text("last_read", SariLanguage.selected), systemImage: "book.pages.fill")
+                            Label(SariUIStrings.text("last_read", language), systemImage: "book.pages.fill")
                         }
                     }
                 }
@@ -187,15 +188,15 @@ struct QuranView: View {
 
     private var searchView: some View {
         VStack(spacing: 0) {
-            TextField(SariUIStrings.text("search_quran_name", SariLanguage.selected), text: $query)
+            TextField(SariUIStrings.text("search_quran_name", language), text: $query)
                 .textFieldStyle(.roundedBorder)
                 .padding()
                 .multilineTextAlignment(language.isArabic ? .trailing : .leading)
             if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 ContentUnavailableView(
-                    SariUIStrings.text("quran_search", SariLanguage.selected),
+                    SariUIStrings.text("quran_search", language),
                     systemImage: "magnifyingglass",
-                    description: Text(SariUIStrings.text("quran_search_hint", SariLanguage.selected))
+                    description: Text(SariUIStrings.text("quran_search_hint", language))
                 )
             } else {
                 List(store.search(query)) { ayah in
@@ -222,9 +223,9 @@ struct QuranView: View {
         return Group {
             if saved.isEmpty {
                 ContentUnavailableView(
-                    SariUIStrings.text("no_bookmarks", SariLanguage.selected),
+                    SariUIStrings.text("no_bookmarks", language),
                     systemImage: "bookmark",
-                    description: Text(SariUIStrings.text("quran_no_saved_hint", SariLanguage.selected))
+                    description: Text(SariUIStrings.text("quran_no_saved_hint", language))
                 )
             } else {
                 List(saved) { ayah in
@@ -288,21 +289,40 @@ struct MushafReaderView: View {
 
             TabView(selection: $currentPage) {
                 ForEach(1...604, id: \.self) { page in
-                    MushafPageView(page: page, ayat: store.ayat(onPage: page)) { ayah in
-                        store.markRead(ayah.id)
-                        selectedAyah = ayah
-                    }
+                    MushafPageView(
+                        page: page,
+                        ayat: store.ayat(onPage: page),
+                        isActive: abs(page - currentPage) <= 1
+                    )
                     .tag(page)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 6)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 5)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .safeAreaInset(edge: .bottom) {
-            pageControls
-        }
+        .safeAreaInset(edge: .bottom) { pageControls }
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Menu {
+                    let pageAyat = store.ayat(onPage: currentPage)
+                    if pageAyat.isEmpty {
+                        Text(noAyatLabel)
+                    } else {
+                        ForEach(pageAyat) { ayah in
+                            Button {
+                                store.markRead(ayah.id)
+                                selectedAyah = ayah
+                            } label: {
+                                Text("\(ayah.sura_name_ar) • \(ayah.ayah)")
+                            }
+                        }
+                    }
+                } label: {
+                    Label(pageAyatLabel, systemImage: "text.book.closed")
+                }
+            }
+
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     pageInput = "\(currentPage)"
@@ -318,18 +338,14 @@ struct MushafReaderView: View {
         .alert(pageJumpTitle, isPresented: $showPageJump) {
             TextField("1–604", text: $pageInput)
                 .keyboardType(.numberPad)
-            Button(SariUIStrings.text("cancel", SariLanguage.selected), role: .cancel) {}
-            Button(SariContentText.pick(language, [.ar: "انتقال", .en: "Go", .tr: "Git", .ms: "Pergi", .id: "Buka", .ja: "移動", .zh: "前往", .ru: "Перейти", .fr: "Aller"])) {
+            Button(SariUIStrings.text("cancel", language), role: .cancel) {}
+            Button(goLabel) {
                 if let value = Int(pageInput), (1...604).contains(value) {
                     withAnimation { currentPage = value }
                 }
             }
         } message: {
-            Text(SariContentText.pick(language, [
-                .ar: "أدخل رقم صفحة من 1 إلى 604", .en: "Enter a page number from 1 to 604", .tr: "1–604 arasında sayfa numarası girin",
-                .ms: "Masukkan nombor halaman 1 hingga 604", .id: "Masukkan nomor halaman 1–604", .ja: "1〜604のページ番号を入力してください",
-                .zh: "请输入1到604的页码", .ru: "Введите номер страницы от 1 до 604", .fr: "Entrez un numéro de page de 1 à 604"
-            ]))
+            Text(pageJumpMessage)
         }
         .onAppear {
             if let initialAyah {
@@ -341,6 +357,16 @@ struct MushafReaderView: View {
         }
         .onChange(of: currentPage) { _, newPage in
             if let first = store.ayat(onPage: newPage).first { store.markRead(first.id) }
+            Task {
+                let nearby = (max(1, newPage - 2)...min(604, newPage + 2))
+                    .filter { $0 != newPage }
+                await MushafPageRepository.shared.prefetch(pages: nearby)
+            }
+        }
+        .task {
+            let nearby = (max(1, currentPage - 2)...min(604, currentPage + 2))
+                .filter { $0 != currentPage }
+            await MushafPageRepository.shared.prefetch(pages: nearby)
         }
         .sariLanguageEnvironment(language)
     }
@@ -395,91 +421,187 @@ struct MushafReaderView: View {
             .ja: "ページへ移動", .zh: "前往页面", .ru: "Перейти к странице", .fr: "Aller à la page"
         ])
     }
+
+    private var pageJumpMessage: String {
+        SariContentText.pick(language, [
+            .ar: "أدخل رقم صفحة من 1 إلى 604", .en: "Enter a page number from 1 to 604", .tr: "1–604 arasında sayfa numarası girin",
+            .ms: "Masukkan nombor halaman 1 hingga 604", .id: "Masukkan nomor halaman 1–604", .ja: "1〜604のページ番号を入力してください",
+            .zh: "请输入1到604的页码", .ru: "Введите номер страницы от 1 до 604", .fr: "Entrez un numéro de page de 1 à 604"
+        ])
+    }
+
+    private var goLabel: String {
+        SariContentText.pick(language, [
+            .ar: "انتقال", .en: "Go", .tr: "Git", .ms: "Pergi", .id: "Buka", .ja: "移動", .zh: "前往", .ru: "Перейти", .fr: "Aller"
+        ])
+    }
+
+    private var pageAyatLabel: String {
+        SariContentText.pick(language, [
+            .ar: "آيات الصفحة", .en: "Page verses", .tr: "Sayfa ayetleri", .ms: "Ayat halaman", .id: "Ayat halaman",
+            .ja: "このページの節", .zh: "本页经文", .ru: "Аяты страницы", .fr: "Versets de la page"
+        ])
+    }
+
+    private var noAyatLabel: String {
+        SariContentText.pick(language, [
+            .ar: "لا توجد بيانات آيات لهذه الصفحة", .en: "No verse data for this page", .tr: "Bu sayfa için ayet verisi yok",
+            .ms: "Tiada data ayat untuk halaman ini", .id: "Tidak ada data ayat untuk halaman ini", .ja: "このページの節データがありません",
+            .zh: "本页没有经文数据", .ru: "Нет данных аятов для этой страницы", .fr: "Aucune donnée de verset pour cette page"
+        ])
+    }
 }
 
 private struct MushafPageView: View {
     let page: Int
     let ayat: [Ayah]
-    let onAyahTap: (Ayah) -> Void
+    let isActive: Bool
 
-    private var surahNames: String {
-        var seen = Set<Int>()
-        return ayat.compactMap { ayah in
-            guard seen.insert(ayah.sura).inserted else { return nil }
-            return ayah.sura_name_ar
-        }.joined(separator: " • ")
-    }
+    @AppStorage("sariLanguage") private var languageRaw = ""
+    @State private var svgData: Data?
+    @State private var failed = false
+    @State private var retryToken = 0
 
-    private var pageText: AttributedString {
-        var result = AttributedString()
-        var previousEndLine = 0
-        for ayah in ayat {
-            if previousEndLine == 0, ayah.line_start > 1 {
-                result.append(AttributedString(String(repeating: "\n", count: min(2, ayah.line_start - 1))))
-            } else if previousEndLine > 0 {
-                let gap = max(0, ayah.line_start - previousEndLine - 1)
-                if gap > 0 { result.append(AttributedString(String(repeating: "\n", count: min(2, gap)))) }
-            }
-            var chunk = AttributedString(ayah.text + " ")
-            chunk.link = URL(string: "sari://quran/ayah/\(ayah.id)")
-            result.append(chunk)
-            previousEndLine = max(previousEndLine, ayah.line_end)
-        }
-        return result
-    }
+    private var language: SariLanguage { SariLanguage(rawValue: languageRaw) ?? .device }
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("الجزء \(ayat.first?.juz ?? 1)")
-                Spacer()
-                Text(surahNames)
-                    .lineLimit(1)
-                Spacer()
-                Text("\(page)")
-            }
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 16)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
-
-            Divider().opacity(0.35)
-
-            ScrollView {
-                Text(pageText)
-                    .font(.custom("kfgqpchafsuthmanicscript-Reg", size: 26))
-                    .lineSpacing(8)
-                    .kerning(0.15)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 18)
-                    .tint(.primary)
-                    .environment(\.openURL, OpenURLAction { url in
-                        guard url.scheme == "sari",
-                              let id = Int(url.lastPathComponent),
-                              let ayah = ayat.first(where: { $0.id == id }) else { return .discarded }
-                        onAyahTap(ayah)
-                        return .handled
-                    })
-            }
-
-            Divider().opacity(0.35)
-            Text("﴿ \(page) ﴾")
-                .font(.custom("kfgqpchafsuthmanicscript-Reg", size: 17))
-                .padding(.vertical, 7)
-        }
-        .environment(\.layoutDirection, .rightToLeft)
-        .background(
+        ZStack {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .fill(Color(uiColor: .systemBackground))
                 .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
-        )
+
+            if let svgData {
+                MushafSVGWebView(data: svgData)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .padding(2)
+            } else if failed {
+                fallbackView
+                    .padding(14)
+            } else {
+                VStack(spacing: 12) {
+                    ProgressView()
+                    Text(loadingLabel)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(Color.primary.opacity(0.06), lineWidth: 1)
         )
+        .task(id: "\(page)-\(isActive)-\(retryToken)") {
+            guard isActive, svgData == nil else { return }
+            failed = false
+            do {
+                svgData = try await MushafPageRepository.shared.svgData(for: page)
+            } catch {
+                failed = true
+            }
+        }
+    }
+
+    private var fallbackView: some View {
+        VStack(spacing: 12) {
+            Label(exactPageUnavailableLabel, systemImage: "wifi.exclamationmark")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+
+            ScrollView {
+                VStack(alignment: .trailing, spacing: 12) {
+                    ForEach(ayat) { ayah in
+                        Text(ayah.text)
+                            .font(.custom("kfgqpchafsuthmanicscript-Reg", size: 23))
+                            .lineSpacing(5)
+                            .multilineTextAlignment(.trailing)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
+                }
+            }
+            .environment(\.layoutDirection, .rightToLeft)
+
+            Button {
+                svgData = nil
+                failed = false
+                retryToken += 1
+            } label: {
+                Label(retryLabel, systemImage: "arrow.clockwise")
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+
+    private var loadingLabel: String {
+        SariContentText.pick(language, [
+            .ar: "تحميل صفحة المصحف الدقيقة…", .en: "Loading the exact Mushaf page…", .tr: "Tam Mushaf sayfası yükleniyor…",
+            .ms: "Memuat halaman Mushaf tepat…", .id: "Memuat halaman Mushaf presisi…", .ja: "正確なムシャフページを読み込み中…",
+            .zh: "正在加载精确的穆斯哈夫页面…", .ru: "Загрузка точной страницы мусхафа…", .fr: "Chargement de la page exacte du Moushaf…"
+        ])
+    }
+
+    private var exactPageUnavailableLabel: String {
+        SariContentText.pick(language, [
+            .ar: "الصفحة المطابقة لم تُحفظ على الجهاز بعد. يظهر النص المحلي مؤقتًا.",
+            .en: "The exact page is not cached on this device yet. Local text is shown temporarily.",
+            .tr: "Tam sayfa henüz cihazda önbelleğe alınmadı. Yerel metin geçici olarak gösteriliyor.",
+            .ms: "Halaman tepat belum disimpan pada peranti. Teks tempatan dipaparkan sementara.",
+            .id: "Halaman presisi belum tersimpan di perangkat. Teks lokal ditampilkan sementara.",
+            .ja: "正確なページはまだ端末に保存されていません。一時的にローカル本文を表示します。",
+            .zh: "精确页面尚未缓存在设备上，暂时显示本地文本。",
+            .ru: "Точная страница ещё не сохранена на устройстве; временно показан локальный текст.",
+            .fr: "La page exacte n’est pas encore en cache sur l’appareil ; le texte local est affiché temporairement."
+        ])
+    }
+
+    private var retryLabel: String {
+        SariContentText.pick(language, [
+            .ar: "إعادة المحاولة", .en: "Retry", .tr: "Tekrar dene", .ms: "Cuba lagi", .id: "Coba lagi",
+            .ja: "再試行", .zh: "重试", .ru: "Повторить", .fr: "Réessayer"
+        ])
+    }
+}
+
+private struct MushafSVGWebView: UIViewRepresentable {
+    let data: Data
+
+    final class Coordinator {
+        var lastData: Data?
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
+    func makeUIView(context: Context) -> WKWebView {
+        let configuration = WKWebViewConfiguration()
+        configuration.defaultWebpagePreferences.allowsContentJavaScript = false
+
+        let webView = WKWebView(frame: .zero, configuration: configuration)
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = .clear
+        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.bounces = false
+        webView.isUserInteractionEnabled = false
+        return webView
+    }
+
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        guard context.coordinator.lastData != data else { return }
+        context.coordinator.lastData = data
+        let encoded = data.base64EncodedString()
+        let html = """
+        <!doctype html>
+        <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+          <style>
+            html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent;}
+            img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;}
+          </style>
+        </head>
+        <body><img alt="Mushaf page" src="data:image/svg+xml;base64,\(encoded)"></body>
+        </html>
+        """
+        webView.loadHTMLString(html, baseURL: nil)
     }
 }
 
@@ -567,7 +689,7 @@ struct TafsirSheet: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(SariUIStrings.text("done", SariLanguage.selected)) { dismiss() }
+                    Button(SariUIStrings.text("done", language)) { dismiss() }
                 }
             }
         }
