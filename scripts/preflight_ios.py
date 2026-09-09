@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import plistlib
 import sqlite3
+import struct
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -85,6 +86,75 @@ def check_app_resource_collisions() -> None:
         if len(paths) > 1:
             pretty = ", ".join(str(p.relative_to(ROOT)) for p in paths)
             fail(f"Duplicate app bundle resource output '{key}': {pretty}")
+
+
+def caf_duration_seconds(path: Path) -> float | None:
+    """Parse enough of a CAF file to validate iOS custom-notification audio.
+
+    SARI's notification files are uncompressed LPCM CAF. iOS custom notification
+    sounds must be shorter than 30 seconds, so this release gate verifies the
+    actual bundled bytes rather than only checking filenames.
+    """
+    try:
+        data = path.read_bytes()
+        if len(data) < 20 or data[:4] != b"caff":
+            return None
+        pos = 8
+        desc = None
+        audio_bytes = None
+        while pos + 12 <= len(data):
+            chunk_type = data[pos:pos + 4]
+            chunk_size = struct.unpack(">q", data[pos + 4:pos + 12])[0]
+            pos += 12
+            if chunk_size < 0:
+                chunk_size = len(data) - pos
+            if pos + chunk_size > len(data):
+                return None
+            chunk = data[pos:pos + chunk_size]
+            if chunk_type == b"desc" and len(chunk) >= 32:
+                sample_rate = struct.unpack(">d", chunk[:8])[0]
+                format_id = chunk[8:12]
+                _, bytes_per_packet, frames_per_packet, channels, bits = struct.unpack(">IIIII", chunk[12:32])
+                desc = (sample_rate, format_id, bytes_per_packet, frames_per_packet, channels, bits)
+            elif chunk_type == b"data":
+                # CAF data chunk starts with a 4-byte edit count.
+                audio_bytes = max(0, chunk_size - 4)
+            pos += chunk_size
+
+        if not desc or audio_bytes is None:
+            return None
+        sample_rate, format_id, bytes_per_packet, frames_per_packet, channels, bits = desc
+        if format_id != b"lpcm" or sample_rate <= 0 or bytes_per_packet <= 0 or frames_per_packet <= 0:
+            return None
+        if channels < 1 or bits not in (8, 16, 24, 32):
+            return None
+        packets = audio_bytes / bytes_per_packet
+        return packets * frames_per_packet / sample_rate
+    except Exception:
+        return None
+
+
+def check_adhan_audio() -> None:
+    reciters = load_json("SARI/Resources/data/adhan_reciters.json")
+    if not isinstance(reciters, dict):
+        return
+    for item in reciters.get("sounds", []):
+        if not isinstance(item, dict):
+            continue
+        notification = item.get("notification", "")
+        preview = item.get("preview", "")
+        caf = ROOT / "SARI/Resources" / notification
+        m4a = ROOT / "SARI/Resources/audio" / preview
+        if caf.is_file():
+            duration = caf_duration_seconds(caf)
+            if duration is None:
+                fail(f"Invalid or unsupported CAF notification sound: {notification}")
+            elif duration >= 30:
+                fail(f"Adhan notification sound must be under 30 seconds: {notification} = {duration:.2f}s")
+        if m4a.is_file():
+            head = m4a.read_bytes()[:32]
+            if b"ftyp" not in head:
+                fail(f"Invalid M4A Adhan preview container: {preview}")
 
 
 def check_bundled_data() -> None:
@@ -204,10 +274,10 @@ def check_project_config() -> None:
     for token in required:
         if token not in text:
             fail(f"project.yml is missing required setting: {token}")
-    if text.count("MARKETING_VERSION: 0.9.2") != 2:
-        fail("App and widget MARKETING_VERSION must both be 0.9.2")
-    if text.count("CURRENT_PROJECT_VERSION: 11") != 2:
-        fail("App and widget CURRENT_PROJECT_VERSION must both be 11")
+    if text.count("MARKETING_VERSION: 0.9.3") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.3")
+    if text.count("CURRENT_PROJECT_VERSION: 12") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 12")
 
 
 def check_local_ai_config() -> None:
@@ -245,6 +315,7 @@ check_required_files()
 check_plists()
 check_app_resource_collisions()
 check_bundled_data()
+check_adhan_audio()
 check_sqlite()
 check_project_config()
 check_local_ai_config()
@@ -258,4 +329,5 @@ if ERRORS:
 print("SARI iOS preflight OK")
 print("- no duplicate app resource outputs")
 print("- plists/resources/data/sqlite validated")
+print("- Adhan CAF/M4A assets validated; custom notification sounds are < 30s")
 print("- app/widget version and core XcodeGen settings aligned")

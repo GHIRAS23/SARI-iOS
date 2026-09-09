@@ -898,13 +898,7 @@ final class PrayerStore:
                 forKey: "adhanSound"
             ) ?? "AdhanAliMulla.caf"
 
-        let validSounds: Set<String> = [
-            "AdhanDughariri.caf",
-            "AdhanQatami.caf",
-            "AdhanBaafif.caf",
-            "AdhanAliMulla.caf"
-        ]
-        let soundName = validSounds.contains(savedSound) ? savedSound : "AdhanAliMulla.caf"
+        let soundName = resolvedAdhanSoundName(savedSound) ?? "AdhanAliMulla.caf"
         if soundName != savedSound { suite?.set(soundName, forKey: "adhanSound") }
 
         let prayers = [
@@ -990,6 +984,62 @@ final class PrayerStore:
         }
     }
 
+    private func resolvedAdhanSoundName(_ requested: String) -> String? {
+        let validSounds: Set<String> = [
+            "AdhanDughariri.caf",
+            "AdhanQatami.caf",
+            "AdhanBaafif.caf",
+            "AdhanAliMulla.caf"
+        ]
+        guard validSounds.contains(requested) else { return nil }
+        let file = requested as NSString
+        let ext = file.pathExtension
+        let name = file.deletingPathExtension
+        guard Bundle.main.url(forResource: name, withExtension: ext) != nil else { return nil }
+        return requested
+    }
+
+    /// Schedules a short test using the same custom sound path as real prayer alerts.
+    /// This catches bundle/sound/permission issues without waiting for the next prayer.
+    func testAdhanNotification(after seconds: TimeInterval = 3) {
+        let center = UNUserNotificationCenter.current()
+        let savedSound = suite?.string(forKey: "adhanSound") ?? "AdhanAliMulla.caf"
+        let soundName = resolvedAdhanSoundName(savedSound)
+        let language = SariLanguage.selected
+
+        Task {
+            let granted = (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+            guard granted else { return }
+
+            let content = UNMutableNotificationContent()
+            content.title = SariContentText.pick(language, [
+                .ar: "اختبار صوت الأذان", .en: "Adhan sound test", .tr: "Ezan sesi testi",
+                .ms: "Ujian bunyi azan", .id: "Tes suara azan", .ja: "アザーン音テスト",
+                .zh: "宣礼声测试", .ru: "Проверка звука азана", .fr: "Test du son de l’adhan"
+            ])
+            content.body = SariContentText.pick(language, [
+                .ar: "إذا سمعت الأذان فملف الإشعار يعمل بشكل صحيح.", .en: "If you hear the Adhan, the notification sound file is working correctly.",
+                .tr: "Ezanı duyarsanız bildirim ses dosyası doğru çalışıyor.", .ms: "Jika anda mendengar azan, fail bunyi notifikasi berfungsi dengan betul.",
+                .id: "Jika azan terdengar, file suara notifikasi berfungsi dengan benar.", .ja: "アザーンが聞こえれば通知音ファイルは正常です。",
+                .zh: "如果听到宣礼声，说明通知声音文件工作正常。", .ru: "Если слышен азан, файл звука уведомления работает правильно.",
+                .fr: "Si vous entendez l’adhan, le fichier sonore de notification fonctionne correctement."
+            ])
+            if let soundName {
+                content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: soundName))
+            } else {
+                content.sound = .default
+            }
+
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(seconds, 1), repeats: false)
+            let request = UNNotificationRequest(
+                identifier: "sari_adhan_sound_test",
+                content: content,
+                trigger: trigger
+            )
+            try? await center.add(request)
+        }
+    }
+
     private func addNotification(
         center:
             UNUserNotificationCenter,
@@ -1005,15 +1055,12 @@ final class PrayerStore:
         content.title = title
         content.body = body
 
-        if let sound {
-            content.sound =
-                UNNotificationSound(
-                    named:
-                        UNNotificationSoundName(
-                            rawValue: sound
-                        )
-                )
+        if let sound, let bundledSound = resolvedAdhanSoundName(sound) {
+            content.sound = UNNotificationSound(
+                named: UNNotificationSoundName(rawValue: bundledSound)
+            )
         } else {
+            // Never schedule a silent/broken custom path. Fall back to the system sound.
             content.sound = .default
         }
 

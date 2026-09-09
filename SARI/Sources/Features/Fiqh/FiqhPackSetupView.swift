@@ -35,6 +35,11 @@ struct FiqhPackSetupView: View {
                     Text(downloadStatus)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+                    if pack.downloadedBytes > 0 {
+                        Text(progressDetails)
+                            .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
                     Text(downloadKeepOpen)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -55,7 +60,7 @@ struct FiqhPackSetupView: View {
                                 error = nil
                                 try await pack.installRecommendedModel()
                             } catch {
-                                self.error = failedLabel
+                                self.error = failureMessage(error)
                             }
                         }
                     } label: {
@@ -186,10 +191,55 @@ struct FiqhPackSetupView: View {
     ]) }
 
     private var downloadKeepOpen: String { SariContentText.pick(language, [
-        .ar: "يفضل إبقاء SARI مفتوحًا حتى يكتمل التنزيل.", .en: "Keep SARI open until the download finishes.", .tr: "İndirme bitene kadar SARI'yi açık tutun.",
-        .ms: "Biarkan SARI terbuka sehingga muat turun selesai.", .id: "Biarkan SARI tetap terbuka sampai unduhan selesai.", .ja: "ダウンロード完了までSARIを開いたままにしてください。",
-        .zh: "请保持 SARI 打开直到下载完成。", .ru: "Оставьте SARI открытым до завершения загрузки.", .fr: "Gardez SARI ouvert jusqu’à la fin du téléchargement."
+        .ar: "إذا انقطع الاتصال سيحاول SARI الاستكمال تلقائيًا، ويحفظ بيانات الاستئناف للمحاولة التالية.", .en: "If the connection drops, SARI retries automatically and keeps resume data for the next attempt.", .tr: "Bağlantı kesilirse SARI otomatik olarak yeniden dener ve sonraki deneme için devam verisini saklar.",
+        .ms: "Jika sambungan terputus, SARI mencuba semula secara automatik dan menyimpan data sambungan untuk percubaan seterusnya.", .id: "Jika koneksi terputus, SARI mencoba lagi otomatis dan menyimpan data lanjutan untuk percobaan berikutnya.", .ja: "接続が切れた場合、SARIは自動再試行し、次回のために再開データを保存します。",
+        .zh: "如果连接中断，SARI 会自动重试，并保存断点数据供下次继续。", .ru: "При обрыве соединения SARI автоматически повторит попытку и сохранит данные для продолжения.", .fr: "Si la connexion est interrompue, SARI réessaie automatiquement et conserve les données de reprise."
     ]) }
+
+
+    private var progressDetails: String {
+        let written = formatBytes(pack.downloadedBytes)
+        let total = pack.totalBytes > 0 ? formatBytes(pack.totalBytes) : "—"
+        let speed = pack.bytesPerSecond > 0 ? " · \(formatBytes(Int64(pack.bytesPerSecond)))/s" : ""
+        let percent = Int((pack.progress * 100).rounded())
+        return "\(written) / \(total) · \(percent)%\(speed)"
+    }
+
+    private func formatBytes(_ bytes: Int64) -> String {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useMB, .useGB]
+        formatter.countStyle = .file
+        formatter.includesUnit = true
+        return formatter.string(fromByteCount: max(bytes, 0))
+    }
+
+    private func failureMessage(_ error: Error) -> String {
+        let reason: String
+        if let urlError = error as? URLError {
+            switch urlError.code {
+            case .notConnectedToInternet, .networkConnectionLost, .timedOut:
+                reason = SariContentText.pick(language, [
+                    .ar: "انقطع الاتصال أثناء التنزيل. بيانات الاستئناف محفوظة؛ أعد المحاولة وسيكمل SARI قدر الإمكان من حيث توقف.",
+                    .en: "The connection was interrupted. Resume data was saved; try again and SARI will continue where possible."
+                ])
+            case .dataLengthExceedsMaximum:
+                reason = SariContentText.pick(language, [
+                    .ar: "المساحة الحرة غير كافية لتنزيل النموذج والتحقق منه. وفر ما لا يقل عن 3.2 جيجابايت.",
+                    .en: "There is not enough free storage to download and verify the model. Free at least 3.2 GB."
+                ])
+            case .cannotDecodeContentData:
+                reason = SariContentText.pick(language, [
+                    .ar: "اكتمل ملف غير مطابق للحجم أو بصمة SHA‑256، لذلك رفضه SARI ولن يفعّله.",
+                    .en: "The completed file did not match the expected size or SHA-256, so SARI rejected it."
+                ])
+            default:
+                reason = urlError.localizedDescription
+            }
+        } else {
+            reason = error.localizedDescription
+        }
+        return "\(failedLabel)\n\(reason)"
+    }
 
     private var verificationNote: String { SariContentText.pick(language, [
         .ar: "يُفعّل النموذج فقط بعد مطابقة بصمة SHA‑256 الموثقة؛ وإذا فشل التحقق فلا يُستخدم الملف.",

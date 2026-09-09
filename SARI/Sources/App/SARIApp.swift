@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct SARIApp: App {
+    @UIApplicationDelegateAdaptor(SariAppDelegate.self) private var appDelegate
     @StateObject private var prayer = PrayerStore()
     @AppStorage("sariOnboardingCompleted") private var onboardingCompleted = false
     @Environment(\.scenePhase) private var scenePhase

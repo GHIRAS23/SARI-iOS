@@ -18,6 +18,7 @@ struct PrayerSettingsView: View {
     @AppStorage("asrMethod",store:UserDefaults(suiteName:"group.sa.sari.app")) private var asrMethod="standard"
     @State private var player: AVAudioPlayer?
     @State private var audioError: String?
+    @State private var testMessage: String?
     private var language: SariLanguage { SariLanguage.selected }
 
     private let sounds: [AdhanSoundOption] = [
@@ -99,6 +100,21 @@ struct PrayerSettingsView: View {
                     .contentShape(Rectangle())
                     .onTapGesture { select(sound) }
                 }
+                Button {
+                    testMessage = SariContentText.pick(language,[
+                        .ar:"سيصل اختبار صوت الأذان خلال 3 ثوانٍ.",.en:"An Adhan sound test will arrive in 3 seconds.",
+                        .tr:"Ezan sesi testi 3 saniye içinde gelecek.",.ms:"Ujian bunyi azan akan tiba dalam 3 saat (3 detik).",
+                        .id:"Tes suara azan akan muncul dalam 3 detik.",.ja:"3秒後にアザーン音テストが届きます。",
+                        .zh:"3 秒后将收到宣礼声测试。",.ru:"Проверка звука азана придёт через 3 секунды.",.fr:"Un test du son de l’adhan arrivera dans 3 secondes."
+                    ])
+                    prayer.testAdhanNotification(after: 3)
+                } label: {
+                    Label(SariContentText.pick(language,[
+                        .ar:"اختبار صوت الأذان",.en:"Test Adhan sound",.tr:"Ezan sesini test et",.ms:"Uji bunyi azan",
+                        .id:"Tes suara azan",.ja:"アザーン音をテスト",.zh:"测试宣礼声",.ru:"Проверить звук азана",.fr:"Tester le son de l’adhan"
+                    ]), systemImage:"speaker.wave.2.fill")
+                }
+                if let testMessage { Text(testMessage).font(.caption).foregroundStyle(.secondary) }
                 if let audioError { Text(audioError).font(.caption).foregroundStyle(.red) }
             } header: {
                 Text(SariUIStrings.text("adhan_sound", language))

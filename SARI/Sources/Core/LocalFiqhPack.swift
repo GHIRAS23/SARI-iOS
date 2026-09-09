@@ -30,6 +30,9 @@ final class LocalFiqhPack: ObservableObject {
     @Published private(set) var progress: Double = 0
     @Published private(set) var status = "غير مثبت"
     @Published private(set) var installedVersion: String?
+    @Published private(set) var downloadedBytes: Int64 = 0
+    @Published private(set) var totalBytes: Int64 = 0
+    @Published private(set) var bytesPerSecond: Double = 0
 
     private let fm = FileManager.default
 
@@ -89,6 +92,9 @@ final class LocalFiqhPack: ObservableObject {
         if fm.fileExists(atPath: root.path) { try fm.removeItem(at: root) }
         installedVersion = nil
         progress = 0
+        downloadedBytes = 0
+        totalBytes = 0
+        bytesPerSecond = 0
         refresh()
     }
 
@@ -111,31 +117,60 @@ final class LocalFiqhPack: ObservableObject {
             throw URLError(.dataLengthExceedsMaximum)
         }
 
-        let stagedModel = root.appendingPathComponent("model.gguf.new")
-        try? fm.removeItem(at: stagedModel)
+        // Keep the partial/resume state across transient network failures.
+        // A 2.1 GB model must never be forced to restart from zero after a timeout.
+        let stagedModel = root.appendingPathComponent("model.gguf.part")
+        let resumeData = root.appendingPathComponent("model.gguf.resume")
 
+        progress = 0.08
+        downloadedBytes = 0
+        totalBytes = Self.recommendedApproxBytes
+        bytesPerSecond = 0
+
+        var lastError: Error?
+        for attempt in 1...3 {
+            do {
+                try await fetch(
+                    Self.recommendedModelURL,
+                    to: stagedModel,
+                    resumeDataAt: resumeData,
+                    expectedBytes: 0,
+                    sha256: Self.recommendedModelSHA256,
+                    base: 0.08,
+                    span: 0.84,
+                    label: attempt == 1
+                        ? "تنزيل نموذج المساعد المحلي…"
+                        : "استكمال تنزيل النموذج — المحاولة \(attempt) من 3…"
+                )
+                lastError = nil
+                break
+            } catch {
+                lastError = error
+                if let urlError = error as? URLError, urlError.code == .cannotResume {
+                    try? fm.removeItem(at: resumeData)
+                }
+                guard attempt < 3 else { break }
+                status = "انقطع التنزيل — سيتم الاستكمال تلقائيًا…"
+                try? await Task.sleep(nanoseconds: UInt64(attempt) * 2_000_000_000)
+            }
+        }
+
+        if let lastError {
+            // Do not erase resume data here: the next tap can continue the transfer.
+            throw lastError
+        }
+
+        status = "التحقق من سلامة النموذج…"
+        progress = max(progress, 0.94)
         do {
-            progress = 0.08
-            try await fetch(
-                Self.recommendedModelURL,
-                to: stagedModel,
-                expectedBytes: 0,
-                sha256: Self.recommendedModelSHA256,
-                base: 0.08,
-                span: 0.84,
-                label: "تنزيل نموذج المساعد المحلي…"
-            )
-
-            status = "التحقق من سلامة النموذج…"
-            progress = max(progress, 0.94)
             try atomicReplace(stagedModel, modelURL)
+            try? fm.removeItem(at: resumeData)
             try Self.recommendedModelVersion.write(
                 to: versionURL,
                 atomically: true,
                 encoding: .utf8
             )
         } catch {
-            try? fm.removeItem(at: stagedModel)
             throw error
         }
 
@@ -179,8 +214,8 @@ final class LocalFiqhPack: ObservableObject {
             throw URLError(.cannotParseResponse)
         }
 
-        let stagedModel = root.appendingPathComponent("model.gguf.new")
-        let stagedLibrary = root.appendingPathComponent("fiqh_pages.sqlite3.new")
+        let stagedModel = root.appendingPathComponent("model.gguf.part")
+        let stagedLibrary = root.appendingPathComponent("fiqh_pages.sqlite3.part")
         try? fm.removeItem(at: stagedModel)
         try? fm.removeItem(at: stagedLibrary)
 
@@ -188,6 +223,7 @@ final class LocalFiqhPack: ObservableObject {
             try await fetch(
                 manifest.modelURL,
                 to: stagedModel,
+                resumeDataAt: root.appendingPathComponent("manifest-model.resume"),
                 expectedBytes: manifest.modelBytes,
                 sha256: manifest.modelSHA256,
                 base: 0,
@@ -197,6 +233,7 @@ final class LocalFiqhPack: ObservableObject {
             try await fetch(
                 manifest.libraryURL,
                 to: stagedLibrary,
+                resumeDataAt: root.appendingPathComponent("manifest-library.resume"),
                 expectedBytes: manifest.libraryBytes,
                 sha256: manifest.librarySHA256,
                 base: 0.82,
@@ -222,6 +259,7 @@ final class LocalFiqhPack: ObservableObject {
     private func fetch(
         _ url: URL,
         to destination: URL,
+        resumeDataAt resumeDataURL: URL,
         expectedBytes: Int64,
         sha256: String,
         base: Double,
@@ -233,29 +271,47 @@ final class LocalFiqhPack: ObservableObject {
         }
 
         status = label
-        let (temp, response) = try await URLSession.shared.download(from: url)
-        guard let http = response as? HTTPURLResponse,
-              (200..<300).contains(http.statusCode) else {
-            throw URLError(.badServerResponse)
+        let downloaded = try await ResumableFileDownloader.shared.download(
+            from: url,
+            to: destination,
+            resumeDataAt: resumeDataURL
+        ) { snapshot in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.downloadedBytes = snapshot.writtenBytes
+                let effectiveTotal = snapshot.expectedBytes > 0 ? snapshot.expectedBytes : self.totalBytes
+                if snapshot.expectedBytes > 0 { self.totalBytes = snapshot.expectedBytes }
+                if effectiveTotal > 0 {
+                    let fraction = min(1, Double(snapshot.writtenBytes) / Double(effectiveTotal))
+                    self.progress = min(0.93, base + span * fraction)
+                }
+                self.bytesPerSecond = snapshot.bytesPerSecond
+            }
         }
 
-        let attrs = try fm.attributesOfItem(atPath: temp.path)
+        let attrs = try fm.attributesOfItem(atPath: downloaded.path)
         let bytes = (attrs[.size] as? NSNumber)?.int64Value ?? 0
+        downloadedBytes = bytes
+        if expectedBytes > 0 { totalBytes = expectedBytes }
         guard expectedBytes <= 0 || bytes == expectedBytes else {
+            try? fm.removeItem(at: downloaded)
+            try? fm.removeItem(at: resumeDataURL)
             throw URLError(.cannotDecodeContentData)
         }
 
         status = "التحقق من SHA‑256…"
-        let digest = try sha256File(temp)
+        progress = max(progress, base + span * 0.98)
+        let digest = try sha256File(downloaded)
         guard digest.caseInsensitiveCompare(sha256) == .orderedSame else {
+            // A completed but corrupt file must never be resumed or activated.
+            try? fm.removeItem(at: downloaded)
+            try? fm.removeItem(at: resumeDataURL)
             throw URLError(.cannotDecodeContentData)
         }
 
-        if fm.fileExists(atPath: destination.path) { try fm.removeItem(at: destination) }
-        try fm.moveItem(at: temp, to: destination)
         try? fm.setAttributes(
             [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
-            ofItemAtPath: destination.path
+            ofItemAtPath: downloaded.path
         )
         progress = min(1, base + span)
     }
