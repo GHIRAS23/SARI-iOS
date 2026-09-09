@@ -274,10 +274,10 @@ def check_project_config() -> None:
     for token in required:
         if token not in text:
             fail(f"project.yml is missing required setting: {token}")
-    if text.count("MARKETING_VERSION: 0.9.4") != 2:
-        fail("App and widget MARKETING_VERSION must both be 0.9.4")
-    if text.count("CURRENT_PROJECT_VERSION: 13") != 2:
-        fail("App and widget CURRENT_PROJECT_VERSION must both be 13")
+    if text.count("MARKETING_VERSION: 0.9.5") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.5")
+    if text.count("CURRENT_PROJECT_VERSION: 14") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 14")
 
 
 def check_local_ai_config() -> None:
@@ -298,6 +298,35 @@ def check_local_ai_config() -> None:
             fail("LocalFiqhPack.swift does not match LocalAIPack/recommended_model.json")
 
 
+
+
+
+def check_swift6_api_compatibility() -> None:
+    """Catch known type-check-only traps that `swiftc -parse` cannot detect.
+
+    This release gate was added after Xcode 16.4 correctly rejected
+    `URLError.Code.cannotResume`: that member does not exist even though the
+    source is syntactically valid. Keep the scan explicit and deterministic.
+    """
+    local_pack = require("SARI/Sources/Core/LocalFiqhPack.swift")
+    downloader = require("SARI/Sources/Core/ResumableFileDownloader.swift")
+    for path in (local_pack, downloader):
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        if ".cannotResume" in text:
+            fail(f"Unsupported URLError.Code.cannotResume in {path.relative_to(ROOT)} (Xcode 16.4/Swift 6)")
+
+    if downloader.exists():
+        text = downloader.read_text(encoding="utf-8")
+        required_tokens = (
+            "NSURLSessionDownloadTaskResumeData",
+            "startedFromResumeData",
+            "Data.WritingOptions.atomic",
+        )
+        for token in required_tokens:
+            if token not in text:
+                fail(f"Resumable downloader compatibility guard missing: {token}")
 
 def check_notification_delegate() -> None:
     p = require("SARI/Sources/App/SariAppDelegate.swift")
@@ -332,6 +361,7 @@ check_adhan_audio()
 check_sqlite()
 check_project_config()
 check_local_ai_config()
+check_swift6_api_compatibility()
 check_notification_delegate()
 
 if ERRORS:
@@ -344,4 +374,5 @@ print("SARI iOS preflight OK")
 print("- no duplicate app resource outputs")
 print("- plists/resources/data/sqlite validated")
 print("- Adhan CAF/M4A assets validated; custom notification sounds are < 30s")
+print("- Swift 6/Xcode 16.4 compatibility traps validated")
 print("- app/widget version and core XcodeGen settings aligned")

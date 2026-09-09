@@ -53,6 +53,7 @@ final class ResumableFileDownloader: NSObject, URLSessionDownloadDelegate, @unch
     private var lastSampleDate = Date()
     private var lastSampleBytes: Int64 = 0
     private var completedResult = false
+    private var startedFromResumeData = false
 
     private override init() {
         super.init()
@@ -83,8 +84,10 @@ final class ResumableFileDownloader: NSObject, URLSessionDownloadDelegate, @unch
 
             let task: URLSessionDownloadTask
             if let resumeData = try? Data(contentsOf: resumeURL), !resumeData.isEmpty {
+                self.startedFromResumeData = true
                 task = session.downloadTask(withResumeData: resumeData)
             } else {
+                self.startedFromResumeData = false
                 var request = URLRequest(url: url)
                 request.timeoutInterval = 120
                 request.cachePolicy = .reloadIgnoringLocalCacheData
@@ -173,19 +176,26 @@ final class ResumableFileDownloader: NSObject, URLSessionDownloadDelegate, @unch
     ) {
         if let error {
             let nsError = error as NSError
-            if let resumeData = nsError.userInfo[NSURLSessionDownloadTaskResumeData] as? Data,
-               !resumeData.isEmpty {
-                lock.lock()
-                let resumeURL = resumeDataURL
-                lock.unlock()
-                if let resumeURL {
-                    try? FileManager.default.createDirectory(
-                        at: resumeURL.deletingLastPathComponent(),
-                        withIntermediateDirectories: true
-                    )
-                    try? resumeData.write(to: resumeURL, options: .atomic)
-                }
+            let newResumeData = nsError.userInfo[NSURLSessionDownloadTaskResumeData] as? Data
+
+            lock.lock()
+            let resumeURL = resumeDataURL
+            let hadResumeData = startedFromResumeData
+            lock.unlock()
+
+            if let newResumeData, !newResumeData.isEmpty, let resumeURL {
+                try? FileManager.default.createDirectory(
+                    at: resumeURL.deletingLastPathComponent(),
+                    withIntermediateDirectories: true
+                )
+                try? newResumeData.write(to: resumeURL, options: Data.WritingOptions.atomic)
+            } else if hadResumeData, let resumeURL {
+                // If a resume-based task fails without producing replacement resume data,
+                // the stored resume blob is stale/corrupt. Remove it so the next retry can
+                // start a clean request instead of failing forever on the same blob.
+                try? FileManager.default.removeItem(at: resumeURL)
             }
+
             finish(.failure(error))
             return
         }
@@ -213,6 +223,7 @@ final class ResumableFileDownloader: NSObject, URLSessionDownloadDelegate, @unch
         self.destinationURL = nil
         self.resumeDataURL = nil
         self.completedResult = false
+        self.startedFromResumeData = false
         lock.unlock()
 
         switch result {

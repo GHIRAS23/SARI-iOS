@@ -146,9 +146,8 @@ final class LocalFiqhPack: ObservableObject {
                 break
             } catch {
                 lastError = error
-                if let urlError = error as? URLError, urlError.code == .cannotResume {
-                    try? fm.removeItem(at: resumeData)
-                }
+                // Resume-data validity is handled inside ResumableFileDownloader.
+                // Keep transient network state here so a multi-gigabyte model can continue.
                 guard attempt < 3 else { break }
                 status = "انقطع التنزيل — سيتم الاستكمال تلقائيًا…"
                 try? await Task.sleep(nanoseconds: UInt64(attempt) * 2_000_000_000)

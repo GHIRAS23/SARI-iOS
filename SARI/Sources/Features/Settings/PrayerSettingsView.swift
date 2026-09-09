@@ -103,7 +103,7 @@ struct PrayerSettingsView: View {
                 Button {
                     testMessage = SariContentText.pick(language,[
                         .ar:"سيصل اختبار صوت الأذان خلال 3 ثوانٍ.",.en:"An Adhan sound test will arrive in 3 seconds.",
-                        .tr:"Ezan sesi testi 3 saniye içinde gelecek.",.ms:"Ujian bunyi azan akan tiba dalam 3 saat (3 detik).",
+                        .tr:"Ezan sesi testi 3 saniye içinde gelecek.",.ms:"Ujian bunyi azan akan tiba dalam 3 saat.",
                         .id:"Tes suara azan akan muncul dalam 3 detik.",.ja:"3秒後にアザーン音テストが届きます。",
                         .zh:"3 秒后将收到宣礼声测试。",.ru:"Проверка звука азана придёт через 3 секунды.",.fr:"Un test du son de l’adhan arrivera dans 3 secondes."
                     ])
