@@ -274,10 +274,10 @@ def check_project_config() -> None:
     for token in required:
         if token not in text:
             fail(f"project.yml is missing required setting: {token}")
-    if text.count("MARKETING_VERSION: 0.9.3") != 2:
-        fail("App and widget MARKETING_VERSION must both be 0.9.3")
-    if text.count("CURRENT_PROJECT_VERSION: 12") != 2:
-        fail("App and widget CURRENT_PROJECT_VERSION must both be 12")
+    if text.count("MARKETING_VERSION: 0.9.4") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.4")
+    if text.count("CURRENT_PROJECT_VERSION: 13") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 13")
 
 
 def check_local_ai_config() -> None:
@@ -297,6 +297,19 @@ def check_local_ai_config() -> None:
         if expected_sha not in text or expected_url not in text:
             fail("LocalFiqhPack.swift does not match LocalAIPack/recommended_model.json")
 
+
+
+def check_notification_delegate() -> None:
+    p = require("SARI/Sources/App/SariAppDelegate.swift")
+    if not p.exists():
+        return
+    text = p.read_text(encoding="utf-8")
+    if "final class SariNotificationDelegate: NSObject, UNUserNotificationCenterDelegate" not in text:
+        fail("Foreground notification delegate must stay separate for Swift 6/Xcode 16.4")
+    if "final class SariAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate" in text:
+        fail("Do not combine UIApplicationDelegate and UNUserNotificationCenterDelegate under Swift 6")
+    if "withCompletionHandler completionHandler" not in text:
+        fail("Foreground Adhan notification delegate is missing its completion-handler callback")
 
 def check_required_files() -> None:
     for rel in (
@@ -319,6 +332,7 @@ check_adhan_audio()
 check_sqlite()
 check_project_config()
 check_local_ai_config()
+check_notification_delegate()
 
 if ERRORS:
     print("SARI iOS preflight FAILED:", file=sys.stderr)
