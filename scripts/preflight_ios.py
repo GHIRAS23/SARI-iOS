@@ -274,10 +274,10 @@ def check_project_config() -> None:
     for token in required:
         if token not in text:
             fail(f"project.yml is missing required setting: {token}")
-    if text.count("MARKETING_VERSION: 0.9.5") != 2:
-        fail("App and widget MARKETING_VERSION must both be 0.9.5")
-    if text.count("CURRENT_PROJECT_VERSION: 14") != 2:
-        fail("App and widget CURRENT_PROJECT_VERSION must both be 14")
+    if text.count("MARKETING_VERSION: 0.9.6") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.6")
+    if text.count("CURRENT_PROJECT_VERSION: 15") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 15")
 
 
 def check_local_ai_config() -> None:

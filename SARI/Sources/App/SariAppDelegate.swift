@@ -6,24 +6,21 @@ import UserNotifications
 /// Keep this object separate from UIApplicationDelegate. UIApplicationDelegate is
 /// main-actor isolated in Swift 6, while UNUserNotificationCenterDelegate callbacks
 /// are imported as nonisolated. Mixing both conformances in one class triggers the
-/// Swift 6/Xcode 16.4 "non-sendable parameter ... into main actor-isolated
-/// implementation" build error.
+/// Swift 6/Xcode 16.4 actor-isolation build error.
 final class SariNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-        // Present prayer notifications and play their custom Adhan sound even when
-        // SARI is currently open in the foreground.
         completionHandler([.banner, .list, .sound])
     }
 }
 
 @MainActor
 final class SariAppDelegate: NSObject, UIApplicationDelegate {
-    // UNUserNotificationCenter keeps its delegate weakly, so the app delegate must
-    // strongly retain this object for the lifetime of the process.
+    // UNUserNotificationCenter keeps its delegate weakly, so retain it for the
+    // lifetime of the process.
     private let notificationDelegate = SariNotificationDelegate()
 
     func application(
@@ -31,6 +28,22 @@ final class SariAppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         UNUserNotificationCenter.current().delegate = notificationDelegate
+        ResumableFileDownloader.shared.prepareBackgroundSession()
         return true
+    }
+
+    /// Required for URLSessionConfiguration.background. iOS may relaunch SARI after
+    /// a suspended 2.1 GB model transfer finishes. The downloader calls this handler
+    /// only after all background-session delegate events have been delivered.
+    func application(
+        _ application: UIApplication,
+        handleEventsForBackgroundURLSession identifier: String,
+        completionHandler: @escaping () -> Void
+    ) {
+        guard identifier == ResumableFileDownloader.backgroundSessionIdentifier else {
+            completionHandler()
+            return
+        }
+        ResumableFileDownloader.shared.setBackgroundCompletionHandler(completionHandler)
     }
 }

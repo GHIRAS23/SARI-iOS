@@ -24,11 +24,12 @@ jobs:
         run: |
           set -euo pipefail
           PINNED="/Applications/Xcode_16.4.app/Contents/Developer"
-          if [[ -d "$PINNED" ]]; then
-            export DEVELOPER_DIR="$PINNED"
-          else
-            export DEVELOPER_DIR="$(xcode-select -p)"
+          if [[ ! -d "$PINNED" ]]; then
+            echo "Xcode 16.4 is required for this release candidate but was not found on the runner." >&2
+            ls -1 /Applications | grep -E '^Xcode' || true
+            exit 1
           fi
+          export DEVELOPER_DIR="$PINNED"
           echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
           echo "Using DEVELOPER_DIR=$DEVELOPER_DIR"
           xcodebuild -version
@@ -39,6 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/preflight_ios.py
+          python3 scripts/validate_fiqh_release.py
           python3 scripts/validate_prayer_math.py
           find SARI/Sources SARIWidget -type f -name '*.swift' -print0 \
             | xargs -0 swiftc -parse
