@@ -1,0 +1,33 @@
+[
+  {
+    "city": "Makkah",
+    "lat": 21.4225,
+    "lon": 39.8262,
+    "expected_deg": 0.0,
+    "note": "at Kaaba coordinate direction undefined; excluded from tolerance"
+  },
+  {
+    "city": "Madinah",
+    "lat": 24.4672,
+    "lon": 39.6111,
+    "expected_approx": 176.0
+  },
+  {
+    "city": "London",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "expected_approx": 119.0
+  },
+  {
+    "city": "New York",
+    "lat": 40.7128,
+    "lon": -74.006,
+    "expected_approx": 58.5
+  },
+  {
+    "city": "Tokyo",
+    "lat": 35.6762,
+    "lon": 139.6503,
+    "expected_approx": 293.0
+  }
+]

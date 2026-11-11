@@ -1,0 +1,53 @@
+{
+  "stage": "15C18",
+  "purpose": "Rendered localization acceptance test",
+  "languages": [
+    "ar",
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "required_devices": [
+    "320dp compact phone portrait",
+    "430dp large phone portrait",
+    "phone at 160% text/font scale",
+    "768dp tablet portrait",
+    "1024dp tablet landscape"
+  ],
+  "critical_screens": [
+    "Onboarding",
+    "Home",
+    "Prayer Times",
+    "Prayer Settings",
+    "Qibla",
+    "Quran",
+    "Ayah/Tafsir",
+    "Adhkar",
+    "Weather",
+    "Travel",
+    "Fiqh Assistant",
+    "Settings"
+  ],
+  "pass_conditions": [
+    "No visible UI label remains unintentionally Arabic when a non-Arabic language is selected.",
+    "Arabic UI flows RTL; non-Arabic UI flows LTR.",
+    "Quran and Arabic source adhkar remain Arabic by design.",
+    "No clipped/overlapping text at 160% scale.",
+    "French and Russian wrap without hiding actions.",
+    "Japanese and Chinese render without broken layout.",
+    "Tablet layouts keep readable content widths.",
+    "Error/offline/permission states are localized."
+  ],
+  "native_only": [
+    "GPS and location permission lifecycle",
+    "Qibla compass behavior",
+    "notification permission and scheduling",
+    "adhan/background behavior",
+    "real Dynamic Type/font-scale rendering"
+  ]
+}

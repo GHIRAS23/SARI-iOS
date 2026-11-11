@@ -1,18 +1,13 @@
 import SwiftUI
-
-private struct SariFiqhTurn: Identifiable {
-    let id = UUID()
-    let question: String
-    let answer: FiqhServerAnswer
-}
+import UIKit
 
 struct FiqhAssistantView: View {
-    @Environment(\.openURL) private var openURL
     @State private var question = ""
-    @State private var turns: [SariFiqhTurn] = []
     @State private var loading = false
     @State private var errorMessage: String?
+    @State private var showHistory = false
     @StateObject private var pack = LocalFiqhPack.shared
+    @StateObject private var history = SariFiqhHistoryStore.shared
     @AppStorage("sariLanguage") private var languageRaw = ""
     @FocusState private var composerFocused: Bool
 
@@ -40,7 +35,7 @@ struct FiqhAssistantView: View {
                                 runtimeReadyCard
                             }
 
-                            ForEach(turns) { turn in
+                            ForEach(history.currentTurns) { turn in
                                 questionBubble(turn.question)
                                 answerCard(turn.answer)
                             }
@@ -55,7 +50,7 @@ struct FiqhAssistantView: View {
                     .simultaneousGesture(
                         TapGesture().onEnded { composerFocused = false }
                     )
-                    .onChange(of: turns.count) { _, _ in
+                    .onChange(of: history.currentTurns.count) { _, _ in
                         composerFocused = false
                         withAnimation(.easeOut(duration: 0.22)) {
                             proxy.scrollTo("bottom", anchor: .bottom)
@@ -69,11 +64,45 @@ struct FiqhAssistantView: View {
                             }
                         }
                     }
+                    .onChange(of: history.currentConversationID) { _, _ in
+                        errorMessage = nil
+                        composerFocused = false
+                        withAnimation(.easeOut(duration: 0.18)) {
+                            proxy.scrollTo("bottom", anchor: .bottom)
+                        }
+                    }
                 }
             }
             .safeAreaInset(edge: .bottom) { composer }
             .navigationTitle(SariStrings.t("ask", language))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        showHistory = true
+                    } label: {
+                        Image(systemName: "clock.arrow.circlepath")
+                    }
+                    .accessibilityLabel(historyLabel)
+
+                    Button {
+                        composerFocused = false
+                        history.newConversation()
+                        question = ""
+                        errorMessage = nil
+                    } label: {
+                        Image(systemName: "square.and.pencil")
+                    }
+                    .accessibilityLabel(newConversationLabel)
+                }
+            }
+        }
+        .sheet(isPresented: $showHistory) { historySheet }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didReceiveMemoryWarningNotification)) { _ in
+            Task {
+                await LocalFiqhEngine.shared.releaseModelIfIdle()
+                await SariDiagnostics.shared.log("fiqh.memoryWarning releaseRequested=true")
+            }
         }
         .sariLanguageEnvironment(language)
     }
@@ -192,21 +221,9 @@ struct FiqhAssistantView: View {
     private func answerCard(_ answer: FiqhServerAnswer) -> some View {
         VStack(alignment: language.isArabic ? .trailing : .leading, spacing: 14) {
             HStack {
-                Text(
-                    SariUIStrings.format(
-                        "source_match",
-                        language,
-                        ["value": "\(answer.retrieval_confidence)"]
-                    )
-                )
-                .font(.caption.weight(.bold))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.accentColor.opacity(0.10), in: Capsule())
-
-                Spacer()
                 Label(levelLabel(answer.level), systemImage: levelIcon(answer.level))
                     .font(.subheadline.weight(.bold))
+                Spacer()
             }
 
             Text(answer.answer)
@@ -227,31 +244,23 @@ struct FiqhAssistantView: View {
 
             if !answer.sources.isEmpty {
                 Divider()
-                Text(SariStrings.t("sources", language)).font(.headline)
+                Text(supportingTextTitle)
+                    .font(.headline)
 
-                ForEach(answer.sources.prefix(5)) { source in
-                    let sourceIndex = answer.sources.firstIndex(where: { $0.id == source.id }) ?? 0
-                    DisclosureGroup {
-                        VStack(alignment: language.isArabic ? .trailing : .leading, spacing: 9) {
-                            Text(source.text)
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                                .textSelection(.enabled)
-
-                            if let url = FiqhAPI.shared.absoluteSourceURL(source) {
-                                Button { openURL(url) } label: {
-                                    Label(SariUIStrings.text("open_source", language), systemImage: "doc.richtext")
-                                }
-                                .buttonStyle(.bordered)
-                            }
-                        }
-                        .padding(.top, 8)
-                    } label: {
-                        Text("[S\(sourceIndex + 1)] \(source.source_label)")
-                            .font(.subheadline.weight(.semibold))
+                VStack(spacing: 10) {
+                    ForEach(Array(answer.sources.prefix(3))) { item in
+                        Text(item.text)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
+                            .padding(13)
+                            .background(
+                                Color(.secondarySystemBackground),
+                                in: RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            )
+                            .accessibilityLabel(supportingTextTitle)
                     }
-                    .padding(13)
-                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 15))
                 }
             }
 
@@ -272,22 +281,59 @@ struct FiqhAssistantView: View {
         .sariAskCard()
     }
 
+    private var historySheet: some View {
+        NavigationStack {
+            List {
+                ForEach(history.conversations) { conversation in
+                    Button {
+                        history.select(conversation.id)
+                        showHistory = false
+                    } label: {
+                        VStack(alignment: language.isArabic ? .trailing : .leading, spacing: 5) {
+                            Text(conversation.preview.isEmpty ? newConversationLabel : conversation.preview)
+                                .font(.body.weight(.semibold))
+                                .lineLimit(2)
+                            Text(conversation.updatedAt.formatted(date: .abbreviated, time: .shortened))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
+                    }
+                }
+                .onDelete { offsets in
+                    let ids = offsets.compactMap { index in
+                        history.conversations.indices.contains(index) ? history.conversations[index].id : nil
+                    }
+                    for id in ids { history.delete(id) }
+                }
+            }
+            .navigationTitle(historyLabel)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(doneLabel) { showHistory = false }
+                }
+            }
+        }
+        .sariLanguageEnvironment(language)
+    }
+
     private func levelLabel(_ level: String) -> String {
         if level.contains("explicit") {
             return SariContentText.pick(language, [
-                .ar: "نص صريح", .en: "Explicit source", .tr: "Açık kaynak", .ms: "Sumber jelas", .id: "Sumber eksplisit",
-                .ja: "明示された根拠", .zh: "明确来源", .ru: "Прямой источник", .fr: "Source explicite"
+                .ar: "نص صريح", .en: "Explicit text", .tr: "Açık metin", .ms: "Teks jelas", .id: "Teks eksplisit",
+                .ja: "明示された本文", .zh: "明确文本", .ru: "Прямой текст", .fr: "Texte explicite"
             ])
         }
         if level.contains("inference") {
             return SariContentText.pick(language, [
-                .ar: "استدلال من المصدر", .en: "Source-based inference", .tr: "Kaynağa dayalı çıkarım", .ms: "Rumusan berasaskan sumber",
-                .id: "Kesimpulan berbasis sumber", .ja: "資料に基づく推論", .zh: "基于来源的推断", .ru: "Вывод по источнику", .fr: "Inférence fondée sur la source"
+                .ar: "استدلال", .en: "Text-based inference", .tr: "Metne dayalı çıkarım", .ms: "Rumusan berasaskan teks",
+                .id: "Kesimpulan berbasis teks", .ja: "本文に基づく推論", .zh: "基于文本的推断", .ru: "Вывод по тексту", .fr: "Inférence fondée sur le texte"
             ])
         }
         return SariContentText.pick(language, [
-            .ar: "المصدر غير كافٍ", .en: "Insufficient source", .tr: "Kaynak yetersiz", .ms: "Sumber tidak mencukupi",
-            .id: "Sumber tidak cukup", .ja: "根拠不足", .zh: "来源不足", .ru: "Недостаточно источников", .fr: "Source insuffisante"
+            .ar: "النص غير كافٍ", .en: "Insufficient text", .tr: "Metin yetersiz", .ms: "Teks tidak mencukupi",
+            .id: "Teks tidak cukup", .ja: "本文不足", .zh: "文本不足", .ru: "Недостаточно текста", .fr: "Texte insuffisant"
         ])
     }
 
@@ -317,6 +363,8 @@ struct FiqhAssistantView: View {
                 retrieval_confidence: local.confidence,
                 confidence_label: "",
                 sources: local.sources.map { source in
+                    // Metadata remains available inside the saved object for integrity and
+                    // future audits. answerCard intentionally renders only source.text.
                     FiqhSource(
                         id: source.id,
                         part: source.part,
@@ -333,11 +381,69 @@ struct FiqhAssistantView: View {
                 source_basis: "local",
                 disclaimer: SariUIStrings.text("fiqh_local_disclaimer", language)
             )
-            turns.append(SariFiqhTurn(question: q, answer: converted))
+            history.append(question: q, answer: converted)
         } catch {
             question = q
-            errorMessage = SariUIStrings.text("fiqh_local_error", language)
+            errorMessage = message(for: error)
+            await SariDiagnostics.shared.log(
+                "fiqh.ask failed type=\(String(describing: type(of: error))) error=\(String(describing: error))"
+            )
         }
+    }
+
+    private func message(for error: Error) -> String {
+        if let engineError = error as? LocalFiqhEngineError {
+            switch engineError {
+            case .busy:
+                return SariContentText.pick(language, [
+                    .ar: "ساري ما زال يعالج السؤال السابق. انتظر اكتمال الإجابة ثم حاول مرة أخرى.",
+                    .en: "SARI is still processing the previous question. Wait for it to finish and try again."
+                ])
+            case .questionTooLong:
+                return SariContentText.pick(language, [
+                    .ar: "السؤال طويل جدًا للتشغيل المحلي الآمن. اختصره قليلًا ثم أعد الإرسال.",
+                    .en: "The question is too long for the safe local context. Shorten it slightly and send it again."
+                ])
+            case .promptTooLarge:
+                return SariContentText.pick(language, [
+                    .ar: "تعذر تجهيز النصوص ضمن الحد الآمن. أعد صياغة السؤال بشكل أقصر.",
+                    .en: "The supporting text could not fit within the safe limit. Rephrase the question more briefly."
+                ])
+            case .runtimeValidationFailed:
+                return SariContentText.pick(language, [
+                    .ar: "النموذج المحلي لم يجتز فحص التشغيل. أعد فحصه من بطاقة الإعداد أعلاه.",
+                    .en: "The local model did not pass its runtime check. Run the check again from the setup card above."
+                ])
+            }
+        }
+        return SariUIStrings.text("fiqh_local_error", language)
+    }
+
+    private var supportingTextTitle: String {
+        SariContentText.pick(language, [
+            .ar: "النص المستند إليه", .en: "Supporting text", .tr: "Dayanak metin", .ms: "Teks sandaran",
+            .id: "Teks yang digunakan", .ja: "根拠となる本文", .zh: "所依据的文本", .ru: "Опорный текст", .fr: "Texte d’appui"
+        ])
+    }
+
+    private var historyLabel: String {
+        SariContentText.pick(language, [
+            .ar: "المحادثات", .en: "Conversations", .tr: "Konuşmalar", .ms: "Perbualan", .id: "Percakapan",
+            .ja: "会話", .zh: "对话", .ru: "Диалоги", .fr: "Conversations"
+        ])
+    }
+
+    private var newConversationLabel: String {
+        SariContentText.pick(language, [
+            .ar: "محادثة جديدة", .en: "New conversation", .tr: "Yeni konuşma", .ms: "Perbualan baharu", .id: "Percakapan baru",
+            .ja: "新しい会話", .zh: "新对话", .ru: "Новый диалог", .fr: "Nouvelle conversation"
+        ])
+    }
+
+    private var doneLabel: String {
+        SariContentText.pick(language, [
+            .ar: "تم", .en: "Done", .tr: "Bitti", .ms: "Selesai", .id: "Selesai", .ja: "完了", .zh: "完成", .ru: "Готово", .fr: "Terminé"
+        ])
     }
 
     private var offlineReadyTitle: String {
@@ -350,15 +456,15 @@ struct FiqhAssistantView: View {
 
     private var modelRequiredNote: String {
         SariContentText.pick(language, [
-            .ar: "نزّل النموذج المحلي مرة واحدة من البطاقة أعلاه لتفعيل الاستنتاج.",
-            .en: "Download the local model once from the card above to enable reasoning.",
-            .tr: "Çıkarımı etkinleştirmek için yukarıdaki karttan yerel modeli bir kez indirin.",
-            .ms: "Muat turun model tempatan sekali daripada kad di atas untuk mengaktifkan penaakulan.",
-            .id: "Unduh model lokal sekali dari kartu di atas untuk mengaktifkan penalaran.",
-            .ja: "推論を有効にするには、上のカードからローカルモデルを一度ダウンロードしてください。",
-            .zh: "请从上方卡片一次性下载本地模型以启用推理。",
-            .ru: "Один раз скачайте локальную модель из карточки выше, чтобы включить рассуждение.",
-            .fr: "Téléchargez une fois le modèle local depuis la carte ci-dessus pour activer le raisonnement."
+            .ar: "نزّل النموذج المحلي أو افحص النسخة المثبتة مرة واحدة لتفعيل الاستنتاج.",
+            .en: "Download the local model or validate the installed copy once to enable reasoning.",
+            .tr: "Çıkarımı etkinleştirmek için yerel modeli indirin veya kurulu kopyayı bir kez doğrulayın.",
+            .ms: "Muat turun model tempatan atau sahkan salinan yang dipasang sekali untuk mengaktifkan penaakulan.",
+            .id: "Unduh model lokal atau validasi salinan yang terpasang sekali untuk mengaktifkan penalaran.",
+            .ja: "推論を有効にするには、ローカルモデルをダウンロードするか、インストール済みモデルを一度検証してください。",
+            .zh: "下载本地模型或对已安装模型进行一次验证即可启用推理。",
+            .ru: "Скачайте локальную модель или один раз проверьте уже установленную копию, чтобы включить рассуждение.",
+            .fr: "Téléchargez le modèle local ou validez une fois la copie installée pour activer le raisonnement."
         ])
     }
 }

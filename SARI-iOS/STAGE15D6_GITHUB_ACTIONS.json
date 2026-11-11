@@ -1,0 +1,10 @@
+{
+  "stage": "15D6_GITHUB_ACTIONS",
+  "workflow": ".github/workflows/ios-build.yml",
+  "runner": "macos-15",
+  "build": "generic iOS device, unsigned",
+  "artifact": "SARI-iPhone-unsigned",
+  "purpose": "First real Xcode compile on GitHub macOS from an HP/Windows workflow.",
+  "installable_directly": false,
+  "next": "After a green build, handle signing/install path separately."
+}

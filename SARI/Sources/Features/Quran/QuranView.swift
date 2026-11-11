@@ -29,6 +29,8 @@ struct SurahSummary: Identifiable, Hashable {
 final class QuranStore: ObservableObject {
     @Published private(set) var ayat: [Ayah] = []
     @Published private(set) var surahs: [SurahSummary] = []
+    @Published private(set) var isLoaded = false
+    @Published private(set) var loadError: String?
     @Published var bookmarks: Set<Int> = []
     @Published var lastReadID: Int?
 
@@ -42,24 +44,59 @@ final class QuranStore: ObservableObject {
     }
 
     func load() {
-        guard let url = Bundle.main.sariResourceURL(name: "quran_tafseer", extension: "json", subdirectory: "data"),
-              let data = try? Data(contentsOf: url),
-              let decoded = try? JSONDecoder().decode([Ayah].self, from: data) else { return }
-        ayat = decoded
-        pageIndex = Dictionary(grouping: decoded, by: \.page)
-        surahs = Dictionary(grouping: decoded, by: \.sura)
-            .map { key, rows in
-                let first = rows.first!
-                return SurahSummary(
-                    id: key,
-                    nameAR: first.sura_name_ar,
-                    nameEN: first.sura_name_en,
-                    ayahCount: rows.count,
-                    firstPage: first.page,
-                    juz: first.juz
-                )
+        isLoaded = false
+        loadError = nil
+
+        guard let url = Bundle.main.sariResourceURL(
+            name: "quran_tafseer",
+            extension: "json",
+            subdirectory: "data"
+        ) else {
+            loadError = "Missing bundled quran_tafseer.json"
+            return
+        }
+
+        do {
+            let data = try Data(contentsOf: url)
+            let decoded = try JSONDecoder().decode([Ayah].self, from: data)
+            let expectedIDs = Set(1...6_236)
+            let decodedIDs = Set(decoded.map(\.id))
+
+            guard decoded.count == 6_236,
+                  decodedIDs == expectedIDs,
+                  Set(decoded.map(\.sura)) == Set(1...114),
+                  Set(decoded.map(\.page)) == Set(1...604),
+                  decoded.allSatisfy({
+                      (1...114).contains($0.sura) &&
+                      (1...604).contains($0.page) &&
+                      $0.ayah > 0 &&
+                      !$0.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+                      !$0.tafseer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                  }) else {
+                loadError = "Quran data failed the 6,236-ayah integrity check"
+                return
             }
-            .sorted { $0.id < $1.id }
+
+            let ordered = decoded.sorted { $0.id < $1.id }
+            ayat = ordered
+            pageIndex = Dictionary(grouping: ordered, by: \.page)
+            surahs = Dictionary(grouping: ordered, by: \.sura)
+                .map { key, rows in
+                    let first = rows[0]
+                    return SurahSummary(
+                        id: key,
+                        nameAR: first.sura_name_ar,
+                        nameEN: first.sura_name_en,
+                        ayahCount: rows.count,
+                        firstPage: first.page,
+                        juz: first.juz
+                    )
+                }
+                .sorted { $0.id < $1.id }
+            isLoaded = true
+        } catch {
+            loadError = "Unable to decode bundled Quran data: \(error.localizedDescription)"
+        }
     }
 
     func ayat(for surah: Int) -> [Ayah] { ayat.filter { $0.sura == surah } }
@@ -102,25 +139,68 @@ struct QuranView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                Picker("", selection: $selectedSection) {
-                    Text(SariContentText.pick(language, [
-                        .ar: "السور", .en: "Surahs", .tr: "Sureler", .ms: "Surah", .id: "Surah",
-                        .ja: "スーラ", .zh: "章", .ru: "Суры", .fr: "Sourates"
-                    ])).tag(0)
-                    Text(SariStrings.t("search", language)).tag(1)
-                    Text(SariStrings.t("bookmarks", language)).tag(2)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal)
-                .padding(.top, 8)
+            Group {
+                if store.isLoaded {
+                    VStack(spacing: 0) {
+                        Picker("", selection: $selectedSection) {
+                            Text(SariContentText.pick(language, [
+                                .ar: "السور", .en: "Surahs", .tr: "Sureler", .ms: "Surah", .id: "Surah",
+                                .ja: "スーラ", .zh: "章", .ru: "Суры", .fr: "Sourates"
+                            ])).tag(0)
+                            Text(SariStrings.t("search", language)).tag(1)
+                            Text(SariStrings.t("bookmarks", language)).tag(2)
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.horizontal)
+                        .padding(.top, 8)
 
-                if selectedSection == 0 {
-                    surahList
-                } else if selectedSection == 1 {
-                    searchView
+                        if selectedSection == 0 {
+                            surahList
+                        } else if selectedSection == 1 {
+                            searchView
+                        } else {
+                            bookmarksView
+                        }
+                    }
                 } else {
-                    bookmarksView
+                    VStack(spacing: 14) {
+                        Image(systemName: "book.closed")
+                            .font(.system(size: 42))
+                            .foregroundStyle(.secondary)
+                        Text(SariContentText.pick(language, [
+                            .ar: "تعذر تحميل بيانات المصحف",
+                            .en: "Unable to load Quran data",
+                            .tr: "Kur’an verileri yüklenemedi",
+                            .ms: "Data al-Quran tidak dapat dimuat",
+                            .id: "Data Al-Qur'an tidak dapat dimuat",
+                            .ja: "クルアーンのデータを読み込めません",
+                            .zh: "无法加载古兰经数据",
+                            .ru: "Не удалось загрузить данные Корана",
+                            .fr: "Impossible de charger les données du Coran"
+                        ]))
+                        .font(.headline)
+                        Text(SariContentText.pick(language, [
+                            .ar: "تحقق من وجود ملف بيانات المصحف وسلامته، ثم أعد المحاولة.",
+                            .en: "Check that the bundled Quran data file exists and is valid, then retry.",
+                            .tr: "Kur’an veri dosyasının bulunduğunu ve geçerli olduğunu kontrol edip yeniden deneyin.",
+                            .ms: "Pastikan fail data al-Quran tersedia dan sah, kemudian cuba lagi.",
+                            .id: "Pastikan berkas data Al-Qur'an tersedia dan valid, lalu coba lagi.",
+                            .ja: "クルアーンのデータファイルを確認して、もう一度お試しください。",
+                            .zh: "请检查古兰经数据文件是否存在且有效，然后重试。",
+                            .ru: "Проверьте наличие и целостность файла данных Корана и повторите попытку.",
+                            .fr: "Vérifiez que le fichier de données du Coran existe et est valide, puis réessayez."
+                        ]))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        Button(SariContentText.pick(language, [
+                            .ar: "إعادة المحاولة", .en: "Retry", .tr: "Tekrar dene", .ms: "Cuba lagi",
+                            .id: "Coba lagi", .ja: "再試行", .zh: "重试", .ru: "Повторить", .fr: "Réessayer"
+                        ])) { store.load() }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .multilineTextAlignment(.center)
+                    .padding(24)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
             .navigationTitle(SariStrings.t("quran", language))
@@ -292,7 +372,11 @@ struct MushafReaderView: View {
                     MushafPageView(
                         page: page,
                         ayat: store.ayat(onPage: page),
-                        isActive: abs(page - currentPage) <= 1
+                        isActive: abs(page - currentPage) <= 1,
+                        onSelectAyah: { ayah in
+                            store.markRead(ayah.id)
+                            selectedAyah = ayah
+                        }
                     )
                     .tag(page)
                     .padding(.horizontal, 7)
@@ -319,7 +403,7 @@ struct MushafReaderView: View {
                         }
                     }
                 } label: {
-                    Label(pageAyatLabel, systemImage: "text.book.closed")
+                    Label(pageAyatLabel, systemImage: "text.book.closed.fill")
                 }
             }
 
@@ -438,8 +522,9 @@ struct MushafReaderView: View {
 
     private var pageAyatLabel: String {
         SariContentText.pick(language, [
-            .ar: "آيات الصفحة", .en: "Page verses", .tr: "Sayfa ayetleri", .ms: "Ayat halaman", .id: "Ayat halaman",
-            .ja: "このページの節", .zh: "本页经文", .ru: "Аяты страницы", .fr: "Versets de la page"
+            .ar: "اختيار آية للتفسير", .en: "Select an ayah for Tafsir", .tr: "Tefsir için ayet seçin",
+            .ms: "Pilih ayat untuk tafsir", .id: "Pilih ayat untuk tafsir", .ja: "タフスィールする節を選択",
+            .zh: "选择经文查看注释", .ru: "Выбрать аят для тафсира", .fr: "Choisir un verset pour le tafsir"
         ])
     }
 
@@ -456,6 +541,7 @@ private struct MushafPageView: View {
     let page: Int
     let ayat: [Ayah]
     let isActive: Bool
+    let onSelectAyah: (Ayah) -> Void
 
     @AppStorage("sariLanguage") private var languageRaw = ""
     @State private var svgData: Data?
@@ -471,9 +557,14 @@ private struct MushafPageView: View {
                 .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
 
             if let svgData {
-                MushafSVGWebView(data: svgData)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .padding(2)
+                MushafSVGWebView(data: svgData) { surahNumber, ayahNumber in
+                    guard let tappedAyah = ayat.first(where: {
+                        $0.sura == surahNumber && $0.ayah == ayahNumber
+                    }) else { return }
+                    onSelectAyah(tappedAyah)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .padding(2)
             } else if failed {
                 fallbackView
                     .padding(14)
@@ -510,15 +601,31 @@ private struct MushafPageView: View {
             ScrollView {
                 VStack(alignment: .trailing, spacing: 12) {
                     ForEach(ayat) { ayah in
-                        Text(ayah.text)
-                            .font(.custom("kfgqpchafsuthmanicscript-Reg", size: 23))
-                            .lineSpacing(5)
-                            .multilineTextAlignment(.trailing)
+                        Button {
+                            onSelectAyah(ayah)
+                        } label: {
+                            VStack(alignment: .trailing, spacing: 6) {
+                                Text(ayah.text)
+                                    .font(.custom("kfgqpchafsuthmanicscript-Reg", size: 23))
+                                    .lineSpacing(5)
+                                    .multilineTextAlignment(.trailing)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+
+                                Label(tafsirActionLabel, systemImage: "text.book.closed")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(.green)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                            }
+                            .padding(10)
                             .frame(maxWidth: .infinity, alignment: .trailing)
+                            .background(Color.green.opacity(0.045), in: RoundedRectangle(cornerRadius: 10))
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
+                .environment(\.layoutDirection, .rightToLeft)
             }
-            .environment(\.layoutDirection, .rightToLeft)
 
             Button {
                 svgData = nil
@@ -531,6 +638,14 @@ private struct MushafPageView: View {
         }
     }
 
+    private var tafsirActionLabel: String {
+        SariContentText.pick(language, [
+            .ar: "عرض التفسير الميسر", .en: "View Tafsir Muyassar", .tr: "Tefsir-i Müyeser'i görüntüle",
+            .ms: "Lihat Tafsir Muyassar", .id: "Lihat Tafsir Muyassar", .ja: "タフスィール・ムヤッサルを表示",
+            .zh: "查看简明注释", .ru: "Открыть тафсир аль-Муяссар", .fr: "Voir le Tafsir Muyassar"
+        ])
+    }
+
     private var loadingLabel: String {
         SariContentText.pick(language, [
             .ar: "تحميل صفحة المصحف الدقيقة…", .en: "Loading the exact Mushaf page…", .tr: "Tam Mushaf sayfası yükleniyor…",
@@ -541,15 +656,15 @@ private struct MushafPageView: View {
 
     private var exactPageUnavailableLabel: String {
         SariContentText.pick(language, [
-            .ar: "الصفحة المطابقة لم تُحفظ على الجهاز بعد. يظهر النص المحلي مؤقتًا.",
-            .en: "The exact page is not cached on this device yet. Local text is shown temporarily.",
-            .tr: "Tam sayfa henüz cihazda önbelleğe alınmadı. Yerel metin geçici olarak gösteriliyor.",
-            .ms: "Halaman tepat belum disimpan pada peranti. Teks tempatan dipaparkan sementara.",
-            .id: "Halaman presisi belum tersimpan di perangkat. Teks lokal ditampilkan sementara.",
-            .ja: "正確なページはまだ端末に保存されていません。一時的にローカル本文を表示します。",
-            .zh: "精确页面尚未缓存在设备上，暂时显示本地文本。",
-            .ru: "Точная страница ещё не сохранена на устройстве; временно показан локальный текст.",
-            .fr: "La page exacte n’est pas encore en cache sur l’appareil ; le texte local est affiché temporairement."
+            .ar: "الصفحة المطابقة لم تُحفظ على الجهاز بعد. يمكنك اختيار الآية لفتح تفسيرها.",
+            .en: "The exact page is not cached yet. Select an ayah below to open its Tafsir.",
+            .tr: "Tam sayfa henüz önbelleğe alınmadı. Tefsirini açmak için aşağıdan bir ayet seçin.",
+            .ms: "Halaman tepat belum dicache. Pilih ayat di bawah untuk melihat tafsirnya.",
+            .id: "Halaman presisi belum tersimpan. Pilih ayat di bawah untuk membuka tafsirnya.",
+            .ja: "正確なページはまだ保存されていません。下から節を選んで注釈を開いてください。",
+            .zh: "精确页面尚未缓存。请从下方选择经文查看注释。",
+            .ru: "Точная страница ещё не сохранена. Выберите аят ниже, чтобы открыть тафсир.",
+            .fr: "La page exacte n’est pas encore en cache. Choisissez un verset ci-dessous pour ouvrir son tafsir."
         ])
     }
 
@@ -561,18 +676,41 @@ private struct MushafPageView: View {
     }
 }
 
+/// Displays the original SVG inline so its transparent ayah polygons can receive taps.
+/// The SVG's visible glyph paths ignore pointer events, allowing the ayah hit-layer below
+/// them to identify the exact surah/ayah pair. A native page-ayah menu remains available
+/// as an accessible fallback when an artwork page has no hit-layer.
 private struct MushafSVGWebView: UIViewRepresentable {
     let data: Data
+    let onAyahTap: (Int, Int) -> Void
 
-    final class Coordinator {
+    @MainActor
+    final class Coordinator: NSObject, WKScriptMessageHandler {
         var lastData: Data?
+        var onAyahTap: ((Int, Int) -> Void)?
+
+        func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+            guard message.name == "ayahTap",
+                  let payload = message.body as? [String: Any],
+                  let surahNumber = (payload["surah"] as? NSNumber)?.intValue,
+                  let ayahNumber = (payload["ayah"] as? NSNumber)?.intValue,
+                  (1...114).contains(surahNumber),
+                  (1...286).contains(ayahNumber) else { return }
+
+            onAyahTap?(surahNumber, ayahNumber)
+        }
     }
 
     func makeCoordinator() -> Coordinator { Coordinator() }
 
     func makeUIView(context: Context) -> WKWebView {
+        let contentController = WKUserContentController()
+        contentController.add(context.coordinator, name: "ayahTap")
+
         let configuration = WKWebViewConfiguration()
-        configuration.defaultWebpagePreferences.allowsContentJavaScript = false
+        configuration.userContentController = contentController
+        configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
 
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.isOpaque = false
@@ -580,28 +718,117 @@ private struct MushafSVGWebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = .clear
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
-        webView.isUserInteractionEnabled = false
+        webView.scrollView.panGestureRecognizer.isEnabled = false
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        webView.isUserInteractionEnabled = true
         return webView
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
+        context.coordinator.onAyahTap = onAyahTap
         guard context.coordinator.lastData != data else { return }
         context.coordinator.lastData = data
+
         let encoded = data.base64EncodedString()
         let html = """
         <!doctype html>
-        <html>
+        <html lang="en">
         <head>
+          <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:;">
           <style>
-            html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent;}
-            img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;}
+            html,body,#stage{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:transparent;}
+            #stage{display:flex;align-items:center;justify-content:center;}
+            #stage svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;}
+            .ayahPolygon{fill:#000000;fill-opacity:0.001;pointer-events:all;cursor:pointer;}
+            .ayahPolygon.sari-selected{fill:#D5B66A;fill-opacity:0.22;}
           </style>
         </head>
-        <body><img alt="Mushaf page" src="data:image/svg+xml;base64,\(encoded)"></body>
+        <body>
+          <div id="stage" aria-label="Interactive Quran page"></div>
+          <script>
+            (() => {
+              const svgBase64 = '\(encoded)';
+              const bytes = Uint8Array.from(atob(svgBase64), character => character.charCodeAt(0));
+              const svgText = new TextDecoder('utf-8').decode(bytes);
+              const parsed = new DOMParser().parseFromString(svgText, 'image/svg+xml');
+              const parsedRoot = parsed.documentElement;
+              const stage = document.getElementById('stage');
+
+              if (!parsedRoot || parsedRoot.localName.toLowerCase() !== 'svg' || parsed.querySelector('parsererror')) {
+                stage.textContent = 'Unable to render this Quran page.';
+                return;
+              }
+
+              // Keep the SVG self-contained and prevent embedded markup from executing.
+              parsedRoot.querySelectorAll('script, foreignObject, iframe, object, embed').forEach(node => node.remove());
+              [parsedRoot, ...parsedRoot.querySelectorAll('*')].forEach(element => {
+                Array.from(element.attributes).forEach(attribute => {
+                  const name = attribute.name.toLowerCase();
+                  const value = attribute.value.trim();
+                  if (name.startsWith('on')) element.removeAttribute(attribute.name);
+                  if ((name === 'href' || name.endsWith(':href')) && value && !value.startsWith('#') && !value.startsWith('data:')) {
+                    element.removeAttribute(attribute.name);
+                  }
+                });
+              });
+
+              const svgRoot = document.importNode(parsedRoot, true);
+              svgRoot.style.width = '100%';
+              svgRoot.style.height = '100%';
+              svgRoot.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+              // The artwork draws glyph paths over the transparent hit polygons.
+              // Disable hit testing on glyphs so taps reach the matching ayah polygon.
+              svgRoot.querySelectorAll('path:not(.ayahPolygon), text, use, image, line, polyline, polygon, rect, circle, ellipse').forEach(element => {
+                element.style.pointerEvents = 'none';
+              });
+
+              const hitTargets = Array.from(svgRoot.querySelectorAll('.ayahPolygon'));
+              hitTargets.forEach(element => {
+                element.style.pointerEvents = 'all';
+                element.style.fill = '#000000';
+                element.style.fillOpacity = '0.001';
+              });
+
+              let selectedPolygon = null;
+              svgRoot.addEventListener('click', event => {
+                const target = event.target instanceof Element ? event.target : null;
+                const polygon = target && target.closest ? target.closest('.ayahPolygon') : null;
+                if (!polygon) return;
+
+                const surah = Number(polygon.getAttribute('surah'));
+                const ayah = Number(polygon.getAttribute('ayah'));
+                if (!Number.isInteger(surah) || !Number.isInteger(ayah)) return;
+                if (surah < 1 || surah > 114 || ayah < 1 || ayah > 286) return;
+
+                event.preventDefault();
+                event.stopPropagation();
+                if (selectedPolygon) {
+                  selectedPolygon.classList.remove('sari-selected');
+                  selectedPolygon.style.fillOpacity = '0.001';
+                }
+                selectedPolygon = polygon;
+                selectedPolygon.classList.add('sari-selected');
+                selectedPolygon.style.fillOpacity = '0.22';
+                window.webkit.messageHandlers.ayahTap.postMessage({ surah, ayah });
+              }, true);
+
+              stage.replaceChildren(svgRoot);
+              document.documentElement.style.touchAction = 'manipulation';
+            })();
+          </script>
+        </body>
         </html>
         """
         webView.loadHTMLString(html, baseURL: nil)
+    }
+
+    static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
+        webView.configuration.userContentController.removeScriptMessageHandler(forName: "ayahTap")
+        coordinator.onAyahTap = nil
+        webView.stopLoading()
     }
 }
 
@@ -620,9 +847,10 @@ struct TafsirSheet: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage("sariLanguage") private var languageRaw = ""
     @StateObject private var translated = TafsirTranslationStore()
+    @StateObject private var pack = LocalFiqhPack.shared
+    @StateObject private var network = NetworkState.shared
 
     private var language: SariLanguage { SariLanguage(rawValue: languageRaw) ?? .device }
-    private var translatedText: String? { translated.translatedTafsir(for: ayah) }
 
     var body: some View {
         NavigationStack {
@@ -647,34 +875,20 @@ struct TafsirSheet: View {
                         .font(.title3.bold())
                         .frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
 
-                    if let translatedText, !translatedText.isEmpty, language != .ar {
-                        Text(translatedText)
-                            .font(.body)
-                            .lineSpacing(6)
-                            .multilineTextAlignment(language.isArabic ? .trailing : .leading)
-                            .frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
-
-                        DisclosureGroup(arabicOriginalLabel) {
-                            Text(ayah.tafseer)
-                                .lineSpacing(6)
-                                .multilineTextAlignment(.trailing)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.top, 8)
-                        }
-                    } else {
-                        Text(ayah.tafseer)
-                            .font(.body)
-                            .lineSpacing(6)
-                            .multilineTextAlignment(.trailing)
+                    if language != .ar {
+                        verseMeaningSection
+                        Divider()
+                        Label(arabicOriginalLabel, systemImage: "text.book.closed.fill")
+                            .font(.subheadline.weight(.semibold))
                             .frame(maxWidth: .infinity, alignment: .trailing)
-
-                        if language != .ar {
-                            Label(noVerifiedTranslationNote, systemImage: "checkmark.shield")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
-                        }
                     }
+
+                    Text(ayah.tafseer)
+                        .font(.body)
+                        .lineSpacing(7)
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .environment(\.layoutDirection, .rightToLeft)
                 }
                 .padding()
             }
@@ -695,16 +909,310 @@ struct TafsirSheet: View {
         }
         .onAppear {
             store.markRead(ayah.id)
-            translated.load(language.rawValue)
         }
-        .onChange(of: languageRaw) { _, _ in translated.load(language.rawValue) }
+        .task(id: "\(ayah.id)-\(languageRaw)") {
+            translated.load(language)
+        }
         .sariLanguageEnvironment(language)
     }
+
+    @ViewBuilder
+    private var verseMeaningSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label(verseMeaningTitle, systemImage: "character.book.closed")
+                .font(.subheadline.weight(.semibold))
+
+            switch translated.packState(for: "en") {
+            case .downloading:
+                workingRow(downloadingLabel)
+            case .notInstalled, .failed:
+                englishDownloadCard
+            case .installed:
+                installedMeaningContent
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private var installedMeaningContent: some View {
+        if language == .en {
+            meaningBlock(translated.englishMeaning(for: ayah), note: englishSourceNote)
+        } else if let text = translated.languageMeaning(for: ayah) {
+            meaningBlock(text, note: languagePackNote)
+        } else {
+            languagePackOffer
+            meaningBlock(translated.englishMeaning(for: ayah), note: englishShownNote)
+            aiTranslationControls
+        }
+    }
+
+    @ViewBuilder
+    private func meaningBlock(_ text: String?, note: String) -> some View {
+        if let text {
+            Text(text)
+                .font(.body)
+                .lineSpacing(6)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(note)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        } else {
+            Text(missingMeaningNote)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    /// First-run prompt: shown until the English file is installed, then never again.
+    private var englishDownloadCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(englishDownloadNote)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.leading)
+
+            if translated.packState(for: "en") == .failed {
+                Text(downloadFailedLabel)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
+
+            if translated.isDownloadConfigured {
+                Button {
+                    Task { await translated.downloadPack("en") }
+                } label: {
+                    Label(downloadButtonLabel, systemImage: "arrow.down.circle.fill")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+            } else {
+                Text(notConfiguredLabel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var languagePackOffer: some View {
+        let code = language.rawValue
+        if translated.packState(for: code) == .downloading {
+            workingRow(downloadingLabel)
+        } else if translated.isDownloadConfigured {
+            Button {
+                Task { await translated.downloadPack(code) }
+            } label: {
+                Label(languagePackButton, systemImage: "arrow.down.circle")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+
+    @ViewBuilder
+    private var aiTranslationControls: some View {
+        if translated.isTranslatingWithAI {
+            workingRow(aiWorkingLabel)
+        } else if let ai = translated.aiTranslation {
+            Divider()
+            Text(ai)
+                .font(.body)
+                .lineSpacing(6)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(aiNote)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        } else if pack.readyForInference {
+            Button {
+                Task { await translated.translateWithLocalModel(for: ayah) }
+            } label: {
+                Label(aiButtonLabel, systemImage: "sparkles")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+
+            if translated.aiTranslationFailed {
+                Text(aiFailedLabel)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
+        } else {
+            Text(aiPackNeededNote)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func workingRow(_ title: String) -> some View {
+        HStack(spacing: 10) {
+            ProgressView()
+            Text(title)
+                .font(.caption)
+        }
+    }
+
+    private func localized(_ ar: String, _ en: String) -> String {
+        SariContentText.pick(language, [.ar: ar, .en: en])
+    }
+
+    private var downloadingLabel: String {
+        localized("جارٍ تنزيل الملف…", "Downloading the file…")
+    }
+
+    private var englishDownloadNote: String {
+        localized(
+            "ملف معاني التفسير الإنجليزي غير مثبت. نزّله مرة واحدة، وبعدها يعمل بدون إنترنت. التفسير العربي متاح دائمًا.",
+            "The English meaning file is not installed yet. Download it once; after that it works offline. The Arabic tafsir is always available."
+        )
+    }
+
+    private var downloadButtonLabel: String {
+        localized("تنزيل ملف التفسير مرة واحدة", "Download the tafsir file once")
+    }
+
+    private var downloadFailedLabel: String {
+        localized("تعذر التنزيل. تحقق من الاتصال ثم أعد المحاولة.", "Download failed. Check your connection and try again.")
+    }
+
+    private var notConfiguredLabel: String {
+        localized(
+            "رابط تنزيل ملفات التفسير غير مُعدّ في هذه النسخة.",
+            "The tafsir file download address is not configured in this build."
+        )
+    }
+
+    private var englishShownNote: String {
+        localized(
+            "المعنى معروض بالإنجليزية لأن ترجمة هذه اللغة غير مثبتة.",
+            "The meaning is shown in English because this language's pack is not installed."
+        )
+    }
+
+    private var languagePackNote: String {
+        localized("ترجمة معتمدة من حزمة اللغة المثبتة.", "Translation from the installed language pack.")
+    }
+
+    private var languagePackButton: String {
+        localized("تنزيل ترجمة هذه اللغة (اختياري)", "Download this language's translation (optional)")
+    }
+
+    private var aiButtonLabel: String {
+        localized("ترجمة محلية بالذكاء الاصطناعي (احتياطي)", "Translate on-device with AI (fallback)")
+    }
+
+    private var aiWorkingLabel: String {
+        localized("جارٍ الترجمة محليًا…", "Translating on-device…")
+    }
+
+    private var aiNote: String {
+        localized(
+            "ترجمة آلية محلية من الإنجليزية؛ راجع الأصل عند الحاجة.",
+            "On-device machine translation from English; check the source when needed."
+        )
+    }
+
+    private var aiFailedLabel: String {
+        localized("تعذرت الترجمة المحلية.", "On-device translation failed.")
+    }
+
+    private var aiPackNeededNote: String {
+        localized(
+            "للترجمة المحلية بالذكاء الاصطناعي ثبّت حزمة المساعد الفقهي أولًا.",
+            "For on-device AI translation, install the fiqh assistant pack first."
+        )
+    }
+
+    private var missingMeaningNote: String {
+        localized("المعنى غير متوفر لهذه الآية في الملف المثبت.", "No meaning for this verse in the installed file.")
+    }
+
+    private var verseMeaningTitle: String { SariContentText.pick(language, [
+        .ar: "ترجمة معنى الآية", .en: "Translation of the verse's meaning", .tr: "Ayetin anlamının çevirisi",
+        .ms: "Terjemahan maksud ayat", .id: "Terjemahan makna ayat", .ja: "節の意味の翻訳",
+        .zh: "经文含义的翻译", .ru: "Перевод смысла аята", .fr: "Traduction du sens du verset"
+    ]) }
+
+    private var translationPreparingLabel: String { SariContentText.pick(language, [
+        .ar: "جارٍ تنزيل المرجع الإنجليزي وإعداد الترجمة…", .en: "Downloading the English source and preparing the translation…",
+        .tr: "İngilizce kaynak indiriliyor ve çeviri hazırlanıyor…", .ms: "Memuat turun sumber Inggeris dan menyediakan terjemahan…",
+        .id: "Mengunduh sumber bahasa Inggris dan menyiapkan terjemahan…", .ja: "英語の出典をダウンロードし、翻訳を準備中…",
+        .zh: "正在下载英文来源并准备翻译…", .ru: "Загрузка английского источника и подготовка перевода…",
+        .fr: "Téléchargement de la source anglaise et préparation de la traduction…"
+    ]) }
+
+    private var modelSetupButton: String { SariContentText.pick(language, [
+        .ar: "تنزيل النموذج المطلوب مرة واحدة", .en: "Download the required model once", .tr: "Gerekli modeli bir kez indir",
+        .ms: "Muat turun model yang diperlukan sekali", .id: "Unduh model yang diperlukan sekali", .ja: "必要なモデルを一度ダウンロード",
+        .zh: "一次性下载所需模型", .ru: "Скачать необходимую модель один раз", .fr: "Télécharger le modèle requis une fois"
+    ]) }
+
+    private var modelRequiredForTranslationNote: String { SariContentText.pick(language, [
+        .ar: "تحتاج الترجمة التلقائية إلى تنزيل النموذج مرة واحدة عبر Wi‑Fi أو بيانات الجوال. بعدها تُنشأ الترجمات محليًا.",
+        .en: "Automatic translation needs a one-time model download over Wi-Fi or cellular data. Translations are then generated on-device.",
+        .tr: "Otomatik çeviri için Wi-Fi veya mobil veriyle modeli bir kez indirin. Sonrasında çeviriler cihazda oluşturulur.",
+        .ms: "Terjemahan automatik memerlukan muat turun model sekali melalui Wi-Fi atau data selular. Selepas itu, terjemahan dijana pada peranti.",
+        .id: "Terjemahan otomatis memerlukan unduhan model sekali melalui Wi-Fi atau data seluler. Setelah itu, terjemahan dibuat di perangkat.",
+        .ja: "自動翻訳にはWi-Fiまたはモバイル通信でのモデルの初回ダウンロードが必要です。その後は端末内で翻訳します。",
+        .zh: "自动翻译需要通过 Wi-Fi 或移动数据下载一次模型，之后会在设备本地生成翻译。",
+        .ru: "Для автоматического перевода модель нужно один раз загрузить через Wi-Fi или мобильную сеть. Затем перевод создаётся на устройстве.",
+        .fr: "La traduction automatique nécessite un téléchargement unique du modèle en Wi-Fi ou sur réseau mobile. Les traductions sont ensuite générées sur l’appareil."
+    ]) }
+
+    private var translationSourceNote: String { SariContentText.pick(language, [
+        .ar: "ترجمة آلية لمعنى النص الإنجليزي لهلالي وخان؛ راجع الأصل العربي عند الحاجة.",
+        .en: "Machine translation of the Hilali–Khan English meaning; consult the Arabic source when needed.",
+        .tr: "Hilali–Khan İngilizce anlamının makine çevirisidir; gerektiğinde Arapça kaynağa başvurun.",
+        .ms: "Terjemahan mesin bagi makna Inggeris Hilali–Khan; rujuk sumber Arab jika perlu.",
+        .id: "Terjemahan mesin dari makna bahasa Inggris Hilali–Khan; periksa sumber Arab bila diperlukan.",
+        .ja: "ヒラリー・カーン英訳の機械翻訳です。必要に応じてアラビア語原文を確認してください。",
+        .zh: "这是对 Hilali–Khan 英文译义的机器翻译；如有需要，请参阅阿拉伯语原文。",
+        .ru: "Машинный перевод английского перевода Хилали и Хана; при необходимости сверяйтесь с арабским оригиналом.",
+        .fr: "Traduction automatique du sens anglais de Hilali–Khan ; consultez la source arabe si nécessaire."
+    ]) }
+
+    private var englishSourceNote: String { SariContentText.pick(language, [
+        .ar: "المصدر الإنجليزي: ترجمة هلالي وخان لمعاني القرآن.",
+        .en: "English source: the Hilali–Khan translation of the meanings of the Quran.",
+        .tr: "İngilizce kaynak: Hilali–Khan Kur’an meali.",
+        .ms: "Sumber bahasa Inggeris: terjemahan makna al-Quran oleh Hilali–Khan.",
+        .id: "Sumber bahasa Inggris: terjemahan makna Al-Qur'an oleh Hilali–Khan.",
+        .ja: "英語の出典：ヒラリー・カーンによるクルアーンの意味の翻訳。",
+        .zh: "英文来源：Hilali–Khan《古兰经含义译本》。",
+        .ru: "Английский источник: перевод смыслов Корана Хилали и Хана.",
+        .fr: "Source anglaise : traduction du sens du Coran par Hilali et Khan."
+    ]) }
+
+    private var translationUnavailableNote: String { SariContentText.pick(language, [
+        .ar: "تعذر تحميل النص الإنجليزي أو إعداد الترجمة. تحقق من الاتصال ثم أعد المحاولة.",
+        .en: "The English source or translation could not be prepared. Check your connection and retry.",
+        .tr: "İngilizce kaynak veya çeviri hazırlanamadı. Bağlantınızı kontrol edip yeniden deneyin.",
+        .ms: "Sumber bahasa Inggeris atau terjemahan tidak dapat disediakan. Semak sambungan dan cuba lagi.",
+        .id: "Sumber bahasa Inggris atau terjemahan gagal disiapkan. Periksa koneksi lalu coba lagi.",
+        .ja: "英語の原文または翻訳を準備できませんでした。接続を確認して再試行してください。",
+        .zh: "无法准备英文来源或翻译。请检查网络连接后重试。",
+        .ru: "Не удалось подготовить английский источник или перевод. Проверьте подключение и повторите попытку.",
+        .fr: "Impossible de préparer la source anglaise ou sa traduction. Vérifiez la connexion et réessayez."
+    ]) }
+
+    private var retryTranslationLabel: String { SariContentText.pick(language, [
+        .ar: "إعادة المحاولة", .en: "Retry", .tr: "Yeniden dene", .ms: "Cuba lagi", .id: "Coba lagi",
+        .ja: "再試行", .zh: "重试", .ru: "Повторить", .fr: "Réessayer"
+    ]) }
 
     private var tafsirTitle: String {
         SariContentText.pick(language, [
             .ar: "التفسير الميسر", .en: "Tafseer Muyassar", .tr: "Tefsir-i Müyeser", .ms: "Tafsir Muyassar",
             .id: "Tafsir Muyassar", .ja: "タフスィール・ムヤッサル", .zh: "简明经注", .ru: "Тафсир аль-Муяссар", .fr: "Tafsir Al-Muyassar"
+        ])
+    }
+
+    private var translatedMeaningLabel: String {
+        SariContentText.pick(language, [
+            .ar: "ترجمة معنى التفسير", .en: "Translation of the Tafsir meaning", .tr: "Tefsir anlamının çevirisi",
+            .ms: "Terjemahan maksud tafsir", .id: "Terjemahan makna tafsir", .ja: "注釈の意味の翻訳",
+            .zh: "注释含义的翻译", .ru: "Перевод смысла тафсира", .fr: "Traduction du sens du tafsir"
         ])
     }
 

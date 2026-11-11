@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "country_codes": ["SA", "KW"],
+  "policy": "SARI product default-country policy. This is not independent halal certification for any individual restaurant.",
+  "restaurant_exceptions": []
+}

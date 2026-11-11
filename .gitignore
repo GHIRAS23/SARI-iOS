@@ -30,3 +30,6 @@ SARI.xcodeproj/
 # Local model/build artifacts
 *.ipa
 *.xcarchive
+
+# Mushaf page artwork is fetched in CI (scripts/fetch_mushaf_svgs.sh)
+SARI/Resources/mushaf/

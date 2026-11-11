@@ -1,0 +1,128 @@
+{
+  "stage": "15C8",
+  "catalog_keys": [
+    "adhkar",
+    "country_info",
+    "destination",
+    "embassy",
+    "fiqh",
+    "home",
+    "im_home",
+    "im_traveling",
+    "loading",
+    "local_apps",
+    "muslim_tools",
+    "next_prayer",
+    "no_data",
+    "offline",
+    "prayer_times",
+    "qibla",
+    "quran",
+    "retry",
+    "settings",
+    "travel",
+    "trip_requirements",
+    "weather"
+  ],
+  "adaptive_breakpoints_android_dp": {
+    "compact_max": 599,
+    "medium": 600,
+    "expanded": 840
+  },
+  "adaptive_ios_content_max_width": 980,
+  "priority_migration": [
+    "home",
+    "navigation",
+    "travel"
+  ],
+  "next_migration": [
+    "quran",
+    "prayer",
+    "fiqh",
+    "settings"
+  ],
+  "remaining_hardcoded_top_ios": [
+    [
+      "SARI/Sources/Features/Travel/TravelView.swift",
+      44
+    ],
+    [
+      "SARI/Sources/Core/TravelService.swift",
+      38
+    ],
+    [
+      "SARI/Sources/Core/SariStrings.swift",
+      36
+    ],
+    [
+      "SARI/Sources/Core/WeatherService.swift",
+      30
+    ],
+    [
+      "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+      23
+    ],
+    [
+      "SARI/Sources/Features/Home/HomeView.swift",
+      22
+    ],
+    [
+      "SARI/Sources/Core/PrayerService.swift",
+      19
+    ],
+    [
+      "SARI/Sources/Features/Settings/SettingsView.swift",
+      19
+    ],
+    [
+      "SARI/Sources/Features/Quran/QuranView.swift",
+      18
+    ],
+    [
+      "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+      15
+    ]
+  ],
+  "remaining_hardcoded_top_android": [
+    [
+      "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+      42
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SariApp.kt",
+      41
+    ],
+    [
+      "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+      15
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SariStrings.kt",
+      13
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SettingsScreen.kt",
+      13
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/SariFeatureStrings.kt",
+      13
+    ],
+    [
+      "app/src/main/java/com/sari/app/fiqh/FiqhScreen.kt",
+      13
+    ],
+    [
+      "app/src/main/java/com/sari/app/fiqh/FiqhPackSetupScreen.kt",
+      9
+    ],
+    [
+      "app/src/main/java/com/sari/app/ui/OnboardingScreen.kt",
+      8
+    ],
+    [
+      "app/src/main/java/com/sari/app/weather/WeatherService.kt",
+      7
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "stage": "15C28",
+  "static_gate_closed": true,
+  "direct_ui_candidates": {
+    "ios": [],
+    "android": []
+  },
+  "integrity": {
+    "swift": [],
+    "kotlin": []
+  },
+  "rendered_device_gate": "PENDING",
+  "next": "Rendered device/emulator QA only; static localization redesign is frozen except bug fixes."
+}

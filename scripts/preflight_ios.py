@@ -162,20 +162,43 @@ def check_bundled_data() -> None:
     if isinstance(quran, list):
         if len(quran) != 6236:
             fail(f"Quran rows must be 6236, got {len(quran)}")
-        ids = [x.get("id") for x in quran if isinstance(x, dict)]
-        if len(set(ids)) != 6236:
-            fail("Quran verse ids are not unique/complete")
-        pages = {x.get("page") for x in quran if isinstance(x, dict)}
-        if pages != set(range(1, 605)):
-            fail("Quran pages must cover exactly 1...604")
-        for row in quran:
-            if not isinstance(row, dict):
-                fail("Quran contains a non-object row")
-                break
-            ls, le = row.get("line_start"), row.get("line_end")
-            if not isinstance(ls, int) or not isinstance(le, int) or not (1 <= ls <= 15 and 1 <= le <= 15):
-                fail(f"Invalid Quran line range in verse id {row.get('id')}: {ls}...{le}")
-                break
+        if not all(isinstance(row, dict) for row in quran):
+            fail("Quran contains a non-object row")
+        else:
+            ids = [row.get("id") for row in quran]
+            if set(ids) != set(range(1, 6237)) or len(ids) != len(set(ids)):
+                fail("Quran verse ids must be the complete unique range 1...6236")
+
+            pages = {row.get("page") for row in quran}
+            if pages != set(range(1, 605)):
+                fail("Quran pages must cover exactly 1...604")
+
+            surahs = {row.get("sura") for row in quran}
+            if surahs != set(range(1, 115)):
+                fail("Quran data must cover all 114 surahs")
+
+            missing_tafsir = [
+                row.get("id") for row in quran
+                if not isinstance(row.get("tafseer"), str)
+                or not row.get("tafseer", "").strip()
+            ]
+            if missing_tafsir:
+                fail(f"Quran tafsir is missing or empty for {len(missing_tafsir)} ayat; first IDs: {missing_tafsir[:10]}")
+
+            missing_text = [
+                row.get("id") for row in quran
+                if not isinstance(row.get("text"), str) or not row.get("text", "").strip()
+            ]
+            if missing_text:
+                fail(f"Quran Arabic text is missing or empty for {len(missing_text)} ayat")
+
+            for row in quran:
+                ls, le = row.get("line_start"), row.get("line_end")
+                if not isinstance(ls, int) or not isinstance(le, int) or not (1 <= ls <= 15 and 1 <= le <= 15):
+                    fail(f"Invalid Quran line range in verse id {row.get('id')}: {ls}...{le}")
+                    break
+
+    check_quran_tafsir_interaction()
 
     countries = load_json("SARI/Resources/data/countries.json")
     if isinstance(countries, list):
@@ -235,6 +258,41 @@ def check_bundled_data() -> None:
                 fail(f"Missing Adhan notification sound: {notification}")
 
 
+def check_quran_tafsir_interaction() -> None:
+    """Ensure the bundled tafsir remains reachable from the mushaf UI."""
+    path = require("SARI/Sources/Features/Quran/QuranView.swift")
+    if not path.exists():
+        return
+
+    source = path.read_text(encoding="utf-8")
+    required = (
+        "MushafSVGWebView(data: svgData)",
+        "onSelectAyah:",
+        "allowsContentJavaScript = true",
+        "isUserInteractionEnabled = true",
+        "ayahPolygon",
+        "messageHandlers.ayahTap.postMessage",
+        'add(context.coordinator, name: "ayahTap")',
+        "TafsirSheet(ayah: ayah, store: store)",
+        "Text(ayah.tafseer)",
+        "اختيار آية للتفسير",
+    )
+    for token in required:
+        if token not in source:
+            fail(f"Quran Tafsir interaction is missing required implementation: {token}")
+
+    if "isUserInteractionEnabled = false" in source:
+        fail("Mushaf WebView must not disable interaction while ayah hit-testing is enabled")
+
+    fallback_start = source.find("private var fallbackView: some View")
+    fallback_end = source.find("private var tafsirActionLabel", fallback_start)
+    if fallback_start < 0 or fallback_end < 0 or "Button {" not in source[fallback_start:fallback_end]:
+        fail("Mushaf fallback page must allow selecting an ayah to open its Tafsir")
+
+    if "translatedMeaningLabel" not in source or "Original Arabic tafsir" not in source:
+        fail("Tafsir view must distinguish verified translation from the always-visible Arabic original")
+
+
 def check_sqlite() -> None:
     p = require("SARI/Resources/data/fiqh_pages.sqlite3")
     if not p.exists():
@@ -270,14 +328,15 @@ def check_project_config() -> None:
         "INFOPLIST_FILE: SARI/Info.plist",
         "INFOPLIST_FILE: SARIWidget/Info.plist",
         "exactVersion: 0.1.0",
+        "SARI_MEALDB_API_BASE_URL: https://www.themealdb.com/api/json/v1/1",
     )
     for token in required:
         if token not in text:
             fail(f"project.yml is missing required setting: {token}")
-    if text.count("MARKETING_VERSION: 0.9.5") != 2:
-        fail("App and widget MARKETING_VERSION must both be 0.9.5")
-    if text.count("CURRENT_PROJECT_VERSION: 14") != 2:
-        fail("App and widget CURRENT_PROJECT_VERSION must both be 14")
+    if text.count("MARKETING_VERSION: 0.9.7") != 2:
+        fail("App and widget MARKETING_VERSION must both be 0.9.7")
+    if text.count("CURRENT_PROJECT_VERSION: 16") != 2:
+        fail("App and widget CURRENT_PROJECT_VERSION must both be 16")
 
 
 def check_local_ai_config() -> None:
@@ -373,6 +432,7 @@ if ERRORS:
 print("SARI iOS preflight OK")
 print("- no duplicate app resource outputs")
 print("- plists/resources/data/sqlite validated")
+print("- Quran includes 6,236 non-empty tafsir entries and clickable/accessible tafsir navigation")
 print("- Adhan CAF/M4A assets validated; custom notification sounds are < 30s")
 print("- Swift 6/Xcode 16.4 compatibility traps validated")
 print("- app/widget version and core XcodeGen settings aligned")

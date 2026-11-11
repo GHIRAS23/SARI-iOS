@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "modelURL": "https://YOUR-FILE-HOST.example/sari-fiqh/model.gguf",
+  "modelSHA256": "REPLACE_WITH_REAL_SHA256",
+  "modelBytes": 0,
+  "libraryURL": "https://YOUR-FILE-HOST.example/sari-fiqh/fiqh_pages.sqlite3",
+  "librarySHA256": "REPLACE_WITH_REAL_SHA256",
+  "libraryBytes": 0
+}

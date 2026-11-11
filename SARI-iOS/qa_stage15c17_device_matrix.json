@@ -1,0 +1,93 @@
+{
+  "stage": "15C17",
+  "status": "STATIC_CLASSIFICATION_COMPLETE_DEVICE_QA_PENDING",
+  "languages": [
+    "ar",
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "directions": {
+    "rtl": [
+      "ar"
+    ],
+    "ltr": [
+      "en",
+      "tr",
+      "ms",
+      "id",
+      "ja",
+      "zh",
+      "ru",
+      "fr"
+    ]
+  },
+  "devices": [
+    {
+      "id": "small_phone",
+      "width_dp": 320,
+      "orientation": "portrait",
+      "font_scale": 1.0
+    },
+    {
+      "id": "small_phone_large_text",
+      "width_dp": 320,
+      "orientation": "portrait",
+      "font_scale": 1.6
+    },
+    {
+      "id": "large_phone",
+      "width_dp": 430,
+      "orientation": "portrait",
+      "font_scale": 1.0
+    },
+    {
+      "id": "tablet",
+      "width_dp": 768,
+      "orientation": "portrait",
+      "font_scale": 1.0
+    },
+    {
+      "id": "tablet_landscape",
+      "width_dp": 1024,
+      "orientation": "landscape",
+      "font_scale": 1.3
+    }
+  ],
+  "screens": [
+    "onboarding",
+    "home",
+    "quran",
+    "ayah_detail",
+    "adhkar",
+    "prayer_times",
+    "prayer_settings",
+    "qibla",
+    "weather",
+    "travel",
+    "fiqh",
+    "settings"
+  ],
+  "assertions": [
+    "no clipped text",
+    "no overlap",
+    "Arabic layout is RTL while Quran/adhkar Arabic source remains right-aligned",
+    "French/Russian wrap naturally",
+    "Japanese/Chinese do not force Latin assumptions",
+    "buttons remain tappable at large text",
+    "tablet content does not stretch edge-to-edge",
+    "offline/error states remain readable"
+  ],
+  "device_only_checks": [
+    "compass",
+    "GPS permission lifecycle",
+    "notification scheduling",
+    "adhan background behavior",
+    "real Dynamic Type/font scaling rendering"
+  ]
+}

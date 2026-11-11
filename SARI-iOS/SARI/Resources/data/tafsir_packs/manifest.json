@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "source": "التفسير الميسر العربي المضمّن في SARI",
+  "notice_ar": "الترجمة ترجمة لمعنى التفسير وليست النص العربي الأصلي.",
+  "supported": [
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "pack_format": "json",
+  "entry_schema": {
+    "id": "Quran ayah global integer id",
+    "text": "translated tafsir text"
+  },
+  "integrity": "sha256-required-before-activation"
+}

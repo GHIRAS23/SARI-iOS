@@ -1,0 +1,48 @@
+{
+  "stage": "15C25",
+  "status": "IN_PROGRESS",
+  "ui_replacements": {
+    "ios": {
+      "TravelView.swift": 1,
+      "QuranView.swift": 1,
+      "FiqhAssistantView.swift": 5,
+      "FiqhPackSetupView.swift": 4,
+      "OnboardingView.swift": 10,
+      "SettingsView.swift": 4
+    },
+    "android": {
+      "FiqhScreen.kt": 0,
+      "FiqhPackSetupScreen.kt": 1,
+      "OnboardingScreen.kt": 10,
+      "SettingsScreen.kt": 1
+    },
+    "ios_dynamic": {
+      "quran": 5,
+      "fiqh": 1
+    },
+    "android_dynamic": 1
+  },
+  "android_travel_catalog_runtime_json": true,
+  "remaining_raw_target_lines": {
+    "ios": {
+      "TravelView.swift": 0,
+      "QuranView.swift": 4,
+      "FiqhAssistantView.swift": 2,
+      "FiqhPackSetupView.swift": 0,
+      "OnboardingView.swift": 2,
+      "SettingsView.swift": 4
+    },
+    "android": {
+      "FiqhScreen.kt": 9,
+      "FiqhPackSetupScreen.kt": 4,
+      "OnboardingScreen.kt": 2,
+      "SettingsScreen.kt": 5,
+      "TravelScreen.kt": 6
+    }
+  },
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "next": "Finish remaining interpolated/status UI in Quran/Fiqh/Settings/Onboarding and localize travel catalog display fields; then run final static gate and rendered device QA."
+}

@@ -15,8 +15,8 @@ struct FiqhPackManifest: Codable {
 final class LocalFiqhPack: ObservableObject {
     static let shared = LocalFiqhPack()
 
-    /// Verified multilingual GGUF used by the offline assistant.
-    /// The model is downloaded after installation so the IPA stays reasonably small.
+    /// Keep the same verified 3B Q4_K_M model to preserve answer quality. v0.9.6
+    /// changes runtime safety and download behavior, not the model weights.
     static let recommendedModelName = "Qwen2.5-3B Instruct Q4_K_M"
     static let recommendedModelURL = URL(
         string: "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf"
@@ -24,6 +24,11 @@ final class LocalFiqhPack: ObservableObject {
     static let recommendedModelSHA256 = "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d"
     static let recommendedModelVersion = "qwen2.5-3b-instruct-q4km-2026.09"
     static let recommendedApproxBytes: Int64 = 2_060_000_000
+
+    /// Separate the model-file version from the runtime contract. Existing v0.9.5
+    /// users can reuse the already verified 2.1 GB file; v0.9.6 only performs a
+    /// quick model-load/inference self-test before enabling the assistant.
+    static let runtimeValidationVersion = "swiftllama-0.1.0-sari-safe-v2"
 
     @Published private(set) var installed = false
     @Published private(set) var downloading = false
@@ -44,6 +49,8 @@ final class LocalFiqhPack: ObservableObject {
     }
 
     var modelURL: URL { root.appendingPathComponent("model.gguf") }
+    private var stagedModelURL: URL { root.appendingPathComponent("model.gguf.part") }
+    private var resumeDataURL: URL { root.appendingPathComponent("model.gguf.resume") }
 
     private var writableLibraryURL: URL {
         root.appendingPathComponent("fiqh_pages.sqlite3")
@@ -64,11 +71,21 @@ final class LocalFiqhPack: ObservableObject {
     }
 
     var hasModel: Bool { fm.fileExists(atPath: modelURL.path) }
-    var readyForInference: Bool {
-        installed && hasModel && installedVersion == Self.recommendedModelVersion
-    }
 
     private var versionURL: URL { root.appendingPathComponent("version.txt") }
+    private var runtimeValidationURL: URL { root.appendingPathComponent("runtime-validation.txt") }
+
+    private var runtimeValidationVersion: String? {
+        (try? String(contentsOf: runtimeValidationURL, encoding: .utf8))?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    var readyForInference: Bool {
+        installed
+            && hasModel
+            && installedVersion == Self.recommendedModelVersion
+            && runtimeValidationVersion == Self.runtimeValidationVersion
+    }
 
     func refresh() {
         installed = fm.fileExists(atPath: libraryURL.path)
@@ -77,14 +94,18 @@ final class LocalFiqhPack: ObservableObject {
 
         if installed {
             if readyForInference {
-                status = "جاهز للعمل محليًا بالنموذج والمصادر"
+                status = "جاهز للعمل محليًا بالنموذج والنصوص"
+            } else if hasModel && installedVersion == Self.recommendedModelVersion {
+                status = "النموذج مثبت — يلزم فحص توافق سريع قبل التشغيل"
             } else if hasModel {
                 status = "يتوفر نموذج قديم — يلزم تحديث النموذج المحلي"
+            } else if fm.fileExists(atPath: stagedModelURL.path) {
+                status = "اكتمل التنزيل — بانتظار التحقق والتفعيل"
             } else {
-                status = "المصادر جاهزة — نزّل النموذج المحلي مرة واحدة"
+                status = "النصوص جاهزة — نزّل النموذج المحلي مرة واحدة"
             }
         } else {
-            status = "تعذر تجهيز المصادر المحلية"
+            status = "تعذر تجهيز النصوص المحلية"
         }
     }
 
@@ -96,20 +117,65 @@ final class LocalFiqhPack: ObservableObject {
         totalBytes = 0
         bytesPerSecond = 0
         refresh()
+        Task { await LocalFiqhEngine.shared.releaseModelIfIdle() }
+    }
+
+    /// If iOS continued the large background transfer while SARI was suspended or
+    /// relaunched, reattach to it when the app becomes active. A completed staged
+    /// file is verified/activated here rather than downloaded again.
+    func resumeBackgroundWorkIfNeeded() async {
+        guard installed, !readyForInference, !downloading else { return }
+        let hasStaged = fm.fileExists(atPath: stagedModelURL.path)
+        let active = await ResumableFileDownloader.shared.hasActiveDownload(
+            from: Self.recommendedModelURL
+        )
+        guard hasStaged || active else { return }
+
+        do {
+            try await installRecommendedModel()
+        } catch {
+            status = "تعذر إكمال التحقق من التنزيل — يمكن إعادة المحاولة"
+            await SariDiagnostics.shared.log(
+                "fiqh.pack.resume error=\(String(describing: error))"
+            )
+        }
     }
 
     /// One-tap install for SARI's validated offline multilingual model.
-    /// The bundled fiqh database is kept in the app; only the GGUF is downloaded.
+    /// The bundled fiqh database stays inside the app; only the GGUF is downloaded.
     func installRecommendedModel() async throws {
         guard !downloading else { return }
         guard installed else { throw URLError(.fileDoesNotExist) }
 
         downloading = true
         progress = 0.02
-        status = "التحقق من مساحة الجهاز…"
+        bytesPerSecond = 0
         defer { downloading = false }
 
         try fm.createDirectory(at: root, withIntermediateDirectories: true)
+
+        // Reuse a model already verified by v0.9.5. The runtime marker is intentionally
+        // new, so the first v0.9.6 use still exercises SwiftLlama with a tiny safe prompt.
+        if hasModel && installedVersion == Self.recommendedModelVersion {
+            status = "فحص توافق النموذج المثبت…"
+            progress = 0.94
+            try await validateRuntimeAndMarkReady()
+            return
+        }
+
+        // A background URLSession may have completed while the process was suspended.
+        // Verify its staged file before deciding to start another 2.1 GB transfer.
+        if fm.fileExists(atPath: stagedModelURL.path) {
+            status = "التحقق من التنزيل المكتمل…"
+            progress = 0.90
+            if try verifyRecommendedStagedModel() {
+                try activateRecommendedStagedModel()
+                try await validateRuntimeAndMarkReady()
+                return
+            }
+            try? fm.removeItem(at: stagedModelURL)
+            try? fm.removeItem(at: resumeDataURL)
+        }
 
         let values = try root.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
         if let free = values.volumeAvailableCapacityForImportantUsage,
@@ -117,66 +183,94 @@ final class LocalFiqhPack: ObservableObject {
             throw URLError(.dataLengthExceedsMaximum)
         }
 
-        // Keep the partial/resume state across transient network failures.
-        // A 2.1 GB model must never be forced to restart from zero after a timeout.
-        let stagedModel = root.appendingPathComponent("model.gguf.part")
-        let resumeData = root.appendingPathComponent("model.gguf.resume")
-
-        progress = 0.08
         downloadedBytes = 0
         totalBytes = Self.recommendedApproxBytes
-        bytesPerSecond = 0
+        progress = 0.08
 
         var lastError: Error?
         for attempt in 1...3 {
             do {
                 try await fetch(
                     Self.recommendedModelURL,
-                    to: stagedModel,
-                    resumeDataAt: resumeData,
+                    to: stagedModelURL,
+                    resumeDataAt: resumeDataURL,
                     expectedBytes: 0,
                     sha256: Self.recommendedModelSHA256,
                     base: 0.08,
-                    span: 0.84,
+                    span: 0.82,
                     label: attempt == 1
-                        ? "تنزيل نموذج المساعد المحلي…"
+                        ? "تنزيل نموذج المساعد في الخلفية…"
                         : "استكمال تنزيل النموذج — المحاولة \(attempt) من 3…"
                 )
                 lastError = nil
                 break
             } catch {
                 lastError = error
-                // Resume-data validity is handled inside ResumableFileDownloader.
-                // Keep transient network state here so a multi-gigabyte model can continue.
                 guard attempt < 3 else { break }
-                status = "انقطع التنزيل — سيتم الاستكمال تلقائيًا…"
+                status = "انقطع الاتصال — سيحاول SARI الاستكمال تلقائيًا…"
                 try? await Task.sleep(nanoseconds: UInt64(attempt) * 2_000_000_000)
             }
         }
 
-        if let lastError {
-            // Do not erase resume data here: the next tap can continue the transfer.
-            throw lastError
-        }
+        if let lastError { throw lastError }
 
-        status = "التحقق من سلامة النموذج…"
+        try activateRecommendedStagedModel()
+        try await validateRuntimeAndMarkReady()
+    }
+
+    private func activateRecommendedStagedModel() throws {
+        status = "تفعيل النموذج بعد التحقق…"
+        try atomicReplace(stagedModelURL, modelURL)
+        try? fm.removeItem(at: resumeDataURL)
+        try? fm.removeItem(at: runtimeValidationURL)
+        try Self.recommendedModelVersion.write(
+            to: versionURL,
+            atomically: true,
+            encoding: .utf8
+        )
+        installedVersion = Self.recommendedModelVersion
         progress = max(progress, 0.94)
+    }
+
+    private func verifyRecommendedStagedModel() throws -> Bool {
+        let attrs = try fm.attributesOfItem(atPath: stagedModelURL.path)
+        let bytes = (attrs[.size] as? NSNumber)?.int64Value ?? 0
+        guard bytes > 1_500_000_000 else { return false }
+        downloadedBytes = bytes
+        totalBytes = max(totalBytes, Self.recommendedApproxBytes)
+        let digest = try sha256File(stagedModelURL)
+        return digest.caseInsensitiveCompare(Self.recommendedModelSHA256) == .orderedSame
+    }
+
+    private func validateRuntimeAndMarkReady() async throws {
+        try? fm.removeItem(at: runtimeValidationURL)
+        status = "اختبار تشغيل النموذج محليًا…"
+        progress = max(progress, 0.97)
+
         do {
-            try atomicReplace(stagedModel, modelURL)
-            try? fm.removeItem(at: resumeData)
-            try Self.recommendedModelVersion.write(
-                to: versionURL,
+            try await LocalFiqhEngine.shared.validateRuntime(modelURL: modelURL)
+            try Self.runtimeValidationVersion.write(
+                to: runtimeValidationURL,
                 atomically: true,
                 encoding: .utf8
             )
+            try? fm.setAttributes(
+                [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
+                ofItemAtPath: runtimeValidationURL.path
+            )
+            progress = 1
+            status = "جاهز للعمل بدون إنترنت"
+            refresh()
+            await SariDiagnostics.shared.log("fiqh.pack runtimeValidation=passed")
         } catch {
+            try? fm.removeItem(at: runtimeValidationURL)
+            status = "فشل فحص تشغيل النموذج — لم يتم تفعيل المساعد"
+            refresh()
+            await SariDiagnostics.shared.log(
+                "fiqh.pack runtimeValidation=failed error=\(String(describing: error))"
+            )
             throw error
         }
-
-        progress = 1
-        installedVersion = Self.recommendedModelVersion
-        status = "جاهز للعمل بدون إنترنت"
-        refresh()
     }
 
     /// Keeps compatibility with a future signed manifest hosted by the project.
@@ -213,10 +307,9 @@ final class LocalFiqhPack: ObservableObject {
             throw URLError(.cannotParseResponse)
         }
 
-        let stagedModel = root.appendingPathComponent("model.gguf.part")
+        let stagedModel = root.appendingPathComponent("manifest-model.gguf.part")
         let stagedLibrary = root.appendingPathComponent("fiqh_pages.sqlite3.part")
-        try? fm.removeItem(at: stagedModel)
-        try? fm.removeItem(at: stagedLibrary)
+        try? fm.removeItem(at: runtimeValidationURL)
 
         do {
             try await fetch(
@@ -237,21 +330,19 @@ final class LocalFiqhPack: ObservableObject {
                 sha256: manifest.librarySHA256,
                 base: 0.82,
                 span: 0.18,
-                label: "تنزيل مكتبة المصادر…"
+                label: "تنزيل مكتبة النصوص…"
             )
 
             try atomicReplace(stagedModel, modelURL)
             try atomicReplace(stagedLibrary, writableLibraryURL)
             try manifest.version.write(to: versionURL, atomically: true, encoding: .utf8)
         } catch {
-            try? fm.removeItem(at: stagedModel)
-            try? fm.removeItem(at: stagedLibrary)
             throw error
         }
 
         progress = 1
         installedVersion = manifest.version
-        status = "جاهز للعمل بدون إنترنت"
+        status = "تم تثبيت الحزمة"
         refresh()
     }
 
@@ -282,7 +373,7 @@ final class LocalFiqhPack: ObservableObject {
                 if snapshot.expectedBytes > 0 { self.totalBytes = snapshot.expectedBytes }
                 if effectiveTotal > 0 {
                     let fraction = min(1, Double(snapshot.writtenBytes) / Double(effectiveTotal))
-                    self.progress = min(0.93, base + span * fraction)
+                    self.progress = min(0.91, base + span * fraction)
                 }
                 self.bytesPerSecond = snapshot.bytesPerSecond
             }
@@ -299,10 +390,9 @@ final class LocalFiqhPack: ObservableObject {
         }
 
         status = "التحقق من SHA‑256…"
-        progress = max(progress, base + span * 0.98)
+        progress = max(progress, base + span * 0.96)
         let digest = try sha256File(downloaded)
         guard digest.caseInsensitiveCompare(sha256) == .orderedSame else {
-            // A completed but corrupt file must never be resumed or activated.
             try? fm.removeItem(at: downloaded)
             try? fm.removeItem(at: resumeDataURL)
             throw URLError(.cannotDecodeContentData)
@@ -312,7 +402,7 @@ final class LocalFiqhPack: ObservableObject {
             [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication],
             ofItemAtPath: downloaded.path
         )
-        progress = min(1, base + span)
+        progress = min(0.94, base + span)
     }
 
     /// Incremental SHA-256 avoids loading a multi-gigabyte model into RAM.
