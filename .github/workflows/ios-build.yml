@@ -63,20 +63,6 @@ jobs:
           bash scripts/fetch_mushaf_svgs.sh
           test "$(find SARI/Resources/mushaf/hafs-kfqc -name '[0-9][0-9][0-9].svg' | wc -l | tr -d ' ')" = "604"
 
-      - name: Build tafsir meaning packs into the app
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 scripts/build_tafsir_packs.py --out tafsir-build || echo "::warning::Some languages could not be built; they will show English."
-          mkdir -p SARI/Resources/tafsir-bundle
-          for code in en tr ms id ja zh ru fr; do
-            if test -s "tafsir-build/$code/$code.json"; then
-              cp "tafsir-build/$code/$code.json" "SARI/Resources/tafsir-bundle/$code.json"
-              echo "bundled $code: $(wc -c < "SARI/Resources/tafsir-bundle/$code.json") bytes"
-            fi
-          done
-          test -s SARI/Resources/tafsir-bundle/en.json || echo "::warning::English meanings are missing from this build."
-
       - name: Point the app at the tafsir pack host
         shell: bash
         env:
