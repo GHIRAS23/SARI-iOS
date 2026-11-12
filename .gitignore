@@ -30,3 +30,10 @@ SARI.xcodeproj/
 # Local model/build artifacts
 *.ipa
 *.xcarchive
+
+# Mushaf page artwork is fetched in CI (scripts/fetch_mushaf_svgs.sh)
+SARI/Resources/mushaf/
+
+# English meanings are built in CI (ios-build.yml), never committed
+SARI/Resources/tafsir-bundle/
+tafsir-build/

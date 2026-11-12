@@ -1,0 +1,3103 @@
+[
+  {
+    "code": "AF",
+    "capital": "Kabul",
+    "currencies": [
+      "AFN"
+    ],
+    "languages": [
+      "ps",
+      "uz",
+      "tk"
+    ],
+    "timezones": [
+      "UTC+04:30"
+    ],
+    "latitude": 33.0,
+    "longitude": 65.0
+  },
+  {
+    "code": "AL",
+    "capital": "Tirana",
+    "currencies": [
+      "ALL"
+    ],
+    "languages": [
+      "sq"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 41.0,
+    "longitude": 20.0
+  },
+  {
+    "code": "DZ",
+    "capital": "Algiers",
+    "currencies": [
+      "DZD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 28.0,
+    "longitude": 3.0
+  },
+  {
+    "code": "AD",
+    "capital": "Andorra la Vella",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "ca"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 42.5063,
+    "longitude": 1.5218
+  },
+  {
+    "code": "AO",
+    "capital": "Luanda",
+    "currencies": [
+      "AOA"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": -12.5,
+    "longitude": 18.5
+  },
+  {
+    "code": "AG",
+    "capital": "Saint John's",
+    "currencies": [
+      "XCD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 17.05,
+    "longitude": -61.8
+  },
+  {
+    "code": "AR",
+    "capital": "Buenos Aires",
+    "currencies": [
+      "ARS"
+    ],
+    "languages": [
+      "es",
+      "gn"
+    ],
+    "timezones": [
+      "UTC−03:00"
+    ],
+    "latitude": -34.0,
+    "longitude": -64.0
+  },
+  {
+    "code": "AM",
+    "capital": "Yerevan",
+    "currencies": [
+      "AMD"
+    ],
+    "languages": [
+      "hy",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+04:00"
+    ],
+    "latitude": 40.0,
+    "longitude": 45.0
+  },
+  {
+    "code": "AU",
+    "capital": "Canberra",
+    "currencies": [
+      "AUD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+05:00",
+      "UTC+06:30",
+      "UTC+07:00",
+      "UTC+08:00",
+      "UTC+09:30",
+      "UTC+10:00",
+      "UTC+10:30",
+      "UTC+11:30"
+    ],
+    "latitude": -27.0,
+    "longitude": 133.0
+  },
+  {
+    "code": "AT",
+    "capital": "Vienna",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "de"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 47.33333333,
+    "longitude": 13.33333333
+  },
+  {
+    "code": "AZ",
+    "capital": "Baku",
+    "currencies": [
+      "AZN"
+    ],
+    "languages": [
+      "az",
+      "hy"
+    ],
+    "timezones": [
+      "UTC+04:00"
+    ],
+    "latitude": 40.5,
+    "longitude": 47.5
+  },
+  {
+    "code": "BS",
+    "capital": "Nassau",
+    "currencies": [
+      "BSD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": 24.25,
+    "longitude": -76.0
+  },
+  {
+    "code": "BH",
+    "capital": "Manama",
+    "currencies": [
+      "BHD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 26.0,
+    "longitude": 50.55
+  },
+  {
+    "code": "BD",
+    "capital": "Dhaka",
+    "currencies": [
+      "BDT"
+    ],
+    "languages": [
+      "bn"
+    ],
+    "timezones": [
+      "UTC+06:00"
+    ],
+    "latitude": 24.0,
+    "longitude": 90.0
+  },
+  {
+    "code": "BB",
+    "capital": "Bridgetown",
+    "currencies": [
+      "BBD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 13.16666666,
+    "longitude": -59.53333333
+  },
+  {
+    "code": "BY",
+    "capital": "Minsk",
+    "currencies": [
+      "BYR"
+    ],
+    "languages": [
+      "be",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 53.0,
+    "longitude": 28.0
+  },
+  {
+    "code": "BE",
+    "capital": "Brussels",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "nl",
+      "fr",
+      "de"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 50.83333333,
+    "longitude": 4.0
+  },
+  {
+    "code": "BZ",
+    "capital": "Belmopan",
+    "currencies": [
+      "BZD"
+    ],
+    "languages": [
+      "en",
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00"
+    ],
+    "latitude": 17.25,
+    "longitude": -88.75
+  },
+  {
+    "code": "BJ",
+    "capital": "Porto-Novo",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 9.5,
+    "longitude": 2.25
+  },
+  {
+    "code": "BT",
+    "capital": "Thimphu",
+    "currencies": [
+      "BTN",
+      "INR"
+    ],
+    "languages": [
+      "dz"
+    ],
+    "timezones": [
+      "UTC+06:00"
+    ],
+    "latitude": 27.5,
+    "longitude": 90.5
+  },
+  {
+    "code": "BO",
+    "capital": "Sucre",
+    "currencies": [
+      "BOB",
+      "BOV"
+    ],
+    "languages": [
+      "es",
+      "ay",
+      "qu"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": -17.0,
+    "longitude": -65.0
+  },
+  {
+    "code": "BA",
+    "capital": "Sarajevo",
+    "currencies": [
+      "BAM"
+    ],
+    "languages": [
+      "bs",
+      "hr",
+      "sr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 44.0,
+    "longitude": 18.0
+  },
+  {
+    "code": "BW",
+    "capital": "Gaborone",
+    "currencies": [
+      "BWP"
+    ],
+    "languages": [
+      "en",
+      "tn"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -22.0,
+    "longitude": 24.0
+  },
+  {
+    "code": "BR",
+    "capital": "Brasília",
+    "currencies": [
+      "BRL"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC−05:00",
+      "UTC−04:00",
+      "UTC−03:00",
+      "UTC−02:00"
+    ],
+    "latitude": -10.0,
+    "longitude": -55.0
+  },
+  {
+    "code": "BN",
+    "capital": "Bandar Seri Begawan",
+    "currencies": [
+      "BND"
+    ],
+    "languages": [
+      "ms"
+    ],
+    "timezones": [
+      "UTC+08:00"
+    ],
+    "latitude": 4.5,
+    "longitude": 114.66666666
+  },
+  {
+    "code": "BG",
+    "capital": "Sofia",
+    "currencies": [
+      "BGN"
+    ],
+    "languages": [
+      "bg"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 43.0,
+    "longitude": 25.0
+  },
+  {
+    "code": "BF",
+    "capital": "Ouagadougou",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr",
+      "ff"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 13.0,
+    "longitude": -2.0
+  },
+  {
+    "code": "BI",
+    "capital": "Bujumbura",
+    "currencies": [
+      "BIF"
+    ],
+    "languages": [
+      "fr",
+      "rn"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -3.5,
+    "longitude": 30.0
+  },
+  {
+    "code": "CV",
+    "capital": "Praia",
+    "currencies": [
+      "CVE"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC−01:00"
+    ],
+    "latitude": 16.0,
+    "longitude": -24.0
+  },
+  {
+    "code": "KH",
+    "capital": "Phnom Penh",
+    "currencies": [
+      "KHR"
+    ],
+    "languages": [
+      "km"
+    ],
+    "timezones": [
+      "UTC+07:00"
+    ],
+    "latitude": 13.0,
+    "longitude": 105.0
+  },
+  {
+    "code": "CM",
+    "capital": "Yaoundé",
+    "currencies": [
+      "XAF"
+    ],
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 6.0,
+    "longitude": 12.0
+  },
+  {
+    "code": "CA",
+    "capital": "Ottawa",
+    "currencies": [
+      "CAD"
+    ],
+    "languages": [
+      "en",
+      "fr"
+    ],
+    "timezones": [
+      "UTC−08:00",
+      "UTC−07:00",
+      "UTC−06:00",
+      "UTC−05:00",
+      "UTC−04:00",
+      "UTC−03:30"
+    ],
+    "latitude": 60.0,
+    "longitude": -95.0
+  },
+  {
+    "code": "CF",
+    "capital": "Bangui",
+    "currencies": [
+      "XAF"
+    ],
+    "languages": [
+      "fr",
+      "sg"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 7.0,
+    "longitude": 21.0
+  },
+  {
+    "code": "TD",
+    "capital": "N'Djamena",
+    "currencies": [
+      "XAF"
+    ],
+    "languages": [
+      "fr",
+      "ar"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 15.0,
+    "longitude": 19.0
+  },
+  {
+    "code": "CL",
+    "capital": "Santiago",
+    "currencies": [
+      "CLF",
+      "CLP"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00",
+      "UTC−04:00"
+    ],
+    "latitude": -30.0,
+    "longitude": -71.0
+  },
+  {
+    "code": "CN",
+    "capital": "Beijing",
+    "currencies": [
+      "CNY"
+    ],
+    "languages": [
+      "zh"
+    ],
+    "timezones": [
+      "UTC+08:00"
+    ],
+    "latitude": 35.0,
+    "longitude": 105.0
+  },
+  {
+    "code": "CO",
+    "capital": "Bogotá",
+    "currencies": [
+      "COP"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": 4.0,
+    "longitude": -72.0
+  },
+  {
+    "code": "KM",
+    "capital": "Moroni",
+    "currencies": [
+      "KMF"
+    ],
+    "languages": [
+      "ar",
+      "fr"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": -12.16666666,
+    "longitude": 44.25
+  },
+  {
+    "code": "CG",
+    "capital": "Brazzaville",
+    "currencies": [
+      "XAF"
+    ],
+    "languages": [
+      "fr",
+      "ln"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": -1.0,
+    "longitude": 15.0
+  },
+  {
+    "code": "CD",
+    "capital": "Kinshasa",
+    "currencies": [
+      "CDF"
+    ],
+    "languages": [
+      "fr",
+      "ln",
+      "kg",
+      "sw",
+      "lu"
+    ],
+    "timezones": [
+      "UTC+01:00",
+      "UTC+02:00"
+    ],
+    "latitude": 0.0,
+    "longitude": 25.0
+  },
+  {
+    "code": "CR",
+    "capital": "San José",
+    "currencies": [
+      "CRC"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00"
+    ],
+    "latitude": 10.0,
+    "longitude": -84.0
+  },
+  {
+    "code": "CI",
+    "capital": "Yamoussoukro",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 8.0,
+    "longitude": -5.0
+  },
+  {
+    "code": "HR",
+    "capital": "Zagreb",
+    "currencies": [
+      "HRK"
+    ],
+    "languages": [
+      "hr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 45.16666666,
+    "longitude": 15.5
+  },
+  {
+    "code": "CU",
+    "capital": "Havana",
+    "currencies": [
+      "CUC",
+      "CUP"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": 21.5,
+    "longitude": -80.0
+  },
+  {
+    "code": "CY",
+    "capital": "Nicosia",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "el",
+      "tr",
+      "hy"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 35.0,
+    "longitude": 33.0
+  },
+  {
+    "code": "CZ",
+    "capital": "Prague",
+    "currencies": [
+      "CZK"
+    ],
+    "languages": [
+      "cs",
+      "sk"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 49.75,
+    "longitude": 15.5
+  },
+  {
+    "code": "DK",
+    "capital": "Copenhagen",
+    "currencies": [
+      "DKK"
+    ],
+    "languages": [
+      "da"
+    ],
+    "timezones": [
+      "UTC−04:00",
+      "UTC−03:00",
+      "UTC−01:00",
+      "UTC",
+      "UTC+01:00"
+    ],
+    "latitude": 56.0,
+    "longitude": 10.0
+  },
+  {
+    "code": "DJ",
+    "capital": "Djibouti",
+    "currencies": [
+      "DJF"
+    ],
+    "languages": [
+      "fr",
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 11.5,
+    "longitude": 43.0
+  },
+  {
+    "code": "DM",
+    "capital": "Roseau",
+    "currencies": [
+      "XCD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 15.41666666,
+    "longitude": -61.33333333
+  },
+  {
+    "code": "DO",
+    "capital": "Santo Domingo",
+    "currencies": [
+      "DOP"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 19.0,
+    "longitude": -70.66666666
+  },
+  {
+    "code": "EC",
+    "capital": "Quito",
+    "currencies": [
+      "USD"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00",
+      "UTC−05:00"
+    ],
+    "latitude": -2.0,
+    "longitude": -77.5
+  },
+  {
+    "code": "EG",
+    "capital": "Cairo",
+    "currencies": [
+      "EGP"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 27.0,
+    "longitude": 30.0
+  },
+  {
+    "code": "SV",
+    "capital": "San Salvador",
+    "currencies": [
+      "SVC",
+      "USD"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00"
+    ],
+    "latitude": 13.83333333,
+    "longitude": -88.91666666
+  },
+  {
+    "code": "GQ",
+    "capital": "Malabo",
+    "currencies": [
+      "XAF"
+    ],
+    "languages": [
+      "es",
+      "fr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 2.0,
+    "longitude": 10.0
+  },
+  {
+    "code": "ER",
+    "capital": "Asmara",
+    "currencies": [
+      "ERN"
+    ],
+    "languages": [
+      "ti",
+      "ar",
+      "en"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 15.0,
+    "longitude": 39.0
+  },
+  {
+    "code": "EE",
+    "capital": "Tallinn",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "et"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 59.0,
+    "longitude": 26.0
+  },
+  {
+    "code": "SZ",
+    "capital": "Lobamba",
+    "currencies": [
+      "SZL"
+    ],
+    "languages": [
+      "en",
+      "ss"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -26.5,
+    "longitude": 31.5
+  },
+  {
+    "code": "ET",
+    "capital": "Addis Ababa",
+    "currencies": [
+      "ETB"
+    ],
+    "languages": [
+      "am"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 8.0,
+    "longitude": 38.0
+  },
+  {
+    "code": "FJ",
+    "capital": "Suva",
+    "currencies": [
+      "FJD"
+    ],
+    "languages": [
+      "en",
+      "fj",
+      "hi",
+      "ur"
+    ],
+    "timezones": [
+      "UTC+12:00"
+    ],
+    "latitude": -18.0,
+    "longitude": 175.0
+  },
+  {
+    "code": "FI",
+    "capital": "Helsinki",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "fi",
+      "sv"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 64.0,
+    "longitude": 26.0
+  },
+  {
+    "code": "FR",
+    "capital": "Paris",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC−10:00",
+      "UTC−09:30",
+      "UTC−09:00",
+      "UTC−08:00",
+      "UTC−04:00",
+      "UTC−03:00",
+      "UTC+01:00",
+      "UTC+03:00",
+      "UTC+04:00",
+      "UTC+05:00",
+      "UTC+11:00",
+      "UTC+12:00"
+    ],
+    "latitude": 46.0,
+    "longitude": 2.0
+  },
+  {
+    "code": "GA",
+    "capital": "Libreville",
+    "currencies": [
+      "XAF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": -1.0,
+    "longitude": 11.75
+  },
+  {
+    "code": "GM",
+    "capital": "Banjul",
+    "currencies": [
+      "GMD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [],
+    "latitude": 13.46666666,
+    "longitude": -16.56666666
+  },
+  {
+    "code": "GE",
+    "capital": "Tbilisi",
+    "currencies": [
+      "GEL"
+    ],
+    "languages": [
+      "ka"
+    ],
+    "timezones": [],
+    "latitude": 42.0,
+    "longitude": 43.5
+  },
+  {
+    "code": "DE",
+    "capital": "Berlin",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "de"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 51.0,
+    "longitude": 9.0
+  },
+  {
+    "code": "GH",
+    "capital": "Accra",
+    "currencies": [
+      "GHS"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 8.0,
+    "longitude": -2.0
+  },
+  {
+    "code": "GR",
+    "capital": "Athens",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "el"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 39.0,
+    "longitude": 22.0
+  },
+  {
+    "code": "GD",
+    "capital": "St. George's",
+    "currencies": [
+      "XCD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 12.11666666,
+    "longitude": -61.66666666
+  },
+  {
+    "code": "GT",
+    "capital": "Guatemala City",
+    "currencies": [
+      "GTQ"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00"
+    ],
+    "latitude": 15.5,
+    "longitude": -90.25
+  },
+  {
+    "code": "GN",
+    "capital": "Conakry",
+    "currencies": [
+      "GNF"
+    ],
+    "languages": [
+      "fr",
+      "ff"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 11.0,
+    "longitude": -10.0
+  },
+  {
+    "code": "GW",
+    "capital": "Bissau",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 12.0,
+    "longitude": -15.0
+  },
+  {
+    "code": "GY",
+    "capital": "Georgetown",
+    "currencies": [
+      "GYD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 5.0,
+    "longitude": -59.0
+  },
+  {
+    "code": "HT",
+    "capital": "Port-au-Prince",
+    "currencies": [
+      "HTG",
+      "USD"
+    ],
+    "languages": [
+      "fr",
+      "ht"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": 19.0,
+    "longitude": -72.41666666
+  },
+  {
+    "code": "HN",
+    "capital": "Tegucigalpa",
+    "currencies": [
+      "HNL"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00"
+    ],
+    "latitude": 15.0,
+    "longitude": -86.5
+  },
+  {
+    "code": "HU",
+    "capital": "Budapest",
+    "currencies": [
+      "HUF"
+    ],
+    "languages": [
+      "hu"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 47.0,
+    "longitude": 20.0
+  },
+  {
+    "code": "IS",
+    "capital": "Reykjavik",
+    "currencies": [
+      "ISK"
+    ],
+    "languages": [
+      "is"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 65.0,
+    "longitude": -18.0
+  },
+  {
+    "code": "IN",
+    "capital": "New Delhi",
+    "currencies": [
+      "INR"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "timezones": [
+      "UTC+05:30"
+    ],
+    "latitude": 20.0,
+    "longitude": 77.0
+  },
+  {
+    "code": "ID",
+    "capital": "Jakarta",
+    "currencies": [
+      "IDR"
+    ],
+    "languages": [
+      "id"
+    ],
+    "timezones": [
+      "UTC+07:00",
+      "UTC+08:00",
+      "UTC+09:00"
+    ],
+    "latitude": -5.0,
+    "longitude": 120.0
+  },
+  {
+    "code": "IR",
+    "capital": "Tehran",
+    "currencies": [
+      "IRR"
+    ],
+    "languages": [
+      "fa"
+    ],
+    "timezones": [
+      "UTC+03:30"
+    ],
+    "latitude": 32.0,
+    "longitude": 53.0
+  },
+  {
+    "code": "IQ",
+    "capital": "Baghdad",
+    "currencies": [
+      "IQD"
+    ],
+    "languages": [
+      "ar",
+      "ku"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 33.0,
+    "longitude": 44.0
+  },
+  {
+    "code": "IE",
+    "capital": "Dublin",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "ga",
+      "en"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 53.0,
+    "longitude": -8.0
+  },
+  {
+    "code": "IT",
+    "capital": "Rome",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "it"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 42.83333333,
+    "longitude": 12.83333333
+  },
+  {
+    "code": "JM",
+    "capital": "Kingston",
+    "currencies": [
+      "JMD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": 18.25,
+    "longitude": -77.5
+  },
+  {
+    "code": "JP",
+    "capital": "Tokyo",
+    "currencies": [
+      "JPY"
+    ],
+    "languages": [
+      "ja"
+    ],
+    "timezones": [
+      "UTC+09:00"
+    ],
+    "latitude": 36.0,
+    "longitude": 138.0
+  },
+  {
+    "code": "JO",
+    "capital": "Amman",
+    "currencies": [
+      "JOD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 31.0,
+    "longitude": 36.0
+  },
+  {
+    "code": "KZ",
+    "capital": "Astana",
+    "currencies": [
+      "KZT"
+    ],
+    "languages": [
+      "kk",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+05:00",
+      "UTC+06:00"
+    ],
+    "latitude": 48.0,
+    "longitude": 68.0
+  },
+  {
+    "code": "KE",
+    "capital": "Nairobi",
+    "currencies": [
+      "KES"
+    ],
+    "languages": [
+      "en",
+      "sw"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 1.0,
+    "longitude": 38.0
+  },
+  {
+    "code": "KI",
+    "capital": "South Tarawa",
+    "currencies": [
+      "AUD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+12:00",
+      "UTC+13:00",
+      "UTC+14:00"
+    ],
+    "latitude": 1.41666666,
+    "longitude": 173.0
+  },
+  {
+    "code": "KP",
+    "capital": "Pyongyang",
+    "currencies": [
+      "KPW"
+    ],
+    "languages": [
+      "ko"
+    ],
+    "timezones": [
+      "UTC+09:00"
+    ],
+    "latitude": 40.0,
+    "longitude": 127.0
+  },
+  {
+    "code": "KR",
+    "capital": "Seoul",
+    "currencies": [
+      "KRW"
+    ],
+    "languages": [
+      "ko"
+    ],
+    "timezones": [
+      "UTC+09:00"
+    ],
+    "latitude": 37.0,
+    "longitude": 127.5
+  },
+  {
+    "code": "KW",
+    "capital": "Kuwait City",
+    "currencies": [
+      "KWD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 29.5,
+    "longitude": 45.75
+  },
+  {
+    "code": "KG",
+    "capital": "Bishkek",
+    "currencies": [
+      "KGS"
+    ],
+    "languages": [
+      "ky",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+06:00"
+    ],
+    "latitude": 41.0,
+    "longitude": 75.0
+  },
+  {
+    "code": "LA",
+    "capital": "Vientiane",
+    "currencies": [
+      "LAK"
+    ],
+    "languages": [
+      "lo"
+    ],
+    "timezones": [
+      "UTC+07:00"
+    ],
+    "latitude": 18.0,
+    "longitude": 105.0
+  },
+  {
+    "code": "LV",
+    "capital": "Riga",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "lv"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 57.0,
+    "longitude": 25.0
+  },
+  {
+    "code": "LB",
+    "capital": "Beirut",
+    "currencies": [
+      "LBP"
+    ],
+    "languages": [
+      "ar",
+      "fr"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 33.83333333,
+    "longitude": 35.83333333
+  },
+  {
+    "code": "LS",
+    "capital": "Maseru",
+    "currencies": [
+      "LSL",
+      "ZAR"
+    ],
+    "languages": [
+      "en",
+      "st"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -29.5,
+    "longitude": 28.5
+  },
+  {
+    "code": "LR",
+    "capital": "Monrovia",
+    "currencies": [
+      "LRD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 6.5,
+    "longitude": -9.5
+  },
+  {
+    "code": "LY",
+    "capital": "Tripoli",
+    "currencies": [
+      "LYD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 25.0,
+    "longitude": 17.0
+  },
+  {
+    "code": "LI",
+    "capital": "Vaduz",
+    "currencies": [
+      "CHF"
+    ],
+    "languages": [
+      "de"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 47.26666666,
+    "longitude": 9.53333333
+  },
+  {
+    "code": "LT",
+    "capital": "Vilnius",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "lt"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 56.0,
+    "longitude": 24.0
+  },
+  {
+    "code": "LU",
+    "capital": "Luxembourg",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "fr",
+      "de",
+      "lb"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 49.75,
+    "longitude": 6.16666666
+  },
+  {
+    "code": "MG",
+    "capital": "Antananarivo",
+    "currencies": [
+      "MGA"
+    ],
+    "languages": [
+      "fr",
+      "mg"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": -20.0,
+    "longitude": 47.0
+  },
+  {
+    "code": "MW",
+    "capital": "Lilongwe",
+    "currencies": [
+      "MWK"
+    ],
+    "languages": [
+      "en",
+      "ny"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -13.5,
+    "longitude": 34.0
+  },
+  {
+    "code": "MY",
+    "capital": "Kuala Lumpur",
+    "currencies": [
+      "MYR"
+    ],
+    "languages": [],
+    "timezones": [
+      "UTC+08:00"
+    ],
+    "latitude": 2.5,
+    "longitude": 112.5
+  },
+  {
+    "code": "MV",
+    "capital": "Malé",
+    "currencies": [
+      "MVR"
+    ],
+    "languages": [
+      "dv"
+    ],
+    "timezones": [
+      "UTC+05:00"
+    ],
+    "latitude": 3.25,
+    "longitude": 73.0
+  },
+  {
+    "code": "ML",
+    "capital": "Bamako",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 17.0,
+    "longitude": -4.0
+  },
+  {
+    "code": "MT",
+    "capital": "Valletta",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "mt",
+      "en"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 35.83333333,
+    "longitude": 14.58333333
+  },
+  {
+    "code": "MH",
+    "capital": "Majuro",
+    "currencies": [
+      "USD"
+    ],
+    "languages": [
+      "en",
+      "mh"
+    ],
+    "timezones": [
+      "UTC+12:00"
+    ],
+    "latitude": 9.0,
+    "longitude": 168.0
+  },
+  {
+    "code": "MR",
+    "capital": "Nouakchott",
+    "currencies": [
+      "MRO"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 20.0,
+    "longitude": -12.0
+  },
+  {
+    "code": "MU",
+    "capital": "Port Louis",
+    "currencies": [
+      "MUR"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+04:00"
+    ],
+    "latitude": -20.28333333,
+    "longitude": 57.55
+  },
+  {
+    "code": "MX",
+    "capital": "Mexico City",
+    "currencies": [
+      "MXN"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−08:00",
+      "UTC−07:00",
+      "UTC−06:00"
+    ],
+    "latitude": 23.0,
+    "longitude": -102.0
+  },
+  {
+    "code": "FM",
+    "capital": "Palikir",
+    "currencies": [
+      "USD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+10:00",
+      "UTC+11"
+    ],
+    "latitude": 6.91666666,
+    "longitude": 158.25
+  },
+  {
+    "code": "MD",
+    "capital": "Chișinău",
+    "currencies": [
+      "MDL"
+    ],
+    "languages": [
+      "ro"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 47.0,
+    "longitude": 29.0
+  },
+  {
+    "code": "MC",
+    "capital": "Monaco",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 43.73333333,
+    "longitude": 7.4
+  },
+  {
+    "code": "MN",
+    "capital": "Ulan Bator",
+    "currencies": [
+      "MNT"
+    ],
+    "languages": [
+      "mn"
+    ],
+    "timezones": [
+      "UTC+07:00",
+      "UTC+08:00"
+    ],
+    "latitude": 46.0,
+    "longitude": 105.0
+  },
+  {
+    "code": "ME",
+    "capital": "Podgorica",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "sr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 42.7087,
+    "longitude": 19.3744
+  },
+  {
+    "code": "MA",
+    "capital": "Rabat",
+    "currencies": [
+      "MAD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 32.0,
+    "longitude": -5.0
+  },
+  {
+    "code": "MZ",
+    "capital": "Maputo",
+    "currencies": [
+      "MZN"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -18.25,
+    "longitude": 35.0
+  },
+  {
+    "code": "MM",
+    "capital": "Naypyidaw",
+    "currencies": [
+      "MMK"
+    ],
+    "languages": [
+      "my"
+    ],
+    "timezones": [
+      "UTC+06:30"
+    ],
+    "latitude": 19.7633,
+    "longitude": 96.0785
+  },
+  {
+    "code": "NA",
+    "capital": "Windhoek",
+    "currencies": [
+      "NAD",
+      "ZAR"
+    ],
+    "languages": [
+      "en",
+      "af"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": -22.0,
+    "longitude": 17.0
+  },
+  {
+    "code": "NR",
+    "capital": "Yaren",
+    "currencies": [
+      "AUD"
+    ],
+    "languages": [
+      "en",
+      "na"
+    ],
+    "timezones": [
+      "UTC+12:00"
+    ],
+    "latitude": -0.53333333,
+    "longitude": 166.91666666
+  },
+  {
+    "code": "NP",
+    "capital": "Kathmandu",
+    "currencies": [
+      "NPR"
+    ],
+    "languages": [
+      "ne"
+    ],
+    "timezones": [
+      "UTC+05:45"
+    ],
+    "latitude": 28.0,
+    "longitude": 84.0
+  },
+  {
+    "code": "NL",
+    "capital": "Amsterdam",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "nl"
+    ],
+    "timezones": [],
+    "latitude": 52.5,
+    "longitude": 5.75
+  },
+  {
+    "code": "NZ",
+    "capital": "Wellington",
+    "currencies": [
+      "NZD"
+    ],
+    "languages": [
+      "en",
+      "mi"
+    ],
+    "timezones": [
+      "UTC−11:00",
+      "UTC−10:00",
+      "UTC+12:00",
+      "UTC+12:45",
+      "UTC+13:00"
+    ],
+    "latitude": -41.0,
+    "longitude": 174.0
+  },
+  {
+    "code": "NI",
+    "capital": "Managua",
+    "currencies": [
+      "NIO"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−06:00"
+    ],
+    "latitude": 13.0,
+    "longitude": -85.0
+  },
+  {
+    "code": "NE",
+    "capital": "Niamey",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 16.0,
+    "longitude": 8.0
+  },
+  {
+    "code": "NG",
+    "capital": "Abuja",
+    "currencies": [
+      "NGN"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 10.0,
+    "longitude": 8.0
+  },
+  {
+    "code": "MK",
+    "capital": "Skopje",
+    "currencies": [
+      "MKD"
+    ],
+    "languages": [
+      "mk"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 41.83333333,
+    "longitude": 22.0
+  },
+  {
+    "code": "NO",
+    "capital": "Oslo",
+    "currencies": [
+      "NOK"
+    ],
+    "languages": [
+      "no",
+      "nb",
+      "nn"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 62.0,
+    "longitude": 10.0
+  },
+  {
+    "code": "OM",
+    "capital": "Muscat",
+    "currencies": [
+      "OMR"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+04:00"
+    ],
+    "latitude": 21.0,
+    "longitude": 57.0
+  },
+  {
+    "code": "PK",
+    "capital": "Islamabad",
+    "currencies": [
+      "PKR"
+    ],
+    "languages": [
+      "en",
+      "ur"
+    ],
+    "timezones": [
+      "UTC+05:00"
+    ],
+    "latitude": 30.0,
+    "longitude": 70.0
+  },
+  {
+    "code": "PW",
+    "capital": "Ngerulmud",
+    "currencies": [
+      "USD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+09:00"
+    ],
+    "latitude": 7.5,
+    "longitude": 134.5
+  },
+  {
+    "code": "PA",
+    "capital": "Panama City",
+    "currencies": [
+      "PAB",
+      "USD"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": 9.0,
+    "longitude": -80.0
+  },
+  {
+    "code": "PG",
+    "capital": "Port Moresby",
+    "currencies": [
+      "PGK"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+10:00"
+    ],
+    "latitude": -6.0,
+    "longitude": 147.0
+  },
+  {
+    "code": "PY",
+    "capital": "Asunción",
+    "currencies": [
+      "PYG"
+    ],
+    "languages": [
+      "es",
+      "gn"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": -23.0,
+    "longitude": -58.0
+  },
+  {
+    "code": "PE",
+    "capital": "Lima",
+    "currencies": [
+      "PEN"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−05:00"
+    ],
+    "latitude": -10.0,
+    "longitude": -76.0
+  },
+  {
+    "code": "PH",
+    "capital": "Manila",
+    "currencies": [
+      "PHP"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+08:00"
+    ],
+    "latitude": 13.0,
+    "longitude": 122.0
+  },
+  {
+    "code": "PL",
+    "capital": "Warsaw",
+    "currencies": [
+      "PLN"
+    ],
+    "languages": [
+      "pl"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 52.0,
+    "longitude": 20.0
+  },
+  {
+    "code": "PT",
+    "capital": "Lisbon",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC−01:00",
+      "UTC"
+    ],
+    "latitude": 39.5,
+    "longitude": -8.0
+  },
+  {
+    "code": "QA",
+    "capital": "Doha",
+    "currencies": [
+      "QAR"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 25.5,
+    "longitude": 51.25
+  },
+  {
+    "code": "RO",
+    "capital": "Bucharest",
+    "currencies": [
+      "RON"
+    ],
+    "languages": [
+      "ro"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 46.0,
+    "longitude": 25.0
+  },
+  {
+    "code": "RU",
+    "capital": "Moscow",
+    "currencies": [
+      "RUB"
+    ],
+    "languages": [
+      "ru"
+    ],
+    "timezones": [
+      "UTC+03:00",
+      "UTC+04:00",
+      "UTC+06:00",
+      "UTC+07:00",
+      "UTC+08:00",
+      "UTC+09:00",
+      "UTC+10:00",
+      "UTC+11:00",
+      "UTC+12:00"
+    ],
+    "latitude": 60.0,
+    "longitude": 100.0
+  },
+  {
+    "code": "RW",
+    "capital": "Kigali",
+    "currencies": [
+      "RWF"
+    ],
+    "languages": [
+      "rw",
+      "en",
+      "fr"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -2.0,
+    "longitude": 30.0
+  },
+  {
+    "code": "KN",
+    "capital": "Basseterre",
+    "currencies": [
+      "XCD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 17.33333333,
+    "longitude": -62.75
+  },
+  {
+    "code": "LC",
+    "capital": "Castries",
+    "currencies": [
+      "XCD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 13.88333333,
+    "longitude": -60.96666666
+  },
+  {
+    "code": "VC",
+    "capital": "Kingstown",
+    "currencies": [
+      "XCD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 13.25,
+    "longitude": -61.2
+  },
+  {
+    "code": "WS",
+    "capital": "Apia",
+    "currencies": [
+      "WST"
+    ],
+    "languages": [
+      "sm",
+      "en"
+    ],
+    "timezones": [
+      "UTC+13:00"
+    ],
+    "latitude": -13.58333333,
+    "longitude": -172.33333333
+  },
+  {
+    "code": "SM",
+    "capital": "City of San Marino",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "it"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 43.76666666,
+    "longitude": 12.41666666
+  },
+  {
+    "code": "ST",
+    "capital": "São Tomé",
+    "currencies": [
+      "STD"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 1.0,
+    "longitude": 7.0
+  },
+  {
+    "code": "SA",
+    "capital": "Riyadh",
+    "currencies": [
+      "SAR"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 25.0,
+    "longitude": 45.0
+  },
+  {
+    "code": "SN",
+    "capital": "Dakar",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 14.0,
+    "longitude": -14.0
+  },
+  {
+    "code": "RS",
+    "capital": "Belgrade",
+    "currencies": [
+      "RSD"
+    ],
+    "languages": [
+      "rs"
+    ],
+    "timezones": [
+      "UTC+01:00",
+      "UTC+02:00"
+    ],
+    "latitude": 44.1305021,
+    "longitude": 16.4284181
+  },
+  {
+    "code": "SC",
+    "capital": "Victoria",
+    "currencies": [
+      "SCR"
+    ],
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "timezones": [
+      "UTC+04:00"
+    ],
+    "latitude": -4.58333333,
+    "longitude": 55.66666666
+  },
+  {
+    "code": "SL",
+    "capital": "Freetown",
+    "currencies": [
+      "SLL"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 8.5,
+    "longitude": -11.5
+  },
+  {
+    "code": "SG",
+    "capital": "Singapore",
+    "currencies": [
+      "SGD"
+    ],
+    "languages": [
+      "en",
+      "ms",
+      "ta",
+      "zh"
+    ],
+    "timezones": [
+      "UTC+08:00"
+    ],
+    "latitude": 1.36666666,
+    "longitude": 103.8
+  },
+  {
+    "code": "SK",
+    "capital": "Bratislava",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "sk"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 48.66666666,
+    "longitude": 19.5
+  },
+  {
+    "code": "SI",
+    "capital": "Ljubljana",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "sl"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 46.11666666,
+    "longitude": 14.81666666
+  },
+  {
+    "code": "SB",
+    "capital": "Honiara",
+    "currencies": [
+      "SBD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+11:00"
+    ],
+    "latitude": -8.0,
+    "longitude": 159.0
+  },
+  {
+    "code": "SO",
+    "capital": "Mogadishu",
+    "currencies": [
+      "SOS"
+    ],
+    "languages": [
+      "so",
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 10.0,
+    "longitude": 49.0
+  },
+  {
+    "code": "ZA",
+    "capital": "Pretoria",
+    "currencies": [
+      "ZAR"
+    ],
+    "languages": [
+      "af",
+      "en",
+      "nr",
+      "st",
+      "ss",
+      "tn",
+      "ts",
+      "ve",
+      "xh",
+      "zu"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -29.0,
+    "longitude": 24.0
+  },
+  {
+    "code": "SS",
+    "capital": "Juba",
+    "currencies": [
+      "SSP"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 7.0,
+    "longitude": 30.0
+  },
+  {
+    "code": "ES",
+    "capital": "Madrid",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC",
+      "UTC+01:00"
+    ],
+    "latitude": 40.0,
+    "longitude": -4.0
+  },
+  {
+    "code": "LK",
+    "capital": "Colombo",
+    "currencies": [
+      "LKR"
+    ],
+    "languages": [
+      "si",
+      "ta"
+    ],
+    "timezones": [
+      "UTC+05:30"
+    ],
+    "latitude": 7.0,
+    "longitude": 81.0
+  },
+  {
+    "code": "SD",
+    "capital": "Khartoum",
+    "currencies": [
+      "SDG"
+    ],
+    "languages": [
+      "ar",
+      "en"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 15.0,
+    "longitude": 30.0
+  },
+  {
+    "code": "SR",
+    "capital": "Paramaribo",
+    "currencies": [
+      "SRD"
+    ],
+    "languages": [
+      "nl"
+    ],
+    "timezones": [
+      "UTC−03:00"
+    ],
+    "latitude": 4.0,
+    "longitude": -56.0
+  },
+  {
+    "code": "SE",
+    "capital": "Stockholm",
+    "currencies": [
+      "SEK"
+    ],
+    "languages": [
+      "sv"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 62.0,
+    "longitude": 15.0
+  },
+  {
+    "code": "CH",
+    "capital": "Bern",
+    "currencies": [
+      "CHE",
+      "CHF",
+      "CHW"
+    ],
+    "languages": [
+      "de",
+      "fr",
+      "it"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 47.0,
+    "longitude": 8.0
+  },
+  {
+    "code": "SY",
+    "capital": "Damascus",
+    "currencies": [
+      "SYP"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 35.0,
+    "longitude": 38.0
+  },
+  {
+    "code": "TJ",
+    "capital": "Dushanbe",
+    "currencies": [
+      "TJS"
+    ],
+    "languages": [
+      "tg",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+05:00"
+    ],
+    "latitude": 39.0,
+    "longitude": 71.0
+  },
+  {
+    "code": "TZ",
+    "capital": "Dodoma",
+    "currencies": [
+      "TZS"
+    ],
+    "languages": [
+      "sw",
+      "en"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": -6.0,
+    "longitude": 35.0
+  },
+  {
+    "code": "TH",
+    "capital": "Bangkok",
+    "currencies": [
+      "THB"
+    ],
+    "languages": [
+      "th"
+    ],
+    "timezones": [
+      "UTC+07:00"
+    ],
+    "latitude": 15.0,
+    "longitude": 100.0
+  },
+  {
+    "code": "TL",
+    "capital": "Dili",
+    "currencies": [
+      "USD"
+    ],
+    "languages": [
+      "pt"
+    ],
+    "timezones": [
+      "UTC+09:00"
+    ],
+    "latitude": -8.83333333,
+    "longitude": 125.91666666
+  },
+  {
+    "code": "TG",
+    "capital": "Lomé",
+    "currencies": [
+      "XOF"
+    ],
+    "languages": [
+      "fr"
+    ],
+    "timezones": [
+      "UTC"
+    ],
+    "latitude": 8.0,
+    "longitude": 1.16666666
+  },
+  {
+    "code": "TO",
+    "capital": "Nuku'alofa",
+    "currencies": [
+      "TOP"
+    ],
+    "languages": [
+      "en",
+      "to"
+    ],
+    "timezones": [
+      "UTC+13:00"
+    ],
+    "latitude": -20.0,
+    "longitude": -175.0
+  },
+  {
+    "code": "TT",
+    "capital": "Port of Spain",
+    "currencies": [
+      "TTD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−04:00"
+    ],
+    "latitude": 11.0,
+    "longitude": -61.0
+  },
+  {
+    "code": "TN",
+    "capital": "Tunis",
+    "currencies": [
+      "TND"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 34.0,
+    "longitude": 9.0
+  },
+  {
+    "code": "TR",
+    "capital": "Ankara",
+    "currencies": [
+      "TRY"
+    ],
+    "languages": [
+      "tr"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 39.0,
+    "longitude": 35.0
+  },
+  {
+    "code": "TM",
+    "capital": "Ashgabat",
+    "currencies": [
+      "TMT"
+    ],
+    "languages": [
+      "tk",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+05:00"
+    ],
+    "latitude": 40.0,
+    "longitude": 60.0
+  },
+  {
+    "code": "TV",
+    "capital": "Funafuti",
+    "currencies": [
+      "AUD"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+12:00"
+    ],
+    "latitude": -8.0,
+    "longitude": 178.0
+  },
+  {
+    "code": "UG",
+    "capital": "Kampala",
+    "currencies": [
+      "UGX"
+    ],
+    "languages": [
+      "en",
+      "sw"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 1.0,
+    "longitude": 32.0
+  },
+  {
+    "code": "UA",
+    "capital": "Kiev",
+    "currencies": [
+      "UAH"
+    ],
+    "languages": [
+      "uk"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 49.0,
+    "longitude": 32.0
+  },
+  {
+    "code": "AE",
+    "capital": "Abu Dhabi",
+    "currencies": [
+      "AED"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+04"
+    ],
+    "latitude": 24.0,
+    "longitude": 54.0
+  },
+  {
+    "code": "GB",
+    "capital": "London",
+    "currencies": [
+      "GBP"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−08:00",
+      "UTC−05:00",
+      "UTC−04:00",
+      "UTC−03:00",
+      "UTC−02:00",
+      "UTC",
+      "UTC+01:00",
+      "UTC+02:00",
+      "UTC+06:00"
+    ],
+    "latitude": 54.0,
+    "longitude": -2.0
+  },
+  {
+    "code": "US",
+    "capital": "Washington D.C.",
+    "currencies": [
+      "USD",
+      "USN",
+      "USS"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC−12:00",
+      "UTC−11:00",
+      "UTC−10:00",
+      "UTC−09:00",
+      "UTC−08:00",
+      "UTC−07:00",
+      "UTC−06:00",
+      "UTC−05:00",
+      "UTC−04:00",
+      "UTC+10:00",
+      "UTC+12:00"
+    ],
+    "latitude": 38.0,
+    "longitude": -97.0
+  },
+  {
+    "code": "UY",
+    "capital": "Montevideo",
+    "currencies": [
+      "UYI",
+      "UYU"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−03:00"
+    ],
+    "latitude": -33.0,
+    "longitude": -56.0
+  },
+  {
+    "code": "UZ",
+    "capital": "Tashkent",
+    "currencies": [
+      "UZS"
+    ],
+    "languages": [
+      "uz",
+      "ru"
+    ],
+    "timezones": [
+      "UTC+05:00"
+    ],
+    "latitude": 41.0,
+    "longitude": 64.0
+  },
+  {
+    "code": "VU",
+    "capital": "Port Vila",
+    "currencies": [
+      "VUV"
+    ],
+    "languages": [
+      "bi",
+      "en",
+      "fr"
+    ],
+    "timezones": [
+      "UTC+11:00"
+    ],
+    "latitude": -16.0,
+    "longitude": 167.0
+  },
+  {
+    "code": "VA",
+    "capital": "Vatican City",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "it",
+      "la"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 41.9029,
+    "longitude": 12.4534
+  },
+  {
+    "code": "VE",
+    "capital": "Caracas",
+    "currencies": [
+      "VEF"
+    ],
+    "languages": [
+      "es"
+    ],
+    "timezones": [
+      "UTC−04:30"
+    ],
+    "latitude": 8.0,
+    "longitude": -66.0
+  },
+  {
+    "code": "VN",
+    "capital": "Hanoi",
+    "currencies": [
+      "VND"
+    ],
+    "languages": [
+      "vi"
+    ],
+    "timezones": [
+      "UTC+07:00"
+    ],
+    "latitude": 16.16666666,
+    "longitude": 107.83333333
+  },
+  {
+    "code": "YE",
+    "capital": "Sana'a",
+    "currencies": [
+      "YER"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+03:00"
+    ],
+    "latitude": 15.0,
+    "longitude": 48.0
+  },
+  {
+    "code": "ZM",
+    "capital": "Lusaka",
+    "currencies": [
+      "ZMK"
+    ],
+    "languages": [
+      "en"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -15.0,
+    "longitude": 30.0
+  },
+  {
+    "code": "ZW",
+    "capital": "Harare",
+    "currencies": [
+      "USD"
+    ],
+    "languages": [
+      "en",
+      "sn",
+      "nd"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": -20.0,
+    "longitude": 30.0
+  },
+  {
+    "code": "PS",
+    "capital": "Ramallah",
+    "currencies": [
+      "ILS",
+      "JOD"
+    ],
+    "languages": [
+      "ar"
+    ],
+    "timezones": [
+      "UTC+02:00"
+    ],
+    "latitude": 31.9,
+    "longitude": 35.2
+  },
+  {
+    "code": "XK",
+    "capital": "Pristina",
+    "currencies": [
+      "EUR"
+    ],
+    "languages": [
+      "sq",
+      "sr"
+    ],
+    "timezones": [
+      "UTC+01:00"
+    ],
+    "latitude": 42.667,
+    "longitude": 21.167
+  }
+]

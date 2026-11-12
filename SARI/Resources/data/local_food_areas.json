@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "provider": "TheMealDB",
+  "provider_endpoint": "https://www.themealdb.com/api/json/v1/1",
+  "country_to_area": {
+    "US": "American", "GB": "British", "CA": "Canadian", "CN": "Chinese", "HR": "Croatian",
+    "NL": "Dutch", "EG": "Egyptian", "FR": "French", "GR": "Greek", "IN": "Indian",
+    "IE": "Irish", "IT": "Italian", "JM": "Jamaican", "JP": "Japanese", "KE": "Kenyan",
+    "MY": "Malaysian", "MX": "Mexican", "MA": "Moroccan", "PL": "Polish", "PT": "Portuguese",
+    "RU": "Russian", "ES": "Spanish", "TH": "Thai", "TN": "Tunisian", "TR": "Turkish",
+    "UA": "Ukrainian", "VN": "Vietnamese"
+  },
+  "note": "Only provider-supported cuisine areas are mapped. Countries without an area mapping must display an unavailable state rather than invented dishes."
+}

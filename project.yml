@@ -24,6 +24,8 @@ targets:
         CFBundleDisplayName: ساري
         NSLocationWhenInUseUsageDescription: SARI uses your location to calculate prayer times, Qibla, and nearby travel services.
         SARI_API_BASE_URL: https://YOUR-SARI-BACKEND.example
+        SARI_MEALDB_API_BASE_URL: https://www.themealdb.com/api/json/v1/1
+        SARI_TAFSIR_PACK_BASE_URL: https://YOUR-SARI-BACKEND.example/tafsir
         UILaunchScreen: {}
         UIApplicationSupportsIndirectInputEvents: true
         UIAppFonts:
@@ -50,8 +52,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app
         PRODUCT_NAME: SARI
-        MARKETING_VERSION: 0.9.5
-        CURRENT_PROJECT_VERSION: 14
+        MARKETING_VERSION: 0.9.7
+        CURRENT_PROJECT_VERSION: 16
         GENERATE_INFOPLIST_FILE: "NO"
         INFOPLIST_FILE: SARI/Info.plist
         CODE_SIGN_ENTITLEMENTS: SARI/SARI.entitlements
@@ -81,8 +83,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: sa.sari.app.widget
         PRODUCT_NAME: SARIWidgetExtension
-        MARKETING_VERSION: 0.9.5
-        CURRENT_PROJECT_VERSION: 14
+        MARKETING_VERSION: 0.9.7
+        CURRENT_PROJECT_VERSION: 16
         GENERATE_INFOPLIST_FILE: "NO"
         INFOPLIST_FILE: SARIWidget/Info.plist
         APPLICATION_EXTENSION_API_ONLY: "YES"

@@ -5,7 +5,7 @@ import Network
 final class NetworkState: ObservableObject {
     static let shared = NetworkState()
 
-    @Published private(set) var online = true
+    @Published private(set) var online = false
 
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "sa.sari.network")

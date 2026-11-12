@@ -26,15 +26,16 @@ engine = read(engine_rel)
 for token in (
     "maxPromptUTF8Bytes = 1_800",
     "maxQuestionUTF8Bytes = 700",
-    "outputTokenLimit = 640",
+    "outputTokenLimit = 400",
     "contextSize = 3_072",
     "SamplingParams(",
-    "maxTokens: Self.outputTokenLimit",
+    "maxTokens: 400",
     "guard !inferenceInProgress",
     "validCitationIndexes",
     "stripSourceMarkers",
     "validateRuntime(modelURL:",
-    "gpuLayers: .count(20)",
+    "gpuLayers: .none",
+    "inferenceMarkerURL",
 ):
     require(engine, token, engine_rel)
 for token in (

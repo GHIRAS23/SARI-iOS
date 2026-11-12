@@ -1,0 +1,70 @@
+{
+  "stage": "15C22",
+  "status": "IN_PROGRESS",
+  "focus_replacements": {
+    "ios": [
+      [
+        "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+        10
+      ],
+      [
+        "SARI/Sources/Features/Home/HomeView.swift",
+        7
+      ],
+      [
+        "SARI/Sources/Features/Travel/TravelView.swift",
+        7
+      ]
+    ],
+    "android": [
+      [
+        "app/src/main/java/com/sari/app/travel/TravelScreen.kt",
+        6
+      ],
+      [
+        "app/src/main/java/com/sari/app/ui/SariApp.kt",
+        4
+      ],
+      [
+        "app/src/main/java/com/sari/app/prayer/PrayerSettingsScreen.kt",
+        1
+      ]
+    ]
+  },
+  "focus_remaining_raw": {
+    "ios": [
+      [
+        "PrayerSettingsView.swift",
+        4
+      ],
+      [
+        "HomeView.swift",
+        6
+      ],
+      [
+        "TravelView.swift",
+        12
+      ]
+    ],
+    "android": [
+      [
+        "TravelScreen.kt",
+        36
+      ],
+      [
+        "SariApp.kt",
+        28
+      ],
+      [
+        "PrayerSettingsScreen.kt",
+        7
+      ]
+    ]
+  },
+  "note": "Android Travel raw count still contains country/city/currency/app-description domain data and must not be treated as UI debt.",
+  "integrity": {
+    "swift_parse_failures": [],
+    "kotlin_structural_failures": []
+  },
+  "next": "Finish interpolated focus strings and extract Android Travel domain dataset; then move to Quran/Fiqh/Onboarding/Settings."
+}

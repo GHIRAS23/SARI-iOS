@@ -1,0 +1,249 @@
+{
+  "stage": "15D1_RENDERED_DEVICE_QA_PRECHECK",
+  "status": "BLOCKED_FOR_TRUE_RENDERING",
+  "static_gate": "CLOSED",
+  "languages": [
+    "ar",
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "missing_localized_values": {
+    "ar": 0,
+    "en": 0,
+    "tr": 0,
+    "ms": 0,
+    "id": 0,
+    "ja": 0,
+    "zh": 0,
+    "ru": 0,
+    "fr": 0
+  },
+  "layout_risk_counts": {
+    "ios": 18,
+    "android": 2
+  },
+  "layout_risks": {
+    "ios": [
+      {
+        "file": "SARI/Sources/Core/SariUIStrings.swift",
+        "line": 23,
+        "risk": [
+          "forced_RTL",
+          "forced_LTR"
+        ],
+        "code": ".environment(\\.layoutDirection,language.isArabic ? .rightToLeft:.leftToRight)"
+      },
+      {
+        "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+        "line": 49,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": "}.navigationTitle(SariUIStrings.text(\"prayer_and_adhan\", SariLanguage.selected)).environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        "line": 39,
+        "risk": [
+          "forced_RTL",
+          "forced_LTR"
+        ],
+        "code": ".environment(\\.layoutDirection,language.isArabic ? .rightToLeft:.leftToRight)"
+      },
+      {
+        "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        "line": 62,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": "Text(item.arabic).font(.title3).multilineTextAlignment(.trailing).frame(maxWidth:.infinity,alignment:.trailing).environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+        "line": 82,
+        "risk": [
+          "forced_RTL",
+          "forced_LTR"
+        ],
+        "code": ".environment(\\.layoutDirection,language.isArabic ? .rightToLeft:.leftToRight)"
+      },
+      {
+        "file": "SARI/Sources/Features/Home/HomeView.swift",
+        "line": 34,
+        "risk": [
+          "forced_RTL",
+          "forced_LTR"
+        ],
+        "code": ".environment(\\.layoutDirection, language.isArabic ? .rightToLeft : .leftToRight)"
+      },
+      {
+        "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+        "line": 31,
+        "risk": [
+          "large_fixed_frame"
+        ],
+        "code": "Color.clear.frame(height:150).id(\"bottom\")"
+      },
+      {
+        "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+        "line": 40,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": "}.environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+        "line": 37,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": "}.padding(22).environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+        "line": 130,
+        "risk": [
+          "forced_RTL",
+          "forced_LTR"
+        ],
+        "code": ".environment(\\.layoutDirection,rtl ? .rightToLeft:.leftToRight)"
+      },
+      {
+        "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+        "line": 49,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": "}.navigationTitle(SariUIStrings.format(\"around_you\",SariLanguage.selected,[\"country\":destination.nameArabic])).environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Travel/TravelView.swift",
+        "line": 37,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": ".environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Travel/TravelView.swift",
+        "line": 167,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": ".environment(\\.layoutDirection, .rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Travel/TravelView.swift",
+        "line": 190,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": ".environment(\\.layoutDirection, .rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Travel/TravelView.swift",
+        "line": 229,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": ".environment(\\.layoutDirection, .rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+        "line": 15,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": ".navigationTitle(SariUIStrings.text(\"weather_clothing\",SariLanguage.selected)).navigationBarTitleDisplayMode(.inline).environment(\\.layoutDirection, .rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+        "line": 41,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": ".environment(\\.layoutDirection,.rightToLeft)"
+      },
+      {
+        "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+        "line": 11,
+        "risk": [
+          "forced_RTL"
+        ],
+        "code": "}.navigationTitle(SariUIStrings.text(\"prayer_title\",SariLanguage.selected)).environment(\\.layoutDirection,.rightToLeft).onAppear { prayer.start() }"
+      }
+    ],
+    "android": [
+      {
+        "file": "app/src/main/java/com/sari/app/ui/SariUIStrings.kt",
+        "line": 20,
+        "risk": [
+          "forced_layout_direction"
+        ],
+        "code": "CompositionLocalProvider(LocalLayoutDirection provides if(language.isArabic) LayoutDirection.Rtl else LayoutDirection.Ltr){content()}"
+      },
+      {
+        "file": "app/src/main/java/com/sari/app/ui/SariApp.kt",
+        "line": 286,
+        "risk": [
+          "large_fixed_dimension"
+        ],
+        "code": "ElevatedCard(onClick = onClick, modifier = modifier.height(126.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.elevatedCardColors(containerColor = Color.White)) {"
+      }
+    ]
+  },
+  "environment": {
+    "xcodebuild": null,
+    "simctl": null,
+    "adb": null,
+    "gradle_wrapper": false
+  },
+  "test_matrix": {
+    "iOS": [
+      "small iPhone",
+      "standard iPhone",
+      "large iPhone",
+      "Light",
+      "Dark",
+      "RTL Arabic",
+      "LTR English",
+      "long-text French/Russian",
+      "CJK Japanese/Chinese"
+    ],
+    "Android": [
+      "compact phone",
+      "standard phone",
+      "large phone",
+      "tablet",
+      "Light",
+      "Dark",
+      "RTL Arabic",
+      "LTR English",
+      "long-text French/Russian",
+      "CJK Japanese/Chinese"
+    ]
+  },
+  "manual_visual_checks": [
+    "onboarding",
+    "home",
+    "prayer times",
+    "qibla",
+    "quran",
+    "tafsir",
+    "adhkar",
+    "fiqh assistant",
+    "travel",
+    "places",
+    "weather",
+    "settings",
+    "widget"
+  ],
+  "note": "True rendered QA requires an iOS Simulator/Xcode or Android emulator/device. This environment can audit source/layout risks but cannot honestly claim visual rendering without those runtimes."
+}

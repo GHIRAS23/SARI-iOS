@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "updated_at": null,
+  "missions": [
+    {
+      "nationality_code": "SA",
+      "destination_code": "PL",
+      "title_ar": "",
+      "phone": null,
+      "emergency_phone": null,
+      "address_ar": null,
+      "official_source": null,
+      "verified_at": null
+    }
+  ],
+  "note": "Template only. Production mission contacts must be populated from official/curated sources; do not guess emergency or embassy numbers."
+}

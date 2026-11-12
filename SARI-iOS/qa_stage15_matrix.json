@@ -1,0 +1,44 @@
+{
+  "stage": "15A",
+  "languages": [
+    "ar",
+    "en",
+    "tr",
+    "ms",
+    "id",
+    "ja",
+    "zh",
+    "ru",
+    "fr"
+  ],
+  "screen_classes": [
+    "small_phone",
+    "medium_phone",
+    "large_phone",
+    "tablet",
+    "landscape"
+  ],
+  "directions": [
+    "RTL_ar",
+    "LTR_en",
+    "LTR_long_text_fr_ru"
+  ],
+  "offline": [
+    "quran",
+    "adhkar",
+    "prayer_last_location",
+    "qibla_last_location",
+    "calendar",
+    "local_fiqh_after_pack",
+    "weather_cache_only"
+  ],
+  "device_required": [
+    "gps_permission_cycle",
+    "compass_accuracy",
+    "notifications",
+    "adhan_background",
+    "qwen_ram",
+    "qwen_heat",
+    "qwen_speed"
+  ]
+}

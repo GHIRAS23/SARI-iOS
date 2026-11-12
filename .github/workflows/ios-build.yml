@@ -24,11 +24,12 @@ jobs:
         run: |
           set -euo pipefail
           PINNED="/Applications/Xcode_16.4.app/Contents/Developer"
-          if [[ -d "$PINNED" ]]; then
-            export DEVELOPER_DIR="$PINNED"
-          else
-            export DEVELOPER_DIR="$(xcode-select -p)"
+          if [[ ! -d "$PINNED" ]]; then
+            echo "Xcode 16.4 is required for this release candidate but was not found on the runner." >&2
+            ls -1 /Applications | grep -E '^Xcode' || true
+            exit 1
           fi
+          export DEVELOPER_DIR="$PINNED"
           echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
           echo "Using DEVELOPER_DIR=$DEVELOPER_DIR"
           xcodebuild -version
@@ -39,7 +40,9 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/preflight_ios.py
+          python3 scripts/validate_fiqh_release.py
           python3 scripts/validate_prayer_math.py
+          python3 scripts/validate_travel_release.py
           find SARI/Sources SARIWidget -type f -name '*.swift' -print0 \
             | xargs -0 swiftc -parse
 
@@ -52,6 +55,38 @@ jobs:
             brew install xcodegen
           fi
           xcodegen --version
+
+      - name: Fetch Mushaf page artwork
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/fetch_mushaf_svgs.sh
+          test "$(find SARI/Resources/mushaf/hafs-kfqc -name '[0-9][0-9][0-9].svg' | wc -l | tr -d ' ')" = "604"
+
+      - name: Build tafsir meaning packs into the app
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build_tafsir_packs.py --out tafsir-build || echo "::warning::Some languages could not be built; they will show English."
+          mkdir -p SARI/Resources/tafsir-bundle
+          for code in en tr ms id ja zh ru fr; do
+            if test -s "tafsir-build/$code/$code.json"; then
+              cp "tafsir-build/$code/$code.json" "SARI/Resources/tafsir-bundle/$code.json"
+              echo "bundled $code: $(wc -c < "SARI/Resources/tafsir-bundle/$code.json") bytes"
+            fi
+          done
+          test -s SARI/Resources/tafsir-bundle/en.json || echo "::warning::English meanings are missing from this build."
+
+      - name: Point the app at the tafsir pack host
+        shell: bash
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          URL="https://raw.githubusercontent.com/${REPO}/main/tafsir-packs"
+          sed -i.bak -E "s#^( *SARI_TAFSIR_PACK_BASE_URL:).*#\1 ${URL}#" project.yml
+          rm -f project.yml.bak
+          grep -F "SARI_TAFSIR_PACK_BASE_URL: ${URL}" project.yml
 
       - name: Generate Xcode project
         shell: bash
@@ -94,7 +129,7 @@ jobs:
 
           for resource in \
             quran_tafseer.json ui_strings.json adhkar.json scholars.json countries.json \
-            fiqh_pages.sqlite3 KFGQPCAnRegular.ttf KFGQPCHafsUthmanic.ttf \
+            halal_default_countries.json local_food_areas.json fiqh_pages.sqlite3 KFGQPCAnRegular.ttf KFGQPCHafsUthmanic.ttf \
             AdhanAliMulla.caf AdhanQatami.caf AdhanBaafif.caf AdhanDughariri.caf \
             PrivacyInfo.xcprivacy; do
             grep -Fq "$resource" SARI.xcodeproj/project.pbxproj
@@ -150,10 +185,12 @@ jobs:
 
           for resource in \
             ui_strings.json adhkar.json quran_tafseer.json scholars.json countries.json \
-            fiqh_pages.sqlite3 KFGQPCAnRegular.ttf KFGQPCHafsUthmanic.ttf \
+            halal_default_countries.json local_food_areas.json fiqh_pages.sqlite3 KFGQPCAnRegular.ttf KFGQPCHafsUthmanic.ttf \
             AdhanAliMulla.caf AdhanQatami.caf AdhanBaafif.caf AdhanDughariri.caf; do
             test -n "$(find "$APP_PATH" -name "$resource" -print -quit)"
           done
+
+          test "$(find "$APP_PATH" -name '[0-9][0-9][0-9].svg' | wc -l | tr -d ' ')" = "604"
 
           test -n "$(find "$APP_PATH" -name PrivacyInfo.xcprivacy -print -quit)"
           test -f "$WIDGET_PATH/PrivacyInfo.xcprivacy"

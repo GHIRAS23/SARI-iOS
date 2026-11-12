@@ -1,0 +1,30 @@
+{
+  "schema": 2,
+  "endpoint": "GET /v1/embassies?nationality=SA&destination=GB",
+  "response": {
+    "missions": [
+      {
+        "nationality_code": "SA",
+        "destination_code": "GB",
+        "official_name": "Embassy name as published by the issuing government",
+        "city": "London",
+        "address": "Officially published street address",
+        "phone": "+0000000000",
+        "emergency_phone": null,
+        "email": null,
+        "website": "https://official-government-domain.example",
+        "working_hours": null,
+        "source_url": "https://official-government-domain.example/mission-directory-entry",
+        "verified_at": "YYYY-MM-DD",
+        "is_officially_verified": true
+      }
+    ]
+  },
+  "validation": {
+    "source_url_must_be_https": true,
+    "do_not_generate_missing_contact_fields": true,
+    "official_verification_requires_manual_source_review": true,
+    "community_map_records_must_not_be_marked_official": true
+  },
+  "note": "Template only. Replace illustrative values with data manually verified from official foreign ministries or embassy websites."
+}

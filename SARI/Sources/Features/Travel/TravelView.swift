@@ -22,7 +22,10 @@ struct TravelView: View {
                         missionAndEmergency
                         localApps
                         muslimTools
-                        if profile.destination.hasDetailedData { foodCard }
+                        foodCard
+                        embassyCard
+                        localFoodCard
+                        currencyCard
                         helpButton
                         dataSafetyNote
                     }
@@ -176,13 +179,58 @@ struct TravelView: View {
     }
 
     private var foodCard: some View {
-        NavigationLink(destination:PlacesLocalView(destination:profile.destination)){
-            HStack(spacing:14){
-                Image(systemName:"fork.knife.circle.fill").font(.title2).foregroundStyle(Color.accentColor)
-                VStack(alignment:language.isArabic ? .trailing:.leading,spacing:5){Text(profile.destination.muslimMajority ? SariUIStrings.text("featured_restaurants",language):SariUIStrings.text("halal_nearby",language)).font(.headline).foregroundStyle(.primary);Text(SariUIStrings.text("places_live_desc",language)).font(.subheadline).foregroundStyle(.secondary)}.frame(maxWidth:.infinity,alignment:language.isArabic ? .trailing:.leading)
-                Image(systemName:language.isArabic ? "chevron.left":"chevron.right").font(.caption).foregroundStyle(.secondary)
+        NavigationLink(destination: PlacesLocalView(destination: profile.destination)) {
+            HStack(spacing: 14) {
+                Image(systemName: "fork.knife.circle.fill").font(.title2).foregroundStyle(Color.accentColor)
+                VStack(alignment: language.isArabic ? .trailing : .leading, spacing: 5) {
+                    Text(SariTravelFeatureText.text(arabic: "المطاعم الحلال القريبة", english: "Nearby halal restaurants", language: language)).font(.headline).foregroundStyle(.primary)
+                    Text(SariTravelFeatureText.text(arabic: "اعثر على خمسة خيارات قريبة وافتح المزيد في خرائط Google", english: "Find five nearby options and open more in Google Maps", language: language))
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }.frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
+                Image(systemName: language.isArabic ? "chevron.left" : "chevron.right").font(.caption).foregroundStyle(.secondary)
             }.travelCard()
         }.buttonStyle(.plain)
+    }
+
+    private var embassyCard: some View {
+        NavigationLink(destination: EmbassyDirectoryView(nationalityCode: profile.nationalityCode, destinationCode: profile.destinationCode)) {
+            travelFeatureLink(
+                icon: "building.columns.fill",
+                title: SariTravelFeatureText.text(arabic: "السفارات والقنصليات", english: "Embassies and consulates", language: language),
+                detail: SariTravelFeatureText.text(arabic: "معلومات البعثة وفق جنسيتك وبلد الوجهة", english: "Mission information based on your nationality and destination", language: language)
+            )
+        }.buttonStyle(.plain)
+    }
+
+    private var localFoodCard: some View {
+        NavigationLink(destination: LocalFoodGuideView(destination: profile.destination)) {
+            travelFeatureLink(
+                icon: "fork.knife",
+                title: SariTravelFeatureText.text(arabic: "الأكلات المحلية في الوجهة", english: "Local dishes", language: language),
+                detail: SariTravelFeatureText.text(arabic: "اكتشف الأطباق ومكوناتها والتنبيهات الغذائية", english: "Local dishes from the food database", language: language)
+            )
+        }.buttonStyle(.plain)
+    }
+
+    private var currencyCard: some View {
+        NavigationLink(destination: CurrencyConverterView()) {
+            travelFeatureLink(
+                icon: "arrow.left.arrow.right.circle.fill",
+                title: SariTravelFeatureText.text(arabic: "تحويل العملات", english: "Currency converter", language: language),
+                detail: SariTravelFeatureText.text(arabic: "أسعار محدثة مع استخدام آخر نسخة محفوظة دون إنترنت", english: "Updated rates with the last saved snapshot available offline", language: language)
+            )
+        }.buttonStyle(.plain)
+    }
+
+    private func travelFeatureLink(icon: String, title: String, detail: String) -> some View {
+        HStack(spacing: 14) {
+            Image(systemName: icon).font(.title2).foregroundStyle(Color.accentColor)
+            VStack(alignment: language.isArabic ? .trailing : .leading, spacing: 5) {
+                Text(title).font(.headline).foregroundStyle(.primary)
+                Text(detail).font(.subheadline).foregroundStyle(.secondary)
+            }.frame(maxWidth: .infinity, alignment: language.isArabic ? .trailing : .leading)
+            Image(systemName: language.isArabic ? "chevron.left" : "chevron.right").font(.caption).foregroundStyle(.secondary)
+        }.travelCard()
     }
 
     private var helpButton: some View { Button{showHelp=true}label:{Label(SariUIStrings.text("need_help",language),systemImage:"sos.circle.fill").font(.headline).frame(maxWidth:.infinity).padding(.vertical,15)}.buttonStyle(.borderedProminent).tint(.red) }

@@ -80,9 +80,9 @@ actor MushafPageRepository {
 
     private func bundledPageData(_ page: Int) -> Data? {
         let name = String(format: "%03d", page)
-        guard let url = Bundle.main.url(
-            forResource: name,
-            withExtension: "svg",
+        guard let url = Bundle.main.sariResourceURL(
+            name: name,
+            extension: "svg",
             subdirectory: "mushaf/hafs-kfqc"
         ) else { return nil }
         return try? Data(contentsOf: url)

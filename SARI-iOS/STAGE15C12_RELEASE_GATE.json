@@ -1,0 +1,43 @@
+{
+  "stage": "15C12",
+  "status": "IN_PROGRESS",
+  "actual_replacements_ios": [
+    [
+      "TravelView.swift",
+      8
+    ],
+    [
+      "HomeView.swift",
+      0
+    ],
+    [
+      "PrayerSettingsView.swift",
+      4
+    ]
+  ],
+  "actual_replacements_android": [
+    [
+      "TravelScreen.kt",
+      6
+    ],
+    [
+      "SariApp.kt",
+      1
+    ],
+    [
+      "PrayerSettingsScreen.kt",
+      4
+    ]
+  ],
+  "priority_remaining_ios": {
+    "TravelView.swift": 33,
+    "HomeView.swift": 22,
+    "PrayerSettingsView.swift": 19
+  },
+  "priority_remaining_android": {
+    "TravelScreen.kt": 42,
+    "SariApp.kt": 39,
+    "PrayerSettingsScreen.kt": 11
+  },
+  "note": "Remaining literals include interpolated strings, country/app/domain data, and UI text requiring explicit keys. Do not blind-replace religious/domain content."
+}

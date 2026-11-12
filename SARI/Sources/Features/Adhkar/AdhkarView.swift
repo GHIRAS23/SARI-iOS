@@ -10,7 +10,10 @@ private enum AdhkarUI {
             "tap":[.ar:"اضغط على الدائرة للعد",.en:"Tap the circle to count",.tr:"Saymak için daireye dokunun",.ms:"Tekan bulatan untuk mengira",.id:"Ketuk lingkaran untuk menghitung",.ja:"円をタップして数えます",.zh:"点击圆环计数",.ru:"Нажимайте на круг для счёта",.fr:"Touchez le cercle pour compter"],
             "reset":[.ar:"إعادة العداد",.en:"Reset counter",.tr:"Sayacı sıfırla",.ms:"Tetapkan semula",.id:"Atur ulang",.ja:"カウンターをリセット",.zh:"重置计数",.ru:"Сбросить счётчик",.fr:"Réinitialiser"],
             "items":[.ar:"ذكر",.en:"items",.tr:"zikir",.ms:"zikir",.id:"zikir",.ja:"項目",.zh:"项",.ru:"азкаров",.fr:"invocations"],
-            "unavailable":[.ar:"تعذر تحميل الأذكار",.en:"Adhkar could not be loaded",.tr:"Zikirler yüklenemedi",.ms:"Zikir tidak dapat dimuatkan",.id:"Zikir tidak dapat dimuat",.ja:"アズカールを読み込めませんでした",.zh:"无法加载赞念",.ru:"Не удалось загрузить азкары",.fr:"Impossible de charger les adhkar"]
+            "unavailable":[.ar:"تعذر تحميل الأذكار",.en:"Adhkar could not be loaded",.tr:"Zikirler yüklenemedi",.ms:"Zikir tidak dapat dimuatkan",.id:"Zikir tidak dapat dimuat",.ja:"アズカールを読み込めませんでした",.zh:"无法加载赞念",.ru:"Не удалось загрузить азкары",.fr:"Impossible de charger les adhkar"],
+            "pronunciation":[.ar:"طريقة النطق التقريبية",.en:"Approximate pronunciation guide",.tr:"Telaffuz rehberi",.ms:"Panduan sebutan",.id:"Panduan pelafalan",.ja:"発音ガイド",.zh:"发音提示",.ru:"Подсказка произношения",.fr:"Guide de prononciation"],
+            "meaning":[.ar:"المعنى",.en:"Meaning",.tr:"Anlamı",.ms:"Maksud",.id:"Makna",.ja:"意味",.zh:"含义",.ru:"Значение",.fr:"Sens"],
+            "meaningUnavailable":[.ar:"الترجمة المعتمدة لهذا الذكر غير متاحة حاليًا. النص العربي محفوظ كما هو.",.en:"A reviewed translation for this dhikr is not available yet. The original Arabic is preserved.",.tr:"Bu zikir için gözden geçirilmiş çeviri henüz mevcut değil. Arapça asıl metin korunmuştur.",.ms:"Terjemahan yang disemak belum tersedia. Teks Arab asal dikekalkan.",.id:"Terjemahan yang ditinjau belum tersedia. Teks Arab asli tetap dipertahankan.",.ja:"確認済みの翻訳はまだありません。アラビア語原文を保持しています。",.zh:"暂时没有经过审核的译文，阿拉伯语原文保持不变。",.ru:"Проверенный перевод пока недоступен. Арабский оригинал сохранён.",.fr:"Une traduction vérifiée n’est pas encore disponible. Le texte arabe original est conservé."]
         ]
         return values[key]?[language] ?? values[key]?[.en] ?? key
     }
@@ -137,11 +140,27 @@ private struct DhikrCategoryDataView: View {
                 }
             }
 
-            if let meaning=item.meanings[language.rawValue] ?? item.meanings["en"], !meaning.isEmpty {
-                Divider(); Text(meaning).font(.subheadline).foregroundStyle(.secondary)
-            }
-            if !item.transliteration.isEmpty && !language.isArabic {
-                Text(item.transliteration).font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
+            if !language.isArabic {
+                Divider()
+                VStack(alignment: .leading, spacing: 7) {
+                    Label(AdhkarUI.text("pronunciation", language), systemImage: "character.book.closed")
+                        .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                    Text(item.transliteration.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                         ? ArabicTransliterator.transliterate(item.arabic)
+                         : item.transliteration)
+                        .font(.body).textSelection(.enabled)
+                }
+                Divider()
+                VStack(alignment: .leading, spacing: 7) {
+                    Label(AdhkarUI.text("meaning", language), systemImage: "translate")
+                        .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                    if let meaning = item.meanings[language.rawValue], !meaning.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text(meaning).font(.subheadline).foregroundStyle(.secondary).textSelection(.enabled)
+                    } else {
+                        Text(AdhkarUI.text("meaningUnavailable", language))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
             }
             if let source=item.source {
                 Divider()

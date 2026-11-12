@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FiqhPackSetupView: View {
     @StateObject private var pack = LocalFiqhPack.shared
+    @StateObject private var network = NetworkState.shared
     @AppStorage("sariLanguage") private var languageRaw = ""
     @State private var error: String?
     private var language: SariLanguage { SariLanguage(rawValue: languageRaw) ?? .device }
@@ -64,11 +65,19 @@ struct FiqhPackSetupView: View {
                             }
                         }
                     } label: {
-                        Label(downloadModelButton, systemImage: "arrow.down.circle.fill")
+                        Label(modelActionButton, systemImage: pack.hasModel ? "checkmark.circle.fill" : "arrow.down.circle.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
+                    .disabled(!network.online)
+
+                    if !network.online {
+                        Text(networkRequiredNote)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
 
                     Text(modelSizeNote)
                         .font(.caption)
@@ -101,6 +110,7 @@ struct FiqhPackSetupView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(22)
+        .task { await pack.resumeBackgroundWorkIfNeeded() }
         .sariLanguageEnvironment(language)
     }
 
@@ -153,10 +163,18 @@ struct FiqhPackSetupView: View {
         .fr: "Les sources sont prêtes ; il reste à télécharger le modèle de raisonnement"
     ]) }
 
-    private var downloadModelButton: String { SariContentText.pick(language, [
-        .ar: "تنزيل نموذج الذكاء المحلي", .en: "Download offline AI model", .tr: "Çevrimdışı AI modelini indir", .ms: "Muat turun model AI luar talian",
-        .id: "Unduh model AI offline", .ja: "オフラインAIモデルをダウンロード", .zh: "下载离线 AI 模型", .ru: "Скачать офлайн-модель ИИ", .fr: "Télécharger le modèle IA hors ligne"
-    ]) }
+    private var modelActionButton: String {
+        if pack.hasModel && pack.installedVersion == LocalFiqhPack.recommendedModelVersion {
+            return SariContentText.pick(language, [
+                .ar: "فحص النموذج المثبت", .en: "Validate installed model", .tr: "Kurulu modeli doğrula", .ms: "Sahkan model dipasang",
+                .id: "Validasi model terpasang", .ja: "インストール済みモデルを検証", .zh: "验证已安装模型", .ru: "Проверить установленную модель", .fr: "Valider le modèle installé"
+            ])
+        }
+        return SariContentText.pick(language, [
+            .ar: "تنزيل نموذج الذكاء المحلي", .en: "Download offline AI model", .tr: "Çevrimdışı AI modelini indir", .ms: "Muat turun model AI luar talian",
+            .id: "Unduh model AI offline", .ja: "オフラインAIモデルをダウンロード", .zh: "下载离线 AI 模型", .ru: "Скачать офлайн-модель ИИ", .fr: "Télécharger le modèle IA hors ligne"
+        ])
+    }
 
     private var modelSizeNote: String { SariContentText.pick(language, [
         .ar: "تنزيل واحد بحجم يقارب 2.1 جيجابايت. بعد التحقق من SHA‑256 لا يحتاج المساعد إلى الإنترنت للإجابة.",
@@ -168,6 +186,18 @@ struct FiqhPackSetupView: View {
         .zh: "一次下载约 2.1 GB。通过 SHA-256 校验后，回答无需联网。",
         .ru: "Разовая загрузка около 2,1 ГБ. После проверки SHA-256 интернет для ответов не нужен.",
         .fr: "Téléchargement unique d’environ 2,1 Go. Après vérification SHA-256, les réponses ne nécessitent plus Internet."
+    ]) }
+
+    private var networkRequiredNote: String { SariContentText.pick(language, [
+        .ar: "اتصل بالإنترنت عبر Wi‑Fi أو بيانات الجوال لبدء التنزيل أو استكماله.",
+        .en: "Connect using Wi-Fi or cellular data to start or resume the download.",
+        .tr: "İndirmeyi başlatmak veya sürdürmek için Wi-Fi ya da mobil veriye bağlanın.",
+        .ms: "Sambung melalui Wi-Fi atau data selular untuk memulakan atau menyambung muat turun.",
+        .id: "Sambungkan Wi-Fi atau data seluler untuk memulai atau melanjutkan unduhan.",
+        .ja: "ダウンロードを開始または再開するには、Wi-Fiまたはモバイル通信に接続してください。",
+        .zh: "请连接 Wi-Fi 或移动数据以开始或继续下载。",
+        .ru: "Подключитесь к Wi-Fi или мобильной сети, чтобы начать или продолжить загрузку.",
+        .fr: "Connectez-vous en Wi-Fi ou sur réseau mobile pour démarrer ou reprendre le téléchargement."
     ]) }
 
     private var retryLabel: String { SariContentText.pick(language, [
@@ -191,7 +221,7 @@ struct FiqhPackSetupView: View {
     ]) }
 
     private var downloadKeepOpen: String { SariContentText.pick(language, [
-        .ar: "إذا انقطع الاتصال سيحاول SARI الاستكمال تلقائيًا، ويحفظ بيانات الاستئناف للمحاولة التالية.", .en: "If the connection drops, SARI retries automatically and keeps resume data for the next attempt.", .tr: "Bağlantı kesilirse SARI otomatik olarak yeniden dener ve sonraki deneme için devam verisini saklar.",
+        .ar: "يمكنك الانتقال لأي واجهة أو وضع SARI في الخلفية؛ يستمر التنزيل عبر نظام iOS قدر الإمكان، ويستكمل تلقائيًا عند الانقطاع.", .en: "You can leave this screen or put SARI in the background; iOS continues the transfer when possible and SARI resumes interruptions automatically.", .tr: "Bu ekrandan ayrılabilir veya SARI'yi arka plana alabilirsiniz; iOS mümkün olduğunda indirmeye devam eder ve SARI kesintileri otomatik sürdürür.",
         .ms: "Jika sambungan terputus, SARI mencuba semula secara automatik dan menyimpan data sambungan untuk percubaan seterusnya.", .id: "Jika koneksi terputus, SARI mencoba lagi otomatis dan menyimpan data lanjutan untuk percobaan berikutnya.", .ja: "接続が切れた場合、SARIは自動再試行し、次回のために再開データを保存します。",
         .zh: "如果连接中断，SARI 会自动重试，并保存断点数据供下次继续。", .ru: "При обрыве соединения SARI автоматически повторит попытку и сохранит данные для продолжения.", .fr: "Si la connexion est interrompue, SARI réessaie automatiquement et conserve les données de reprise."
     ]) }

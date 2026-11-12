@@ -1,0 +1,1622 @@
+[
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 13,
+    "class": "domain_candidate",
+    "text": "location:suite?.string(forKey:\"location\") ?? \"افتح ساري لتحديث الموقع\","
+  },
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 30,
+    "class": "ui_candidate",
+    "text": "HStack { Text(\"ساري\").font(.headline); Spacer(); Text(entry.location).font(.caption2).foregroundStyle(.secondary) }"
+  },
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 34,
+    "class": "ui_candidate",
+    "text": "HStack { Label(\"القبلة \\(Int(entry.qibla))°\", systemImage:\"location.north.line\"); Spacer(); Text(entry.prayerTime,style:.relative).monospacedDigit() }.font(.caption)"
+  },
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 36,
+    "class": "ui_candidate",
+    "text": "Text(\"آخر تحديث \\(entry.updated.formatted(date:.omitted,time:.shortened))\").font(.caption2).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARIWidget/SARIWidget.swift",
+    "line": 44,
+    "class": "domain_candidate",
+    "text": ".description(\"الصلاة القادمة، الوقت المتبقي واتجاه القبلة من بيانات ساري.\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 56,
+    "class": "domain",
+    "text": ".init(code: \"SA\", nameArabic: \"السعودية\", flag: \"🇸🇦\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 57,
+    "class": "domain",
+    "text": ".init(code: \"QA\", nameArabic: \"قطر\", flag: \"🇶🇦\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 58,
+    "class": "domain",
+    "text": ".init(code: \"BH\", nameArabic: \"البحرين\", flag: \"🇧🇭\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 59,
+    "class": "domain",
+    "text": ".init(code: \"KW\", nameArabic: \"الكويت\", flag: \"🇰🇼\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 60,
+    "class": "domain",
+    "text": ".init(code: \"AE\", nameArabic: \"الإمارات\", flag: \"🇦🇪\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 61,
+    "class": "domain",
+    "text": ".init(code: \"OM\", nameArabic: \"عُمان\", flag: \"🇴🇲\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 65,
+    "class": "domain",
+    "text": ".init(code: \"PL\", nameArabic: \"بولندا\", flag: \"🇵🇱\", capitalArabic: \"وارسو\", currency: \"الزلوتي البولندي (PLN)\", languagesArabic: \"البولندية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / E • 230V\", latitude: 52.2297, longitude: 21.0122, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 66,
+    "class": "domain",
+    "text": ".init(id:\"pl1\", name:\"Jakdojade\", category:\"النقل\", noteArabic:\"مفيد للنقل العام والمسارات داخل المدن البولندية.\", systemImage:\"tram.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 67,
+    "class": "domain",
+    "text": ".init(id:\"pl2\", name:\"KOLEO\", category:\"القطارات\", noteArabic:\"البحث عن رحلات القطارات المحلية وتذاكرها.\", systemImage:\"train.side.front.car\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 68,
+    "class": "domain",
+    "text": ".init(id:\"pl3\", name:\"Bolt / Uber\", category:\"التنقل\", noteArabic:\"خيارات شائعة لطلب السيارات في المدن الكبرى.\", systemImage:\"car.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 70,
+    "class": "domain",
+    "text": ".init(code: \"JP\", nameArabic: \"اليابان\", flag: \"🇯🇵\", capitalArabic: \"طوكيو\", currency: \"الين الياباني (JPY)\", languagesArabic: \"اليابانية\", timeZoneNoteArabic: \"JST\", plugsArabic: \"A / B • 100V\", latitude: 35.6762, longitude: 139.6503, muslimMajority: false, emergencyGeneral: nil, emergencyNoteArabic: \"للشرطة 110، وللإسعاف والإطفاء 119. تحقق دائمًا من الإرشادات الرسمية عند الحاجة.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 71,
+    "class": "domain",
+    "text": ".init(id:\"jp1\", name:\"Japan Travel by NAVITIME\", category:\"النقل\", noteArabic:\"تخطيط القطارات والمترو والتنقل بين المدن.\", systemImage:\"train.side.front.car\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 72,
+    "class": "domain",
+    "text": ".init(id:\"jp2\", name:\"GO\", category:\"سيارات الأجرة\", noteArabic:\"من تطبيقات طلب سيارات الأجرة المحلية.\", systemImage:\"car.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 73,
+    "class": "domain",
+    "text": ".init(id:\"jp3\", name:\"Google Maps\", category:\"الخرائط\", noteArabic:\"مفيد للتنقل والبحث عن الأماكن ومواعيد النقل.\", systemImage:\"map.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 75,
+    "class": "domain",
+    "text": ".init(code: \"IT\", nameArabic: \"إيطاليا\", flag: \"🇮🇹\", capitalArabic: \"روما\", currency: \"اليورو (EUR)\", languagesArabic: \"الإيطالية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / F / L • 230V\", latitude: 41.9028, longitude: 12.4964, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 76,
+    "class": "domain",
+    "text": ".init(id:\"it1\", name:\"Trenitalia\", category:\"القطارات\", noteArabic:\"القطارات الوطنية والحجوزات.\", systemImage:\"train.side.front.car\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 77,
+    "class": "domain",
+    "text": ".init(id:\"it2\", name:\"Italo\", category:\"القطارات\", noteArabic:\"قطارات سريعة بين مدن إيطالية عديدة.\", systemImage:\"train.side.front.car\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 78,
+    "class": "domain",
+    "text": ".init(id:\"it3\", name:\"Moovit\", category:\"النقل\", noteArabic:\"مسارات النقل العام في مدن متعددة.\", systemImage:\"bus.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 80,
+    "class": "domain",
+    "text": ".init(code: \"AT\", nameArabic: \"النمسا\", flag: \"🇦🇹\", capitalArabic: \"فيينا\", currency: \"اليورو (EUR)\", languagesArabic: \"الألمانية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / F • 230V\", latitude: 48.2082, longitude: 16.3738, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 81,
+    "class": "domain",
+    "text": ".init(id:\"at1\", name:\"ÖBB\", category:\"القطارات\", noteArabic:\"القطارات والنقل بين المدن.\", systemImage:\"train.side.front.car\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 82,
+    "class": "domain",
+    "text": ".init(id:\"at2\", name:\"WienMobil\", category:\"النقل\", noteArabic:\"مفيد للتنقل داخل فيينا.\", systemImage:\"tram.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 84,
+    "class": "domain",
+    "text": ".init(code: \"DE\", nameArabic: \"ألمانيا\", flag: \"🇩🇪\", capitalArabic: \"برلين\", currency: \"اليورو (EUR)\", languagesArabic: \"الألمانية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / F • 230V\", latitude: 52.5200, longitude: 13.4050, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"112 للطوارئ الطبية والإطفاء؛ أرقام الجهات قد تختلف حسب نوع الحالة.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 85,
+    "class": "domain",
+    "text": ".init(id:\"de1\", name:\"DB Navigator\", category:\"القطارات\", noteArabic:\"القطارات والنقل العام في ألمانيا.\", systemImage:\"train.side.front.car\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 86,
+    "class": "domain",
+    "text": ".init(id:\"de2\", name:\"BVG\", category:\"النقل\", noteArabic:\"مفيد للنقل العام في برلين.\", systemImage:\"tram.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 88,
+    "class": "domain",
+    "text": ".init(code: \"FR\", nameArabic: \"فرنسا\", flag: \"🇫🇷\", capitalArabic: \"باريس\", currency: \"اليورو (EUR)\", languagesArabic: \"الفرنسية\", timeZoneNoteArabic: \"أوروبا الوسطى\", plugsArabic: \"C / E • 230V\", latitude: 48.8566, longitude: 2.3522, muslimMajority: false, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الأوروبي الموحد.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 89,
+    "class": "domain",
+    "text": ".init(id:\"fr1\", name:\"Bonjour RATP\", category:\"النقل\", noteArabic:\"النقل العام في باريس وما حولها.\", systemImage:\"tram.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 90,
+    "class": "domain",
+    "text": ".init(id:\"fr2\", name:\"SNCF Connect\", category:\"القطارات\", noteArabic:\"القطارات والحجوزات داخل فرنسا.\", systemImage:\"train.side.front.car\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 92,
+    "class": "domain",
+    "text": ".init(code: \"TR\", nameArabic: \"تركيا\", flag: \"🇹🇷\", capitalArabic: \"أنقرة\", currency: \"الليرة التركية (TRY)\", languagesArabic: \"التركية\", timeZoneNoteArabic: \"TRT\", plugsArabic: \"C / F • 230V\", latitude: 39.9334, longitude: 32.8597, muslimMajority: true, emergencyGeneral: \"112\", emergencyNoteArabic: \"رقم الطوارئ الموحد.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 93,
+    "class": "domain",
+    "text": ".init(id:\"tr1\", name:\"BiTaksi\", category:\"التنقل\", noteArabic:\"طلب سيارات الأجرة في عدد من المدن.\", systemImage:\"car.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 94,
+    "class": "domain",
+    "text": ".init(id:\"tr2\", name:\"Moovit\", category:\"النقل\", noteArabic:\"مسارات النقل العام.\", systemImage:\"bus.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 96,
+    "class": "domain",
+    "text": ".init(code: \"MY\", nameArabic: \"ماليزيا\", flag: \"🇲🇾\", capitalArabic: \"كوالالمبور\", currency: \"الرينغيت (MYR)\", languagesArabic: \"الماليزية ولغات أخرى\", timeZoneNoteArabic: \"MYT\", plugsArabic: \"G • 240V\", latitude: 3.1390, longitude: 101.6869, muslimMajority: true, emergencyGeneral: \"999\", emergencyNoteArabic: \"رقم طوارئ عام؛ تحقق من تعليمات السلطات المحلية عند الحاجة.\", apps: ["
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 97,
+    "class": "domain",
+    "text": ".init(id:\"my1\", name:\"Grab\", category:\"التنقل\", noteArabic:\"سيارات وتوصيل وخدمات محلية.\", systemImage:\"car.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 98,
+    "class": "domain",
+    "text": ".init(id:\"my2\", name:\"MyRapid PULSE\", category:\"النقل\", noteArabic:\"مفيد للنقل العام في كوالالمبور.\", systemImage:\"tram.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 107,
+    "class": "domain",
+    "text": ".init(id:\"entry\", title:\"متطلبات الدخول\", detail:\"تحقق من التأشيرة وصلاحية الجواز ومتطلبات الدخول من مصدر رسمي قبل السفر.\", systemImage:\"person.text.rectangle\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 108,
+    "class": "domain",
+    "text": ".init(id:\"apps\", title:\"نزّل التطبيقات المهمة\", detail:\"راجع تطبيقات النقل والخرائط والخدمات المقترحة للوجهة.\", systemImage:\"square.and.arrow.down.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 109,
+    "class": "domain",
+    "text": ".init(id:\"weather\", title:\"راجع الطقس ولباس الرحلة\", detail:\"افتح طقس الوجهة قبل المغادرة وحدث البيانات عند اقتراب موعد السفر.\", systemImage:\"cloud.sun.fill\"),"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 110,
+    "class": "domain",
+    "text": ".init(id:\"mission\", title:\"احفظ بيانات بعثتك\", detail:nationality == nil ? \"اختر جنسيتك مرة واحدة ليعرض ساري بعثتك المناسبة.\" : \"سيعرض ساري بيانات بعثة دولتك عند توفر بيانات موثقة للوجهة.\", systemImage:\"building.columns.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Core/TravelService.swift",
+    "line": 112,
+    "class": "domain",
+    "text": "if let tripDate { items.insert(.init(id:\"date\", title:\"موعد الرحلة\", detail:tripDate.formatted(date: .long, time: .omitted), systemImage:\"calendar\"), at:0) }"
+  },
+  {
+    "file": "SARI/Sources/Core/SariAppearance.swift",
+    "line": 9,
+    "class": "domain_candidate",
+    "text": "case (.system,.ar):return SariUIStrings.text(\"automatic\", SariLanguage.selected); case (.light,.ar):return \"فاتح\"; case (.dark,.ar):return \"داكن\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 45,
+    "class": "domain",
+    "text": "case 0: return \"صحو\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 46,
+    "class": "domain",
+    "text": "case 1, 2: return \"غائم جزئيًا\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 47,
+    "class": "domain",
+    "text": "case 3: return \"غائم\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 48,
+    "class": "domain",
+    "text": "case 45, 48: return \"ضباب\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 49,
+    "class": "domain",
+    "text": "case 51, 53, 55, 56, 57: return \"رذاذ\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 50,
+    "class": "domain",
+    "text": "case 61, 63, 65, 66, 67: return \"أمطار\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 51,
+    "class": "domain",
+    "text": "case 71, 73, 75, 77: return \"ثلوج\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 52,
+    "class": "domain",
+    "text": "case 80, 81, 82: return \"زخات مطر\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 53,
+    "class": "domain",
+    "text": "case 85, 86: return \"زخات ثلج\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 54,
+    "class": "domain",
+    "text": "case 95, 96, 99: return \"عواصف رعدية\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 55,
+    "class": "domain",
+    "text": "default: return \"طقس متغير\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 78,
+    "class": "domain",
+    "text": "pieces += [\"ملابس خفيفة وفضفاضة\", \"يفضل الألوان الفاتحة\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 79,
+    "class": "domain",
+    "text": "case 27..<34: pieces += [\"ملابس صيفية خفيفة\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 80,
+    "class": "domain",
+    "text": "case 20..<27: pieces += [\"ملابس خفيفة مع طبقة بسيطة للمساء\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 81,
+    "class": "domain",
+    "text": "case 13..<20: pieces += [\"جاكيت خفيف أو كنزة\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 82,
+    "class": "domain",
+    "text": "case 6..<13: pieces += [\"جاكيت متوسط وملابس دافئة\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 83,
+    "class": "domain",
+    "text": "default: pieces += [\"معطف دافئ وطبقات متعددة\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 87,
+    "class": "domain",
+    "text": "pieces += [\"خذ مظلة أو معطفًا مقاومًا للمطر\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 89,
+    "class": "domain",
+    "text": "if max(windSpeed, windGust) >= 35 { pieces += [\"الرياح قوية؛ اختر طبقة خارجية ثابتة\"] }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 90,
+    "class": "domain",
+    "text": "if let today = daily.first, today.high - today.low >= 10 { pieces += [\"الحرارة تتغير بوضوح اليوم؛ خذ طبقة إضافية للمساء\"] }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 91,
+    "class": "domain",
+    "text": "if let uv = daily.first?.uvIndexMax, uv >= 7 { pieces += [\"الشمس قوية؛ قبعة وواقي شمس مناسبان للخروج الطويل\"] }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 92,
+    "class": "domain",
+    "text": "return pieces.joined(separator: \"، \") + \".\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 96,
+    "class": "domain",
+    "text": "if let d = daily.first, d.precipitationProbability >= 70 { return \"احتمال المطر مرتفع اليوم؛ خطط للخروج مع مظلة.\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 97,
+    "class": "domain",
+    "text": "if windGust >= 50 { return \"هبات الرياح قوية؛ انتبه في الأماكن المفتوحة.\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 98,
+    "class": "domain",
+    "text": "if let uv = daily.first?.uvIndexMax, uv >= 8 { return \"مؤشر الأشعة فوق البنفسجية مرتفع؛ قلل التعرض المباشر وقت الظهيرة.\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 99,
+    "class": "domain",
+    "text": "if let d = daily.first, d.high >= 40 { return \"حرارة شديدة متوقعة؛ تجنب المجهود الطويل وقت الذروة.\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 168,
+    "class": "domain",
+    "text": "guard let url = components.url else { errorMessage = \"تعذر تكوين طلب الطقس\"; return }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 171,
+    "class": "domain",
+    "text": "guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else { errorMessage = \"تعذر تحديث الطقس الآن\"; return }"
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 189,
+    "class": "domain",
+    "text": "errorMessage=\"لا يوجد اتصال — يتم عرض آخر طقس محفوظ.\""
+  },
+  {
+    "file": "SARI/Sources/Core/WeatherService.swift",
+    "line": 190,
+    "class": "domain",
+    "text": "} else { errorMessage=\"تعذر تحديث الطقس الآن ولا توجد بيانات محفوظة.\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/SariLanguage.swift",
+    "line": 17,
+    "class": "domain_candidate",
+    "text": "case .ar:return \"العربية\"; case .en:return \"English\"; case .tr:return \"Türkçe\""
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhSearch.swift",
+    "line": 6,
+    "class": "religious_or_fiqh",
+    "text": "var label:String{\"السلسبيل — الجزء \\(part)، الصفحة \\(page)\"}"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhSearch.swift",
+    "line": 43,
+    "class": "religious_or_fiqh",
+    "text": ".replacingOccurrences(of:\"أ\",with:\"ا\").replacingOccurrences(of:\"إ\",with:\"ا\").replacingOccurrences(of:\"آ\",with:\"ا\")"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhSearch.swift",
+    "line": 44,
+    "class": "religious_or_fiqh",
+    "text": ".replacingOccurrences(of:\"ة\",with:\"ه\")"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhSearch.swift",
+    "line": 45,
+    "class": "religious_or_fiqh",
+    "text": "let stop:Set<String>=[\"من\",\"في\",\"على\",\"الى\",\"إلى\",\"هل\",\"ما\",\"هو\",\"هي\",\"عن\",\"ثم\",\"بعد\",\"قبل\",\"the\",\"a\",\"an\",\"is\",\"are\",\"to\",\"of\",\"in\",\"and\",\"or\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/SariCalendar.swift",
+    "line": 7,
+    "class": "domain_candidate",
+    "text": "switch self { case .dual:return \"هجري + ميلادي\";case .hijri:return \"هجري — أم القرى\";case .gregorian:return \"ميلادي\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/SariCalendar.swift",
+    "line": 18,
+    "class": "domain_candidate",
+    "text": "f.dateFormat=language.isArabic ? \"EEEE، d MMMM y 'هـ'\" : \"EEEE, d MMMM y 'AH'\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 9,
+    "class": "domain",
+    "text": "let items = [(\"الفجر\",fajr),(\"الشروق\",sunrise),(\"الظهر\",dhuhr),(\"العصر\",asr),(\"المغرب\",maghrib),(\"العشاء\",isha)]"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 11,
+    "class": "domain",
+    "text": "return (\"الفجر\", Calendar.current.date(byAdding: .day, value: 1, to: fajr) ?? fajr)"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 20,
+    "class": "domain",
+    "text": "case .auto:return \"تلقائي حسب الموقع\"; case .ummAlQura:return \"أم القرى — مكة المكرمة\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 21,
+    "class": "domain",
+    "text": "case .muslimWorldLeague:return \"رابطة العالم الإسلامي\"; case .isna:return \"ISNA — أمريكا الشمالية\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 22,
+    "class": "domain",
+    "text": "case .egyptian:return \"الهيئة المصرية العامة للمساحة\"; case .karachi:return \"جامعة العلوم الإسلامية — كراتشي\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 23,
+    "class": "domain",
+    "text": "case .dubai:return \"دبي\"; case .qatar:return \"قطر\"; case .kuwait:return \"الكويت\"; case .singapore:return \"سنغافورة\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 24,
+    "class": "domain",
+    "text": "case .turkey:return \"رئاسة الشؤون الدينية التركية\"; case .tehran:return \"طهران\"; case .custom:return \"مخصص\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 62,
+    "class": "domain",
+    "text": "var title:String{self == .hanafi ? \"حنفي — ظلّان\" : \"الجمهور — ظل واحد\"}"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 104,
+    "class": "domain",
+    "text": "@Published var locationName = \"موقعك\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 117,
+    "class": "domain",
+    "text": "locationMessage=\"يتم استخدام آخر موقع محفوظ حتى يتم تحديث الموقع.\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 124,
+    "class": "domain",
+    "text": "case .denied,.restricted: locationDenied=true;locationMessage=\"صلاحية الموقع غير متاحة. يمكن الاستمرار بآخر موقع محفوظ أو تفعيل الموقع من إعدادات الجهاز.\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 125,
+    "class": "domain",
+    "text": "@unknown default: locationMessage=\"تعذر تحديد حالة صلاحية الموقع.\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 131,
+    "class": "domain",
+    "text": "case .denied,.restricted: locationDenied=true;locationMessage=\"صلاحية الموقع غير متاحة. يمكن الاستمرار بآخر موقع محفوظ.\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 145,
+    "class": "domain",
+    "text": "if let p=p?.first { Task { @MainActor in self?.locationName = p.locality ?? p.administrativeArea ?? \"موقعك\"; self?.saveWidget() } }"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 149,
+    "class": "domain",
+    "text": "locationMessage = coordinate == nil ? \"تعذر تحديد الموقع ولا يوجد موقع محفوظ بعد.\" : \"تعذر تحديث الموقع؛ يتم استخدام آخر موقع محفوظ.\""
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 190,
+    "class": "domain",
+    "text": "let items=[(\"fajr\",\"الفجر\",t.fajr),(\"dhuhr\",\"الظهر\",t.dhuhr),(\"asr\",\"العصر\",t.asr),(\"maghrib\",\"المغرب\",t.maghrib),(\"isha\",\"العشاء\",t.isha)]"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 195,
+    "class": "domain",
+    "text": "addNotification(center:center,id:\"\\(id)_pre\",title:\"اقتربت صلاة \\(name)\",body:\"متبقي نحو \\(preMinutes) دقائق\",date:pre,sound:nil)"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 197,
+    "class": "domain",
+    "text": "if date > .now { addNotification(center:center,id:id,title:\"حان وقت صلاة \\(name)\",body:\"ساري يذكّرك بالصلاة\",date:date,sound:soundName) }"
+  },
+  {
+    "file": "SARI/Sources/Core/PrayerService.swift",
+    "line": 199,
+    "class": "domain",
+    "text": "addNotification(center:center,id:\"\\(id)_iqama\",title:\"تنبيه الإقامة — \\(name)\",body:\"حان موعد الإقامة الذي حددته\",date:iqama,sound:nil)"
+  },
+  {
+    "file": "SARI/Sources/Core/PlacesService.swift",
+    "line": 9,
+    "class": "domain",
+    "text": "return text.contains(\"halal\") || text.contains(\"حلال\")"
+  },
+  {
+    "file": "SARI/Sources/Core/PlacesService.swift",
+    "line": 17,
+    "class": "domain",
+    "text": "switch self { case .food:return \"المطاعم\"; case .mosque:return \"المساجد\"; case .pharmacy:return \"الصيدليات\"; case .hospital:return \"المستشفيات\"; case .grocery:return \"البقالات\"; case .transport:return \"النقل\" }"
+  },
+  {
+    "file": "SARI/Sources/Core/PlacesService.swift",
+    "line": 31,
+    "class": "domain",
+    "text": "message=\"افتح البحث على الخريطة للحصول على نتائج حية حول وجهتك.\""
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 7,
+    "class": "domain",
+    "text": "\"ask\":[\"ar\":\"اسأل ساري\",\"en\":\"Ask SARI\",\"tr\":\"SARI'ye Sor\",\"ms\":\"Tanya SARI\",\"id\":\"Tanya SARI\",\"ja\":\"SARIに質問\",\"zh\":\"询问 SARI\",\"ru\":\"Спросить SARI\",\"fr\":\"Demander à SARI\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 9,
+    "class": "domain",
+    "text": "\"more\":[\"ar\":\"المزيد\",\"en\":\"More\",\"tr\":\"Daha Fazla\",\"ms\":\"Lagi\",\"id\":\"Lainnya\",\"ja\":\"その他\",\"zh\":\"更多\",\"ru\":\"Ещё\",\"fr\":\"Plus\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 11,
+    "class": "domain",
+    "text": "\"inCountry\":[\"ar\":\"في بلدي\",\"en\":\"At home\",\"tr\":\"Ülkemde\",\"ms\":\"Di negara saya\",\"id\":\"Di negara saya\",\"ja\":\"自国\",\"zh\":\"在本国\",\"ru\":\"В своей стране\",\"fr\":\"Dans mon pays\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 15,
+    "class": "domain",
+    "text": "\"weather\":[\"ar\":\"طقس اليوم\",\"en\":\"Today's weather\",\"tr\":\"Bugünün havası\",\"ms\":\"Cuaca hari ini\",\"id\":\"Cuaca hari ini\",\"ja\":\"今日の天気\",\"zh\":\"今日天气\",\"ru\":\"Погода сегодня\",\"fr\":\"Météo du jour\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 16,
+    "class": "domain",
+    "text": "\"clothes\":[\"ar\":\"لباس اليوم\",\"en\":\"What to wear\",\"tr\":\"Bugün ne giyilmeli\",\"ms\":\"Pakaian hari ini\",\"id\":\"Pakaian hari ini\",\"ja\":\"今日の服装\",\"zh\":\"今日穿着\",\"ru\":\"Что надеть\",\"fr\":\"Tenue du jour\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 18,
+    "class": "domain",
+    "text": "\"fiqhSubtitle\":[\"ar\":\"مساعد فقهي موثّق\",\"en\":\"Source-bound fiqh assistant\",\"tr\":\"Kaynaklı fıkıh asistanı\",\"ms\":\"Pembantu fiqh bersumber\",\"id\":\"Asisten fikih bersumber\",\"ja\":\"出典に基づくフィクフ助手\",\"zh\":\"基于来源的教法助手\",\"ru\":\"Фикх-помощник по источникам\",\"fr\":\"Assistant fiqh sourcé\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 19,
+    "class": "domain",
+    "text": "\"quranSubtitle\":[\"ar\":\"المصحف والتفسير\",\"en\":\"Mushaf & tafsir\",\"tr\":\"Mushaf ve tefsir\",\"ms\":\"Mushaf & tafsir\",\"id\":\"Mushaf & tafsir\",\"ja\":\"ムスハフとタフスィール\",\"zh\":\"古兰经与经注\",\"ru\":\"Мусхаф и тафсир\",\"fr\":\"Mushaf et tafsir\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 20,
+    "class": "domain",
+    "text": "\"adhkarSubtitle\":[\"ar\":\"حصنك اليومي\",\"en\":\"Your daily remembrance\",\"tr\":\"Günlük zikirlerin\",\"ms\":\"Zikir harian anda\",\"id\":\"Zikir harian Anda\",\"ja\":\"毎日のズィクル\",\"zh\":\"每日赞念\",\"ru\":\"Ежедневные поминания\",\"fr\":\"Vos invocations quotidiennes\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 21,
+    "class": "domain",
+    "text": ",\"search\":[\"ar\":\"البحث\",\"en\":\"Search\",\"tr\":\"Ara\",\"ms\":\"Cari\",\"id\":\"Cari\",\"ja\":\"検索\",\"zh\":\"搜索\",\"ru\":\"Поиск\",\"fr\":\"Recherche\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 22,
+    "class": "domain",
+    "text": "\"bookmarks\":[\"ar\":\"المحفوظات\",\"en\":\"Bookmarks\",\"tr\":\"Yer imleri\",\"ms\":\"Penanda\",\"id\":\"Penanda\",\"ja\":\"ブックマーク\",\"zh\":\"书签\",\"ru\":\"Закладки\",\"fr\":\"Favoris\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 23,
+    "class": "domain",
+    "text": "\"continueReading\":[\"ar\":\"متابعة القراءة\",\"en\":\"Continue reading\",\"tr\":\"Okumaya devam et\",\"ms\":\"Teruskan membaca\",\"id\":\"Lanjutkan membaca\",\"ja\":\"続きを読む\",\"zh\":\"继续阅读\",\"ru\":\"Продолжить чтение\",\"fr\":\"Continuer la lecture\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 31,
+    "class": "domain",
+    "text": "\"humidity\":[\"ar\":\"الرطوبة\",\"en\":\"Humidity\",\"tr\":\"Nem\",\"ms\":\"Kelembapan\",\"id\":\"Kelembapan\",\"ja\":\"湿度\",\"zh\":\"湿度\",\"ru\":\"Влажность\",\"fr\":\"Humidité\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 32,
+    "class": "domain",
+    "text": "\"wind\":[\"ar\":\"الرياح\",\"en\":\"Wind\",\"tr\":\"Rüzgâr\",\"ms\":\"Angin\",\"id\":\"Angin\",\"ja\":\"風\",\"zh\":\"风速\",\"ru\":\"Ветер\",\"fr\":\"Vent\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 34,
+    "class": "domain",
+    "text": "\"fajr\":[\"ar\":\"الفجر\",\"en\":\"Fajr\",\"tr\":\"Sabah\",\"ms\":\"Subuh\",\"id\":\"Subuh\",\"ja\":\"ファジュル\",\"zh\":\"晨礼\",\"ru\":\"Фаджр\",\"fr\":\"Fajr\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 35,
+    "class": "domain",
+    "text": "\"dhuhr\":[\"ar\":\"الظهر\",\"en\":\"Dhuhr\",\"tr\":\"Öğle\",\"ms\":\"Zohor\",\"id\":\"Zuhur\",\"ja\":\"ズフル\",\"zh\":\"晌礼\",\"ru\":\"Зухр\",\"fr\":\"Dhuhr\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 36,
+    "class": "domain",
+    "text": "\"asr\":[\"ar\":\"العصر\",\"en\":\"Asr\",\"tr\":\"İkindi\",\"ms\":\"Asar\",\"id\":\"Asar\",\"ja\":\"アスル\",\"zh\":\"晡礼\",\"ru\":\"Аср\",\"fr\":\"Asr\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 37,
+    "class": "domain",
+    "text": "\"maghrib\":[\"ar\":\"المغرب\",\"en\":\"Maghrib\",\"tr\":\"Akşam\",\"ms\":\"Maghrib\",\"id\":\"Magrib\",\"ja\":\"マグリブ\",\"zh\":\"昏礼\",\"ru\":\"Магриб\",\"fr\":\"Maghrib\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 38,
+    "class": "domain",
+    "text": "\"isha\":[\"ar\":\"العشاء\",\"en\":\"Isha\",\"tr\":\"Yatsı\",\"ms\":\"Isyak\",\"id\":\"Isya\",\"ja\":\"イシャー\",\"zh\":\"宵礼\",\"ru\":\"Иша\",\"fr\":\"Isha\"],"
+  },
+  {
+    "file": "SARI/Sources/Core/SariStrings.swift",
+    "line": 40,
+    "class": "domain",
+    "text": "\"sources\":[\"ar\":\"المصادر\",\"en\":\"Sources\",\"tr\":\"Kaynaklar\",\"ms\":\"Sumber\",\"id\":\"Sumber\",\"ja\":\"出典\",\"zh\":\"来源\",\"ru\":\"Источники\",\"fr\":\"Sources\"]"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhEngine.swift",
+    "line": 24,
+    "class": "religious_or_fiqh",
+    "text": "return .init(answer:insufficient(language),sources:[],reason:\"لم أجد نصًا قريبًا بما يكفي في المصادر المحلية.\",confidence:0)"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhEngine.swift",
+    "line": 53,
+    "class": "religious_or_fiqh",
+    "text": "return .init(answer:cleaned.isEmpty ? insufficient(language):cleaned,sources:sources,reason:\"الخلاصة صيغت محليًا من المقاطع المسترجعة من المصادر المثبتة على الجهاز.\",confidence:confidence)"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhEngine.swift",
+    "line": 58,
+    "class": "religious_or_fiqh",
+    "text": "case .ar:return \"لم أجد في المصادر المحلية نصًا كافيًا للإجابة بثقة.\""
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 19,
+    "class": "religious_or_fiqh",
+    "text": "@Published private(set) var status=\"غير مثبت\""
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 36,
+    "class": "religious_or_fiqh",
+    "text": "status=installed ? \"جاهز للعمل بدون إنترنت\":\"غير مثبت\""
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 41,
+    "class": "religious_or_fiqh",
+    "text": "installed=false;installedVersion=nil;progress=0;status=\"تم حذف الملفات\""
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 46,
+    "class": "religious_or_fiqh",
+    "text": "downloading=true;progress=0;status=\"جلب معلومات الحزمة…\""
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 60,
+    "class": "religious_or_fiqh",
+    "text": "try await fetch(manifest.modelURL,to:stagedModel,expectedBytes:manifest.modelBytes,sha256:manifest.modelSHA256,base:0,span:0.82,label:\"تنزيل نموذج المساعد…\")"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 61,
+    "class": "religious_or_fiqh",
+    "text": "try await fetch(manifest.libraryURL,to:stagedLibrary,expectedBytes:manifest.libraryBytes,sha256:manifest.librarySHA256,base:0.82,span:0.18,label:\"تنزيل مكتبة المصادر…\")"
+  },
+  {
+    "file": "SARI/Sources/Core/LocalFiqhPack.swift",
+    "line": 65,
+    "class": "religious_or_fiqh",
+    "text": "progress=1;installed=true;installedVersion=manifest.version;status=\"جاهز للعمل بدون إنترنت\""
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 7,
+    "class": "ui_candidate",
+    "text": "Section(\"عرض التاريخ\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 10,
+    "class": "ui_candidate",
+    "text": "Section(\"تصحيح التاريخ الهجري\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 11,
+    "class": "ui_candidate",
+    "text": "Stepper(\"\\(adjustment >= 0 ? \"+\" : \"\")\\(adjustment) يوم\",value:$adjustment,in:-2...2)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 12,
+    "class": "ui_candidate",
+    "text": "Button(\"إعادة الضبط\"){adjustment=0}.disabled(adjustment==0)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 14,
+    "class": "ui_candidate",
+    "text": "Text(\"يعتمد التاريخ الهجري على تقويم أم القرى. خيار التصحيح يغيّر العرض الهجري فقط ولا يغيّر تاريخ الجهاز أو حساب مواقيت الصلاة.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 16,
+    "class": "ui_candidate",
+    "text": "Section(\"معاينة\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/CalendarSettingsView.swift",
+    "line": 19,
+    "class": "ui_candidate",
+    "text": "}.navigationTitle(\"التقويم والتاريخ\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 12,
+    "class": "ui_candidate",
+    "text": "let sounds=[(\"Alnufis\",\"النفيس\"),(\"Alimula\",\"المعيقلي\"),(\"Alqitami\",\"القطامي\")]"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 13,
+    "class": "ui_candidate",
+    "text": "let prayers=[(\"fajr\",\"الفجر\"),(\"dhuhr\",\"الظهر\"),(\"asr\",\"العصر\"),(\"maghrib\",\"المغرب\"),(\"isha\",\"العشاء\")]"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 18,
+    "class": "ui_candidate",
+    "text": "Section(\"طريقة حساب المواقيت\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 19,
+    "class": "ui_candidate",
+    "text": "Picker(\"التقويم / طريقة الحساب\",selection:$calcMethod) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 23,
+    "class": "ui_candidate",
+    "text": "LabeledContent(\"المستخدم حاليًا\",value:prayer.effectiveCalculationMethod.title)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 25,
+    "class": "ui_candidate",
+    "text": "Picker(\"حساب العصر\",selection:$asrMethod) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 28,
+    "class": "ui_candidate",
+    "text": "NavigationLink(\"التعديلات اليدوية ± دقائق\"){ PrayerOffsetsView().environmentObject(prayer) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 29,
+    "class": "ui_candidate",
+    "text": "Text(\"يمكن اختيار الطريقة يدويًا أو ترك ساري يختار تلقائيًا حسب الموقع. قد تختلف المواقيت الرسمية محليًا بدقائق قليلة.\").font(.footnote).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 35,
+    "class": "ui_candidate",
+    "text": "Toggle(\"تفعيل التنبيه المسبق\",isOn:bindingBool(\"prePrayerEnabled\",defaultValue:true)).onChange(of:bindingBool(\"prePrayerEnabled\",defaultValue:true).wrappedValue){_,_ in prayer.schedulePrayerNotifications()}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 39,
+    "class": "ui_candidate",
+    "text": "Toggle(\"تفعيل تنبيه الإقامة\",isOn:bindingBool(\"iqamaEnabled\",defaultValue:true)).onChange(of:bindingBool(\"iqamaEnabled\",defaultValue:true).wrappedValue){_,_ in prayer.schedulePrayerNotifications()}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 42,
+    "class": "ui_candidate",
+    "text": "Section(\"صوت تنبيه الأذان\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 44,
+    "class": "ui_candidate",
+    "text": "HStack { Button(\"معاينة — \\(name)\"){ play(file) }; Spacer(); if selectedSound == \"\\(file)_29s.caf\" { Image(systemName:\"checkmark.circle.fill\").foregroundStyle(.tint) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 48,
+    "class": "ui_candidate",
+    "text": "Section { Text(\"يمكن تشغيل أو إيقاف الأذان لكل صلاة على حدة. يستخدم iOS صوت إشعار مختصرًا التزامًا بقيود النظام.\").font(.footnote) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 62,
+    "class": "ui_candidate",
+    "text": "let rows=[(\"fajr\",\"الفجر\"),(\"sunrise\",\"الشروق\"),(\"dhuhr\",\"الظهر\"),(\"asr\",\"العصر\"),(\"maghrib\",\"المغرب\"),(\"isha\",\"العشاء\")]"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 65,
+    "class": "ui_candidate",
+    "text": ".navigationTitle(\"تعديل الدقائق\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/PrayerSettingsView.swift",
+    "line": 72,
+    "class": "ui_candidate",
+    "text": "Stepper(\"\\(name): \\(value >= 0 ? \"+\" : \"\")\\(value) دقيقة\",value:$value,in:-30...30)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 14,
+    "class": "ui_candidate",
+    "text": "Text(\"تلقائي — \\(SariLanguage.device.displayName)\").tag(\"\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 20,
+    "class": "ui_candidate",
+    "text": "Section(language.isArabic ? \"التاريخ\":\"Date\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 21,
+    "class": "ui_candidate",
+    "text": "NavigationLink { CalendarSettingsView() } label:{Label(language.isArabic ? \"التقويم والتاريخ\":\"Calendar & date\",systemImage:\"calendar\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 25,
+    "class": "ui_candidate",
+    "text": "Picker(language.isArabic ? \"الوضع\":\"Theme\",selection:$appearanceRaw) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 31,
+    "class": "ui_candidate",
+    "text": "NavigationLink { PrayerSettingsView() } label:{Label(\"الصلاة والأذان والإقامة\",systemImage:\"bell.badge.fill\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 37,
+    "class": "ui_candidate",
+    "text": "Label(\"الحزمة مثبتة\\(pack.installedVersion.map{\" — \\($0)\"} ?? \"\")\",systemImage:\"checkmark.seal.fill\").foregroundStyle(.green)"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 38,
+    "class": "ui_candidate",
+    "text": "Button(role:.destructive){showDelete=true}label:{Label(\"حذف حزمة المساعد من الجهاز\",systemImage:\"trash\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 48,
+    "class": "ui_candidate",
+    "text": ".confirmationDialog(\"حذف ملفات المساعد؟\",isPresented:$showDelete,titleVisibility:.visible) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Settings/SettingsView.swift",
+    "line": 51,
+    "class": "ui_candidate",
+    "text": "} message:{Text(\"يمكن تنزيلها مرة أخرى لاحقًا.\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+    "line": 6,
+    "class": "religious_or_fiqh",
+    "text": "\"repeat\":[\"ar\":\"التكرار\",\"en\":\"Repeat\",\"tr\":\"Tekrar\",\"ms\":\"Ulangan\",\"id\":\"Ulangi\",\"ja\":\"回数\",\"zh\":\"重复\",\"ru\":\"Повтор\",\"fr\":\"Répétition\"],"
+  },
+  {
+    "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+    "line": 7,
+    "class": "religious_or_fiqh",
+    "text": "\"meaning\":[\"ar\":\"المعنى\",\"en\":\"Meaning\",\"tr\":\"Anlamı\",\"ms\":\"Makna\",\"id\":\"Makna\",\"ja\":\"意味\",\"zh\":\"含义\",\"ru\":\"Смысл\",\"fr\":\"Sens\"],"
+  },
+  {
+    "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+    "line": 8,
+    "class": "religious_or_fiqh",
+    "text": "\"pron\":[\"ar\":\"النطق النصي\",\"en\":\"Transliteration\",\"tr\":\"Okunuş\",\"ms\":\"Transliterasi\",\"id\":\"Transliterasi\",\"ja\":\"ローマ字読み\",\"zh\":\"拉丁转写\",\"ru\":\"Транслитерация\",\"fr\":\"Translittération\"],"
+  },
+  {
+    "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+    "line": 9,
+    "class": "religious_or_fiqh",
+    "text": "\"done\":[\"ar\":\"تم ✓\",\"en\":\"Done ✓\",\"tr\":\"Tamam ✓\",\"ms\":\"Selesai ✓\",\"id\":\"Selesai ✓\",\"ja\":\"完了 ✓\",\"zh\":\"完成 ✓\",\"ru\":\"Готово ✓\",\"fr\":\"Terminé ✓\"],"
+  },
+  {
+    "file": "SARI/Sources/Features/Adhkar/AdhkarView.swift",
+    "line": 10,
+    "class": "religious_or_fiqh",
+    "text": "\"unavailable\":[\"ar\":\"تعذر تحميل الأذكار\",\"en\":\"Adhkar could not be loaded\",\"tr\":\"Zikirler yüklenemedi\",\"ms\":\"Zikir tidak dapat dimuatkan\",\"id\":\"Zikir tidak dapat dimuat\",\"ja\":\"アズカールを読み込めませんでした\",\"zh\":\"无法加载赞念\",\"ru\":\"Не удалось загрузить азкары\",\"fr\":\"Impossible de charger les adhkar\"]"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 45,
+    "class": "ui_candidate",
+    "text": "Text(\"ساري\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 100,
+    "class": "ui_candidate",
+    "text": "Label(\"القبلة \\(Int(prayer.qiblaBearing))°\", systemImage: \"location.north.circle.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 102,
+    "class": "ui_candidate",
+    "text": "Text(\"تنبيه الإقامة قابل للتخصيص\").font(.caption)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 116,
+    "class": "ui_candidate",
+    "text": "HStack(spacing: 12) { ProgressView(); Text(\"جاري تحديد موقعك وحساب مواقيت الصلاة…\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 142,
+    "class": "ui_candidate",
+    "text": "HStack { Text(\"عرض التفاصيل والتوقعات\").font(.caption.bold()); Image(systemName: \"chevron.left\").font(.caption.bold()) }.foregroundStyle(Color.accentColor)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 144,
+    "class": "ui_candidate",
+    "text": "} else if weather.isLoading { HStack { ProgressView(); Text(\"جاري تحديث الطقس ولباس اليوم…\") }.frame(maxWidth: .infinity).padding(20) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 152,
+    "class": "ui_candidate",
+    "text": "Text(\"كل ما تحتاجه\").font(.title3.weight(.bold))"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 156,
+    "class": "ui_candidate",
+    "text": "NavigationLink(destination: QiblaView()) { ActionCard(title: SariStrings.t(\"qibla\",language), subtitle: \"\\(Int(prayer.qiblaBearing))° من موقعك\", icon: \"location.north.fill\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 164,
+    "class": "ui_candidate",
+    "text": "HStack { Text(\"وضع السفر مفعّل\").font(.headline); Spacer(); Image(systemName: \"airplane.circle.fill\").font(.title2) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 165,
+    "class": "ui_candidate",
+    "text": "Text(\"ساري سيبرز لك معلومات السفر، التطبيقات المحلية، المطاعم الحلال والتنبيهات المهمة في وجهتك.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 167,
+    "class": "ui_candidate",
+    "text": "Button(\"استكشف أدوات السفر\") { }.buttonStyle(.borderedProminent)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 177,
+    "class": "ui_candidate",
+    "text": "HStack { NavigationLink(SariUIStrings.text(\"see_all\", SariLanguage.selected)) { PrayerTimesView() }.font(.subheadline.bold()); Spacer(); Text(\"مواقيت اليوم\").font(.title3.weight(.bold)) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 179,
+    "class": "ui_candidate",
+    "text": "prayerTime(\"الفجر\", t.fajr)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 180,
+    "class": "ui_candidate",
+    "text": "prayerTime(\"الظهر\", t.dhuhr)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 181,
+    "class": "ui_candidate",
+    "text": "prayerTime(\"العصر\", t.asr)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 182,
+    "class": "ui_candidate",
+    "text": "prayerTime(\"المغرب\", t.maghrib)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 183,
+    "class": "ui_candidate",
+    "text": "prayerTime(\"العشاء\", t.isha)"
+  },
+  {
+    "file": "SARI/Sources/Features/Home/HomeView.swift",
+    "line": 197,
+    "class": "ui_candidate",
+    "text": "Text(\"ساري يساعدك بالمعلومة ويعرض مصادرها، ولا يُعد جهة مستقلة للفتوى.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 48,
+    "class": "ui_candidate",
+    "text": "Text(\"يبحث ساري في النصوص المفهرسة، ويتحقق من دعم الخلاصة قبل عرضها. إذا لم تكفِ المصادر يتحفظ بدل تخمين الحكم.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 55,
+    "class": "ui_candidate",
+    "text": "Label(\"حزمة Qwen3.5-2B والمصادر مثبتة. ربط محرك GGUF المحلي داخل iPhone هو الخطوة المتبقية لتشغيل الإجابة دون خادم.\",systemImage:\"iphone.gen3\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 69,
+    "class": "ui_candidate",
+    "text": "TextField(\"اكتب سؤالك بتفاصيله…\",text:$question,axis:.vertical)"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 93,
+    "class": "ui_candidate",
+    "text": "Text(\"مطابقة المصادر \\(a.retrieval_confidence)%\").font(.caption.weight(.bold))"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 126,
+    "class": "ui_candidate",
+    "text": "if level.contains(\"صريح\"){return \"checkmark.seal.fill\"}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 127,
+    "class": "ui_candidate",
+    "text": "if level.contains(\"استنتاج\"){return \"arrow.triangle.branch\"}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 139,
+    "class": "ui_candidate",
+    "text": "level: local.sources.isEmpty ? SariUIStrings.text(\"insufficient_source\", SariLanguage.selected) : \"استنتاج من المصادر المحلية\","
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhAssistantView.swift",
+    "line": 150,
+    "class": "ui_candidate",
+    "text": "disclaimer: \"ساري مساعد معرفي يعتمد على المصادر المثبتة على الجهاز، وليس جهة مستقلة للفتوى.\""
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 14,
+    "class": "ui_candidate",
+    "text": "Text(\"حمّل ملفات المساعد مرة واحدة. بعد اكتمال التنزيل تعمل المصادر والنموذج على جهازك دون خادم، ويمكن حذف الملفات لاحقًا.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 29,
+    "class": "ui_candidate",
+    "text": "guard let u=manifestURL else{error=\"رابط حزمة المساعد غير مهيأ في هذه النسخة.\";return}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 30,
+    "class": "ui_candidate",
+    "text": "Task{do{try await pack.install(from:u)}catch{self.error=\"فشل التنزيل أو التحقق من الملفات. لم يتم تفعيل الحزمة.\"}}"
+  },
+  {
+    "file": "SARI/Sources/Features/Fiqh/FiqhPackSetupView.swift",
+    "line": 35,
+    "class": "ui_candidate",
+    "text": "Text(\"لن يعتبر ساري الحزمة صالحة إذا لم يطابق حجم الملفات وبصمة SHA-256 القيم المعتمدة.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 12,
+    "class": "ui_candidate",
+    "text": "\"ar\":.init(title:SariUIStrings.text(\"welcome\", SariLanguage.selected),subtitle:\"رفيق المسلم في بلده وفي سفره\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 22,
+    "class": "ui_candidate",
+    "text": "\"ar\":.init(title:\"صلاتك أينما كنت\",subtitle:\"مواقيت الصلاة والقبلة وطرق الحساب والتنبيهات في مكان واحد\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 32,
+    "class": "ui_candidate",
+    "text": "\"ar\":.init(title:\"القرآن والأذكار معك\",subtitle:\"المصحف والتفسير والأذكار مع تجربة تناسب لغتك\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 42,
+    "class": "ui_candidate",
+    "text": "\"ar\":.init(title:\"سافر وأنت مستعد\",subtitle:\"الوجهة والطقس ولباس اليوم ومعلومات البلد ومتطلبات الرحلة والتطبيقات المهمة\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 52,
+    "class": "ui_candidate",
+    "text": "\"ar\":.init(title:\"معلومات مهمة عند السفر\",subtitle:\"يعرض ساري السفارة أو القنصلية والمعلومات المناسبة وفق جنسيتك ووجهتك\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 62,
+    "class": "ui_candidate",
+    "text": "\"ar\":.init(title:\"مساعدك الفقهي على جهازك\",subtitle:\"نزّل حزمة المساعد لتعمل المصادر والنموذج محليًا على جهازك\"),"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 102,
+    "class": "ui_candidate",
+    "text": "Button(word(\"تخطي\",\"Skip\")){finish()}.fontWeight(.semibold)"
+  },
+  {
+    "file": "SARI/Sources/Features/Onboarding/OnboardingView.swift",
+    "line": 126,
+    "class": "ui_candidate",
+    "text": "HStack{Text(page == sariOnboardingPages.count-1 ? word(\"ابدأ مع ساري\",\"Start\") : word(\"التالي\",\"Next\")).fontWeight(.bold);Image(systemName:rtl ? \"arrow.left\":\"arrow.right\")}"
+  },
+  {
+    "file": "SARI/Sources/Features/Contacts/ScholarsView.swift",
+    "line": 19,
+    "class": "ui_candidate",
+    "text": "Link(\"اتصال\", destination: url)"
+  },
+  {
+    "file": "SARI/Sources/Features/Contacts/ScholarsView.swift",
+    "line": 22,
+    "class": "ui_candidate",
+    "text": "}.navigationTitle(\"أصحاب الفضيلة\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 13,
+    "class": "ui_candidate",
+    "text": "Text(destination.muslimMajority ? \"أماكن مميزة حولك\":\"أماكن مفيدة للمسافر\").font(.title2.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 14,
+    "class": "ui_candidate",
+    "text": "Text(destination.muslimMajority ? \"يركز ساري على جودة المكان وقربه.\":\"لا يصف ساري مطعمًا بأنه حلال إلا عند وجود تحقق صريح.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 30,
+    "class": "ui_candidate",
+    "text": "Text(store.message ?? \"لا توجد نتائج موثقة محفوظة حاليًا.\").foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 38,
+    "class": "ui_candidate",
+    "text": "Text(\"خدمات وتطبيقات الوجهة\").font(.title3.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 46,
+    "class": "ui_candidate",
+    "text": "Text(\"المطاعم، ساعات العمل، حالة الحلال وأرقام الخدمات بيانات متغيرة. ساري لا يخمّنها؛ النتائج الحية تفتح في خدمة الخرائط.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/PlacesLocalView.swift",
+    "line": 49,
+    "class": "ui_candidate",
+    "text": "}.navigationTitle(\"حولك في \\(destination.nameArabic)\").environment(\\.layoutDirection,.rightToLeft)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 42,
+    "class": "ui_candidate",
+    "text": "HStack { Text(profile.destination.flag).font(.system(size:42)); Spacer(); VStack(alignment:.trailing, spacing:3) { Text(\"وجهتك\").font(.caption.bold()).foregroundStyle(.secondary); Text(profile.destination.nameArabic).font(.system(size:30,weight:.black,design:.rounded)); Text(profile.destination.capitalArabic).foregroundStyle(.secondary) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 49,
+    "class": "ui_candidate",
+    "text": "HStack(spacing:14) { Image(systemName:\"checklist.checked\").font(.title2).foregroundStyle(Color.accentColor); Spacer(); VStack(alignment:.trailing,spacing:5) { Text(SariUIStrings.text(\"before_travel\", SariLanguage.selected)).font(.headline).foregroundStyle(.primary); Text(\"التأشيرة والجواز، الطقس، التطبيقات، بعثتك وتجهيزات الوجهة.\").font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.trailing) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 57,
+    "class": "ui_candidate",
+    "text": "infoRow(\"العملة\", profile.destination.currency, \"creditcard.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 59,
+    "class": "ui_candidate",
+    "text": "infoRow(\"التوقيت\", profile.destination.timeZoneNoteArabic, \"clock.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 60,
+    "class": "ui_candidate",
+    "text": "infoRow(\"الكهرباء\", profile.destination.plugsArabic, \"powerplug.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 66,
+    "class": "ui_candidate",
+    "text": "HStack { Text(\"طقس الوجهة ولباس اليوم\").font(.title3.bold()); Spacer(); Image(systemName:\"cloud.sun.fill\").symbolRenderingMode(.multicolor) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 71,
+    "class": "ui_candidate",
+    "text": "} else if destinationWeather.isLoading { HStack { ProgressView(); Text(\"جاري تحديث طقس الوجهة…\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 72,
+    "class": "ui_candidate",
+    "text": "else { Text(\"تعذر تحديث الطقس الآن.\").foregroundStyle(.secondary) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 78,
+    "class": "ui_candidate",
+    "text": "Text(\"الأرقام المهمة\").font(.title3.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 80,
+    "class": "ui_candidate",
+    "text": "HStack { Text(nationality.flag).font(.title2); Spacer(); VStack(alignment:.trailing) { Text(SariUIStrings.format(\"embassy_of\", SariLanguage.selected, [\"country\":nationality.nameArabic])).font(.headline); if let m = TravelCatalog.mission(for:nationality.code,in:profile.destination.code) { Text(m.titleArabic).foregroundStyle(.secondary) } else { Text(\"لا توجد بيانات بعثة موثقة مخزنة لهذه الوجهة في النسخة الحالية. لن يخمّن ساري أرقامًا حساسة.\").font(.caption).foregroundStyle(.secondary) } } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 82,
+    "class": "ui_candidate",
+    "text": "Button { showProfile = true } label: { Label(\"اختر جنسيتك لإظهار سفارة/قنصلية دولتك تلقائيًا\",systemImage:\"flag.fill\").frame(maxWidth:.infinity,alignment:.trailing) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 85,
+    "class": "ui_candidate",
+    "text": "HStack { Image(systemName:\"cross.case.fill\").foregroundStyle(.red); Spacer(); VStack(alignment:.trailing) { Text(\"طوارئ \\(profile.destination.nameArabic)\").font(.headline); if let n = profile.destination.emergencyGeneral { Text(\"الطوارئ العامة: \\(n)\").font(.title3.bold()) } ; Text(profile.destination.emergencyNoteArabic).font(.caption).foregroundStyle(.secondary) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 93,
+    "class": "ui_candidate",
+    "text": "Text(\"قبل التثبيت، راجع التطبيق والناشر في متجر جهازك.\").font(.caption2).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 99,
+    "class": "ui_candidate",
+    "text": "Text(\"أدوات المسلم في السفر\").font(.title3.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 103,
+    "class": "ui_candidate",
+    "text": "NavigationLink(destination:FiqhAssistantView()) { travelLink(\"أحكام السفر — اسأل ساري\", \"sparkles\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 113,
+    "class": "ui_candidate",
+    "text": "Text(profile.destination.muslimMajority ? \"المطاعم والأماكن المميزة\":SariUIStrings.text(\"halal_nearby\", SariLanguage.selected)).font(.headline).foregroundStyle(.primary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 114,
+    "class": "ui_candidate",
+    "text": "Text(\"مطاعم، مساجد، صيدليات، مستشفيات، بقالات ونقل — مع بحث حي على الخريطة.\").font(.subheadline).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 121,
+    "class": "ui_candidate",
+    "text": "private var helpButton: some View { Button { showHelp = true } label: { Label(\"أحتاج مساعدة\",systemImage:\"sos.circle.fill\").font(.headline).frame(maxWidth:.infinity).padding(.vertical,15) }.buttonStyle(.borderedProminent).tint(.red) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 122,
+    "class": "ui_candidate",
+    "text": "private var dataSafetyNote: some View { Text(\"بيانات التأشيرات والسفارات والطوارئ معلومات حساسة ومتغيرة؛ ساري لا يخمّنها، ويجب مزامنتها من دليل موثوق قبل النشر العام.\").font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center).padding(.horizontal,8) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 138,
+    "class": "ui_candidate",
+    "text": "Section(\"الجنسية\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 139,
+    "class": "ui_candidate",
+    "text": "Picker(\"الجنسية\", selection: $profile.nationalityCode) {"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 140,
+    "class": "ui_candidate",
+    "text": "Text(\"اختر الجنسية\").tag(\"\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 146,
+    "class": "ui_candidate",
+    "text": "Section(\"الرحلة\") {"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 153,
+    "class": "ui_candidate",
+    "text": "\"تاريخ الرحلة\","
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 157,
+    "class": "ui_candidate",
+    "text": "Button(\"إزالة تاريخ الرحلة\", role: .destructive) { profile.tripDate = nil }"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 160,
+    "class": "ui_candidate",
+    "text": "Text(\"الجنسية تُحفظ على جهازك لتحديد بعثة دولتك أثناء السفر، ويمكن تغييرها لاحقًا.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 207,
+    "class": "ui_candidate",
+    "text": "Label(\"اتصال بالطوارئ \\(number)\", systemImage: \"phone.fill\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 215,
+    "class": "ui_candidate",
+    "text": "Text(\"بعثة \\(nationality.nameArabic) \\(nationality.flag)\").font(.headline)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 217,
+    "class": "ui_candidate",
+    "text": "Text(\"لم تتم مزامنة بيانات بعثة موثقة لهذه الوجهة بعد. لا يعرض ساري رقمًا غير متحقق منه.\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 221,
+    "class": "ui_candidate",
+    "text": "Text(\"حدد جنسيتك أولًا لإظهار بعثتك.\").foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Travel/TravelView.swift",
+    "line": 226,
+    "class": "ui_candidate",
+    "text": ".navigationTitle(\"أحتاج مساعدة\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 134,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"\\(ayah.sura_name_ar) • الآية \\(ayah.ayah) • الصفحة \\(ayah.page)\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 153,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"\\(surah.nameEN) • \\(surah.ayahCount) آية • الجزء \\(surah.juz)\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 167,
+    "class": "religious_or_fiqh",
+    "text": "TextField(\"ابحث في نص القرآن أو اسم السورة\", text: $query)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 177,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"\\(ayah.sura_name_ar) • آية \\(ayah.ayah)\").font(.headline)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 179,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz)\").font(.caption).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 198,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"\\(ayah.sura_name_ar) • آية \\(ayah.ayah)\").font(.headline)"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 219,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"\\(surah.nameEN) • \\(surah.ayahCount) آية\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 239,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"آية \\(ayah.ayah)\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 249,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz) • اضغط لعرض التفسير\")"
+  },
+  {
+    "file": "SARI/Sources/Features/Quran/QuranView.swift",
+    "line": 283,
+    "class": "religious_or_fiqh",
+    "text": "Text(\"الصفحة \\(ayah.page) • الجزء \\(ayah.juz)\").font(.caption).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 11,
+    "class": "ui_candidate",
+    "text": "else if weather.isLoading { ProgressView(\"جاري تحديث توقعات الطقس…\").padding(.top, 80) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 12,
+    "class": "ui_candidate",
+    "text": "else { ContentUnavailableView(\"تعذر عرض الطقس\", systemImage: \"cloud.slash\", description: Text(weather.errorMessage ?? \"اسمح بالموقع ثم أعد المحاولة.\")) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 15,
+    "class": "ui_candidate",
+    "text": ".navigationTitle(\"الطقس ولباس اليوم\").navigationBarTitleDisplayMode(.inline).environment(\\.layoutDirection, .rightToLeft)"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 20,
+    "class": "ui_candidate",
+    "text": "HStack(alignment: .firstTextBaseline) { Text(\"\\(Int(w.temperature.rounded()))°\").font(.system(size: 64, weight: .black, design: .rounded)); Text(\"المحسوسة \\(Int(w.apparentTemperature.rounded()))°\").foregroundStyle(.secondary); Spacer(); if let h = w.high, let l = w.low { Text(\"↑\\(Int(h))°  ↓\\(Int(l))°\").fontWeight(.semibold) } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 24,
+    "class": "ui_candidate",
+    "text": "private func hourly(_ w: WeatherSnapshot) -> some View { VStack(alignment: .trailing, spacing: 12) { Text(\"الساعات القادمة\").font(.title3.bold()); ScrollView(.horizontal, showsIndicators: false) { HStack(spacing: 10) { ForEach(w.hourly.prefix(12)) { h in VStack(spacing: 7) { Text(h.time.formatted(date: .omitted, time: .shortened)).font(.caption); Image(systemName: WeatherSnapshot.symbolName(for: h.weatherCode)); Text(\"\\(Int(h.temperature))°\").font(.headline); Label(\"\\(h.precipitationProbability)"
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 25,
+    "class": "ui_candidate",
+    "text": "private func week(_ w: WeatherSnapshot) -> some View { VStack(alignment: .trailing, spacing: 12) { Text(\"الأيام القادمة\").font(.title3.bold()); VStack(spacing: 0) { ForEach(Array(w.daily.enumerated()), id: \\.element.id) { index, d in HStack { Text(\"\\(d.precipitationProbability)%\").font(.caption).foregroundStyle(.secondary); Image(systemName: WeatherSnapshot.symbolName(for: d.weatherCode)); Text(\"↓\\(Int(d.low))°  ↑\\(Int(d.high))°\").fontWeight(.semibold); Spacer(); Text(d.date.formatted(.dateTime."
+  },
+  {
+    "file": "SARI/Sources/Features/Weather/WeatherDetailView.swift",
+    "line": 26,
+    "class": "ui_candidate",
+    "text": "private func details(_ w: WeatherSnapshot) -> some View { HStack(spacing: 10) { metric(\"الرطوبة\", \"\\(w.humidity)%\", \"humidity.fill\"); metric(\"الرياح\", \"\\(Int(w.windSpeed)) كم/س\", \"wind\"); metric(\"الهبات\", \"\\(Int(w.windGust)) كم/س\", \"wind.circle\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+    "line": 34,
+    "class": "ui_candidate",
+    "text": "Text(aligned ? \"أنت باتجاه القبلة\" : \"حرّك الهاتف حتى يتجه السهم للأعلى\").font(.title3.bold())"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+    "line": 35,
+    "class": "ui_candidate",
+    "text": "Text(\"اتجاه القبلة \\(Int(prayer.qiblaBearing.rounded()))°  •  اتجاه الهاتف \\(Int(compass.heading.rounded()))°\").font(.subheadline).foregroundStyle(.secondary)"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/QiblaView.swift",
+    "line": 36,
+    "class": "ui_candidate",
+    "text": "if compass.accuracy > 20 { Label(\"حرّك الهاتف بشكل رقم 8 لمعايرة البوصلة\",systemImage:\"iphone.gen3.radiowaves.left.and.right\").font(.caption).foregroundStyle(.orange) }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 8,
+    "class": "ui_candidate",
+    "text": "Section { row(\"الفجر\",t.fajr,\"sunrise.fill\"); row(\"الشروق\",t.sunrise,\"sun.horizon.fill\"); row(\"الظهر\",t.dhuhr,\"sun.max.fill\"); row(\"العصر\",t.asr,\"sun.min.fill\"); row(\"المغرب\",t.maghrib,\"sunset.fill\"); row(\"العشاء\",t.isha,\"moon.stars.fill\") } header: { Text(\"مواقيت اليوم — \\(prayer.locationName)\") }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 9,
+    "class": "ui_candidate",
+    "text": "Section { LabeledContent(SariUIStrings.text(\"prayer_calc_method\", SariLanguage.selected),value:prayer.effectiveCalculationMethod.title); NavigationLink { QiblaView() } label: { Label(\"بوصلة القبلة\",systemImage:\"location.north.circle.fill\") }; NavigationLink { PrayerSettingsView() } label: { Label(\"الأذان والإقامة\",systemImage:\"bell.badge.fill\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 10,
+    "class": "ui_candidate",
+    "text": "} else { HStack { ProgressView(); Text(\"جاري حساب المواقيت حسب موقعك…\") } }"
+  },
+  {
+    "file": "SARI/Sources/Features/Prayer/PrayerTimesView.swift",
+    "line": 11,
+    "class": "ui_candidate",
+    "text": "}.navigationTitle(\"الصلاة\").environment(\\.layoutDirection,.rightToLeft).onAppear { prayer.start() }"
+  }
+]
